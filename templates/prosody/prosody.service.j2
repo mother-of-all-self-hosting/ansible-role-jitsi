@@ -26,6 +26,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
 			-p {{ jitsi_prosody_container_jvb_host_bind_port }}:5222 \
 			{% endif %}
 			--env-file={{ jitsi_prosody_base_path }}/env \
+			--label-file={{ jitsi_prosody_base_path }}/labels \
 			--mount type=bind,src={{ jitsi_prosody_config_path }},dst=/config \
 			--mount type=bind,src={{ jitsi_prosody_plugins_path }},dst=/prosody-plugins-custom \
 			{% for arg in jitsi_prosody_container_extra_arguments %}
