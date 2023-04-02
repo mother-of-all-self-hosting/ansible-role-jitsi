@@ -12,6 +12,8 @@
     - {path: "{{ jitsi_web_config_path }}", when: true}
     - {path: "{{ jitsi_web_transcripts_path }}", when: true}
     - {path: "{{ jitsi_web_crontabs_path }}", when: true}
+    - {path: "{{ jitsi_web_well_known_path }}", when: "{{ jitsi_web_well_known_enabled }}"}
+    - {path: "{{ jitsi_web_well_known_path }}/element", when: "{{ jitsi_web_well_known_element_jitsi_enabled }}"}
   when: item.when | bool
 
 - name: Ensure jitsi-web support files installed
@@ -39,6 +41,21 @@
   with_items:
     - custom-config.js
     - custom-interface_config.js
+
+- name: Ensure Jitsi /.well-known/element/jitsi installed
+  when: jitsi_web_well_known_element_jitsi_enabled | bool
+  ansible.builtin.copy:
+    content: "{{ jitsi_web_well_known_element_jitsi_json }}"
+    dest: "{{ jitsi_web_well_known_path }}/element/jitsi"
+    mode: 0644
+    owner: "{{ jitsi_uid }}"
+    group: "{{ jitsi_gid }}"
+
+- name: Ensure Jitsi /.well-known/element/jitsi removed
+  when: not jitsi_web_well_known_element_jitsi_enabled | bool
+  ansible.builtin.file:
+    path: "{{ jitsi_web_well_known_path }}/element/jitsi"
+    state: absent
 
 - name: Ensure jitsi-web container image is pulled
   community.docker.docker_image:

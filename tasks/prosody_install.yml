@@ -42,31 +42,6 @@
     file: "{{ role_path }}/tasks/util/setup_jitsi_auth_uvs_install.yml"
   when: jitsi_enable_auth | bool and jitsi_auth_type == "matrix"
 
-- name: Manage Jitsi .well-known
-  when: jitsi_require_well_known | bool and jitsi_prosody_auth_matrix_uvs_matrix_well_known_files_path != ''
-  block:
-    - name: Ensure .well-known directories exist
-      ansible.builtin.file:
-        path: "{{ item.path }}"
-        state: directory
-        mode: 0775
-        owner: "{{ jitsi_uid }}"
-        group: "{{ jitsi_gid }}"
-      with_items:
-        - {path: "{{ jitsi_prosody_auth_matrix_uvs_matrix_well_known_files_path }}/element", when: "{{ jitsi_enable_auth | bool and jitsi_auth_type == 'matrix' }}"}
-      when: item.when | bool
-
-    # Create .well-known/element/jitsi in the static file directory for nginx-proxy.
-    - name: Ensure Jitsi /.well-known/element/jitsi configured
-      ansible.builtin.copy:
-        content: "{{ jitsi_wellknown_element_jitsi_json }}"
-        dest: "{{ jitsi_prosody_auth_matrix_uvs_matrix_well_known_files_path }}/.well-known/element/jitsi"
-        mode: 0644
-        owner: "{{ jitsi_uid }}"
-        group: "{{ jitsi_gid }}"
-      when: jitsi_enable_auth | bool and jitsi_auth_type == "matrix"
-# END Block
-
 # Remove matrix authentication if disabled
 - name: Ensure user verification plugin is not present if matrix auth is disabled
   ansible.builtin.include_tasks:

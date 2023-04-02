@@ -26,6 +26,9 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
 			{% endif %}
 			--mount type=bind,src={{ jitsi_web_config_path }},dst=/config \
 			--mount type=bind,src={{ jitsi_web_base_path }}/base.html,dst=/usr/share/jitsi-meet/base.html,ro \
+			{% if jitsi_web_well_known_enabled %}
+			--mount type=bind,src={{ jitsi_web_well_known_path }},dst=/usr/share/jitsi-meet/.well-known,ro \
+			{% endif %}
 			--mount type=bind,src={{ jitsi_web_transcripts_path }},dst=/usr/share/jitsi-meet/transcripts \
 			--mount type=bind,src={{ jitsi_web_crontabs_path }},dst=/var/spool/cron/crontabs \
 			{% for arg in jitsi_web_container_extra_arguments %}

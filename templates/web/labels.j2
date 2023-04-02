@@ -8,7 +8,7 @@ traefik.docker.network={{ jitsi_web_container_labels_traefik_docker_network }}
 {% set middlewares = [] %}
 
 {% if jitsi_web_container_labels_traefik_path_prefix != '/' %}
-traefik.http.middlewares.{{ jitsi_identifier }}-web-slashless-redirect.redirectregex.regex=({{ jitsi_web_container_labels_traefik_path_prefix | quote }})$
+traefik.http.middlewares.{{ jitsi_identifier }}-web-slashless-redirect.redirectregex.regex=^({{ jitsi_web_container_labels_traefik_path_prefix | quote }})$
 traefik.http.middlewares.{{ jitsi_identifier }}-web-slashless-redirect.redirectregex.replacement=${1}/
 {% set middlewares = middlewares + [jitsi_identifier + '-web-slashless-redirect'] %}
 {% endif %}

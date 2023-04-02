@@ -82,10 +82,7 @@ jitsi_prosody_auth_matrix_files:
   - path: "mod_matrix_power_sync.lua"
     when: "{{ jitsi_prosody_auth_matrix_uvs_sync_power_levels }}"
 
-# Plugged in group_vars
 jitsi_prosody_auth_matrix_uvs_auth_token: ''
-
-jitsi_prosody_auth_matrix_uvs_matrix_well_known_files_path: ''
 
 # Default max participants to the empty string
 #
@@ -104,7 +101,6 @@ jitsi_xmpp_internal_muc_domain: internal-muc.meet.jitsi
 jitsi_xmpp_modules: ''
 
 jitsi_recorder_domain: recorder.meet.jitsi
-
 
 jitsi_jibri_brewery_muc: jibribrewery
 jitsi_jibri_pending_timeout: 90
@@ -179,6 +175,7 @@ jitsi_web_base_path: "{{ jitsi_base_path }}/web"
 jitsi_web_config_path: "{{ jitsi_web_base_path }}/config"
 jitsi_web_transcripts_path: "{{ jitsi_web_base_path }}/transcripts"
 jitsi_web_crontabs_path: "{{ jitsi_web_base_path }}/crontabs"
+jitsi_web_well_known_path: "{{ jitsi_web_base_path }}/well-known"
 
 jitsi_web_public_url: "https://{{ jitsi_hostname }}{{ '' if jitsi_path_prefix == '/' else jitsi_path_prefix }}/"
 
@@ -387,8 +384,9 @@ jitsi_prosody_plugins_path: "{{ jitsi_prosody_base_path }}/prosody-plugins-custo
 jitsi_prosody_ext_path: "{{ jitsi_prosody_base_path }}/ext"
 
 # well known is currently only needed for auth type "matrix"
-jitsi_require_well_known: "{{ jitsi_enable_auth | bool and jitsi_auth_type == 'matrix' }}"
-jitsi_wellknown_element_jitsi_json: '{"auth": "openidtoken-jwt"}'
+jitsi_web_well_known_enabled: "{{ jitsi_web_well_known_element_jitsi_enabled }}"
+jitsi_web_well_known_element_jitsi_enabled: "{{ jitsi_enable_auth | bool and jitsi_auth_type == 'matrix' }}"
+jitsi_web_well_known_element_jitsi_json: '{"auth": "openidtoken-jwt"}'
 
 jitsi_muc_modules: |
   {{
