@@ -1,0 +1,46 @@
+{% if jitsi_prosody_container_labels_traefik_enabled %}
+traefik.enable=true
+
+{% if jitsi_prosody_container_labels_traefik_docker_network %}
+traefik.docker.network={{ jitsi_prosody_container_labels_traefik_docker_network }}
+{% endif %}
+
+{% set middlewares = [] %}
+
+{% if jitsi_prosody_container_labels_traefik_path_prefix != '/' %}
+traefik.http.middlewares.{{ jitsi_identifier }}-prosody-strip-prefix.stripprefix.prefixes={{ jitsi_prosody_container_labels_traefik_path_prefix }}
+{% set middlewares = middlewares + [jitsi_identifier + '-prosody-strip-prefix'] %}
+{% endif %}
+
+{% if jitsi_prosody_container_labels_traefik_additional_request_headers.keys() | length > 0 %}
+{% for name, value in jitsi_prosody_container_labels_traefik_additional_request_headers.items() %}
+traefik.http.middlewares.{{ jitsi_identifier }}-prosody-add-request-headers.headers.customrequestheaders.{{ name }}={{ value }}
+{% endfor %}
+{% set middlewares = middlewares + [jitsi_identifier + '-prosody-add-request-headers'] %}
+{% endif %}
+
+{% if jitsi_prosody_container_labels_traefik_additional_response_headers.keys() | length > 0 %}
+{% for name, value in jitsi_prosody_container_labels_traefik_additional_response_headers.items() %}
+traefik.http.middlewares.{{ jitsi_identifier }}-prosody-add-response-headers.headers.customresponseheaders.{{ name }}={{ value }}
+{% endfor %}
+{% set middlewares = middlewares + [jitsi_identifier + '-prosody-add-response-headers'] %}
+{% endif %}
+
+traefik.http.routers.{{ jitsi_identifier }}-prosody.rule={{ jitsi_prosody_container_labels_traefik_rule }}
+{% if jitsi_prosody_container_labels_traefik_priority | int > 0 %}
+traefik.http.routers.{{ jitsi_identifier }}-prosody.priority={{ jitsi_prosody_container_labels_traefik_priority }}
+{% endif %}
+traefik.http.routers.{{ jitsi_identifier }}-prosody.service={{ jitsi_identifier }}-prosody
+{% if middlewares | length > 0 %}
+traefik.http.routers.{{ jitsi_identifier }}-prosody.middlewares={{ middlewares | join(',') }}
+{% endif %}
+traefik.http.routers.{{ jitsi_identifier }}-prosody.entrypoints={{ jitsi_prosody_container_labels_traefik_entrypoints }}
+traefik.http.routers.{{ jitsi_identifier }}-prosody.tls={{ jitsi_prosody_container_labels_traefik_tls | to_json }}
+{% if jitsi_prosody_container_labels_traefik_tls %}
+traefik.http.routers.{{ jitsi_identifier }}-prosody.tls.certResolver={{ jitsi_prosody_container_labels_traefik_tls_certResolver }}
+{% endif %}
+
+traefik.http.services.{{ jitsi_identifier }}-prosody.loadbalancer.server.port=5280
+{% endif %}
+
+{{ jitsi_prosody_container_labels_additional_labels }}

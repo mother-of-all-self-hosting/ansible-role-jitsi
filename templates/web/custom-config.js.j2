@@ -1,0 +1,22 @@
+config.defaultLanguage = {{ jitsi_web_config_defaultLanguage|to_json }};
+
+
+if (!config.hasOwnProperty('p2p')) config.p2p = {% raw %}{}{% endraw %};
+
+{% if jitsi_web_stun_servers|length > 0 %}
+config.p2p.stunServers = [
+	{% for url in jitsi_web_stun_servers %}
+		{ urls: {{ url|to_json }} }{% if not loop.last %},{% endif %}
+	{% endfor %}
+];
+{% endif %}
+
+{% if jitsi_disable_gravatar %}
+config.gravatar = {'disabled': true};
+{% endif %}
+
+{% if jitsi_etherpad_enabled %}
+config.etherpad_base = {{ (jitsi_etherpad_base + '/p/') | to_json }}
+{% endif %}
+
+{{ jitsi_web_custom_config_extension }}

@@ -1,0 +1,25 @@
+---
+
+- name: Remove all files regarding prosody mod auth_matrix_user_verification
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  with_flattened:
+    - "{{ jitsi_prosody_auth_matrix_user_verification_repo_target }}"
+    - "{{ jitsi_prosody_auth_matrix_files | map(attribute='path') | map('regex_replace', '^', jitsi_prosody_plugins_path+'/') | list }}"
+  register: jitsi_prosody_auth_matrix_user_verification_uninstalled
+
+- name: Remove /.well-known/element/jitsi
+  when: jitsi_prosody_auth_matrix_uvs_matrix_well_known_files_path != ''
+  ansible.builtin.file:
+    path: "{{ jitsi_prosody_auth_matrix_uvs_matrix_well_known_files_path }}/element/jitsi"
+    state: absent
+
+- when: jitsi_prosody_auth_matrix_user_verification_uninstalled.changed
+  block:
+    - name: Populate service facts
+      ansible.builtin.service_facts:
+
+    - name: Ensure prosody is restarted later on if currently running
+      ansible.builtin.set_fact:
+        jitsi_prosody_require_restart: "{{ true if ansible_facts.services[jitsi_identifier + '-prosody.service']['state'] == 'running' else false }}"

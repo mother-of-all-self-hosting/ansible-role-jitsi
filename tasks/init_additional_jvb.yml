@@ -1,0 +1,5 @@
+---
+
+- ansible.builtin.set_fact:
+    devture_systemd_service_manager_services_list_auto: "{{ [{'name': (jitsi_identifier + '-jvb.service'), 'priority': 1000, 'groups': ['jitsi', 'jitsi-jvb']}] }}"
+  when: jitsi_enabled | bool

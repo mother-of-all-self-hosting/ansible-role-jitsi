@@ -1,0 +1,49 @@
+#jinja2: lstrip_blocks: "True"
+[Unit]
+Description=Jitsi Prosody server ({{ jitsi_identifier }})
+{% for service in jitsi_prosody_systemd_required_services_list %}
+Requires={{ service }}
+After={{ service }}
+{% endfor %}
+DefaultDependencies=no
+
+[Service]
+Type=simple
+Environment="HOME={{ devture_systemd_docker_base_systemd_unit_home_path }}"
+ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} kill {{ jitsi_identifier }}-prosody 2>/dev/null || true'
+ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ jitsi_identifier }}-prosody 2>/dev/null || true'
+
+ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
+			--rm \
+			--name={{ jitsi_identifier }}-prosody \
+			--log-driver=none \
+			--network={{ jitsi_container_network }} \
+			--network-alias={{ jitsi_xmpp_server }} \
+			{% if jitsi_prosody_container_http_host_bind_port %}
+			-p {{ jitsi_prosody_container_http_host_bind_port }}:5280 \
+			{% endif %}
+			{% if jitsi_prosody_container_jvb_host_bind_port %}
+			-p {{ jitsi_prosody_container_jvb_host_bind_port }}:5222 \
+			{% endif %}
+			--env-file={{ jitsi_prosody_base_path }}/env \
+			--mount type=bind,src={{ jitsi_prosody_config_path }},dst=/config \
+			--mount type=bind,src={{ jitsi_prosody_plugins_path }},dst=/prosody-plugins-custom \
+			{% for arg in jitsi_prosody_container_extra_arguments %}
+			{{ arg }} \
+			{% endfor %}
+			{{ jitsi_prosody_container_image }}
+
+{% for network in jitsi_prosody_container_additional_networks %}
+ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ jitsi_identifier }}-prosody
+{% endfor %}
+
+ExecStart={{ devture_systemd_docker_base_host_command_docker }} start --attach {{ jitsi_identifier }}-prosody
+
+ExecStop=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} kill {{ jitsi_identifier }}-prosody 2>/dev/null || true'
+ExecStop=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ jitsi_identifier }}-prosody 2>/dev/null || true'
+Restart=always
+RestartSec=30
+SyslogIdentifier={{ jitsi_identifier }}-prosody
+
+[Install]
+WantedBy=multi-user.target

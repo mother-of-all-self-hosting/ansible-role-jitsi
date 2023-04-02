@@ -1,0 +1,25 @@
+---
+
+- name: Check existence of jitsi-jvb service
+  ansible.builtin.stat:
+    path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jvb.service"
+  register: jitsi_jvb_service_stat
+
+- when: jitsi_jvb_service_stat.stat.exists | bool
+  block:
+    - name: Ensure jitsi-jvb systemd service is stopped
+      ansible.builtin.service:
+        name: "{{ jitsi_identifier }}-jvb"
+        state: stopped
+        enabled: false
+        daemon_reload: true
+
+    - name: Ensure jitsi-jvb systemd service doesn't exist
+      ansible.builtin.file:
+        path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jvb.service"
+        state: absent
+
+    - name: Ensure jitsi-jvb paths doesn't exist
+      ansible.builtin.file:
+        path: "{{ jitsi_jvb_base_path }}"
+        state: absent

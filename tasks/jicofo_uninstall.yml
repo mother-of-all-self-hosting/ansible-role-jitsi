@@ -1,0 +1,25 @@
+---
+
+- name: Check existence of jitsi-jicofo systemd service
+  ansible.builtin.stat:
+    path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jicofo.service"
+  register: jitsi_jicofo_service_stat
+
+- when: jitsi_jicofo_service_stat.stat.exists | bool
+  block:
+    - name: Ensure jitsi-jicofo is stopped
+      ansible.builtin.service:
+        name: "{{ jitsi_identifier }}-jicofo"
+        state: stopped
+        enabled: false
+        daemon_reload: true
+
+    - name: Ensure jitsi-jicofo systemd service doesn't exist
+      ansible.builtin.file:
+        path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jicofo.service"
+        state: absent
+
+    - name: Ensure jitsi-jicofo paths doesn't exist
+      ansible.builtin.file:
+        path: "{{ jitsi_jicofo_base_path }}"
+        state: absent

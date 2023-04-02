@@ -1,0 +1,25 @@
+---
+
+- name: Check if jitsi-prosody systemd service file exists
+  ansible.builtin.stat:
+    path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-prosody.service"
+  register: jitsi_prosody_service_stat
+
+- when: jitsi_prosody_service_stat.stat.exists | bool
+  block:
+    - name: Ensure jitsi-prosody systemd service is stopped
+      ansible.builtin.service:
+        name: "{{ jitsi_identifier }}-prosody"
+        state: stopped
+        enabled: false
+        daemon_reload: true
+
+    - name: Ensure jitsi-prosody systemd service file doesn't exist
+      ansible.builtin.file:
+        path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-prosody.service"
+        state: absent
+
+    - name: Ensure jitsi-prosody paths doesn't exist
+      ansible.builtin.file:
+        path: "{{ jitsi_prosody_base_path }}"
+        state: absent

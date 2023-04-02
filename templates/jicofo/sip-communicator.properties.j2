@@ -1,0 +1,9 @@
+org.jitsi.jicofo.ALWAYS_TRUST_MODE_ENABLED=true
+org.jitsi.jicofo.BRIDGE_MUC={{ jitsi_jvb_brewery_muc }}@{{ jitsi_xmpp_internal_muc_domain }}
+
+org.jitsi.jicofo.jibri.BREWERY={{ jitsi_jibri_brewery_muc }}@{{ jitsi_xmpp_internal_muc_domain }}
+org.jitsi.jicofo.jibri.PENDING_TIMEOUT=90
+
+{% if jitsi_enable_auth %}
+org.jitsi.jicofo.auth.URL=XMPP:{{ jitsi_xmpp_domain }}
+{% endif %}

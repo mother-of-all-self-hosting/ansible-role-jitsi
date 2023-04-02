@@ -1,0 +1,87 @@
+---
+
+- name: Ensure jitsi-prosody environment exists
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    mode: 0777
+    owner: "{{ jitsi_uid }}"
+    group: "{{ jitsi_gid }}"
+  with_items:
+    - {path: "{{ jitsi_prosody_base_path }}", when: true}
+    - {path: "{{ jitsi_prosody_config_path }}", when: true}
+    - {path: "{{ jitsi_prosody_plugins_path }}", when: true}
+    - {path: "{{ jitsi_prosody_ext_path }}", when: true}
+  when: item.when | bool
+
+- name: Ensure jitsi-prosody container image is pulled
+  community.docker.docker_image:
+    name: "{{ jitsi_prosody_container_image }}"
+    source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
+    force_source: "{{ jitsi_prosody_container_image_force_pull if ansible_version.major > 2 or ansible_version.minor >= 8 else omit }}"
+    force: "{{ omit if ansible_version.major > 2 or ansible_version.minor >= 8 else jitsi_prosody_container_image_force_pull }}"
+  register: result
+  retries: "{{ devture_playbook_help_container_retries_count }}"
+  delay: "{{ devture_playbook_help_container_retries_delay }}"
+  until: result is not failed
+
+- name: Ensure jitsi-prosody support files installed
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/prosody/{{ item }}.j2"
+    dest: "{{ jitsi_prosody_base_path }}/{{ item }}"
+    owner: "{{ jitsi_uid }}"
+    group: "{{ jitsi_gid }}"
+    mode: 0640
+  with_items:
+    - env
+
+# Configure matrix authentication.
+- name: Install user verification plugin
+  ansible.builtin.include_tasks:
+    file: "{{ role_path }}/tasks/util/setup_jitsi_auth_uvs_install.yml"
+  when: jitsi_enable_auth | bool and jitsi_auth_type == "matrix"
+
+- name: Manage Jitsi .well-known
+  when: jitsi_require_well_known | bool and jitsi_prosody_auth_matrix_uvs_matrix_well_known_files_path != ''
+  block:
+    - name: Ensure .well-known directories exist
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        mode: 0775
+        owner: "{{ jitsi_uid }}"
+        group: "{{ jitsi_gid }}"
+      with_items:
+        - {path: "{{ jitsi_prosody_auth_matrix_uvs_matrix_well_known_files_path }}/element", when: "{{ jitsi_enable_auth | bool and jitsi_auth_type == 'matrix' }}"}
+      when: item.when | bool
+
+    # Create .well-known/element/jitsi in the static file directory for nginx-proxy.
+    - name: Ensure Jitsi /.well-known/element/jitsi configured
+      ansible.builtin.copy:
+        content: "{{ jitsi_wellknown_element_jitsi_json }}"
+        dest: "{{ jitsi_prosody_auth_matrix_uvs_matrix_well_known_files_path }}/.well-known/element/jitsi"
+        mode: 0644
+        owner: "{{ jitsi_uid }}"
+        group: "{{ jitsi_gid }}"
+      when: jitsi_enable_auth | bool and jitsi_auth_type == "matrix"
+# END Block
+
+# Remove matrix authentication if disabled
+- name: Ensure user verification plugin is not present if matrix auth is disabled
+  ansible.builtin.include_tasks:
+    file: "{{ role_path }}/tasks/util/setup_jitsi_auth_uvs_uninstall.yml"
+  when: (not jitsi_enable_auth | bool) or (jitsi_auth_type != "matrix")
+
+- name: Ensure jitsi-prosody systemd service file is installed
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/prosody/prosody.service.j2"
+    dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-prosody.service"
+    mode: 0644
+  register: jitsi_prosody_systemd_service_result
+
+# Tasks that require a running prosody container are called in this file.
+- name: Run prosody related tasks, that require a running container.
+  ansible.builtin.include_tasks:
+    file: "{{ role_path }}/tasks/util/setup_jitsi_prosody_post_setup_hooks.yml"
+  when:
+    - jitsi_enable_auth | bool and jitsi_auth_type == "internal"
