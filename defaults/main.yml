@@ -30,7 +30,7 @@ jitsi_enable_jaas_components: false
 jitsi_enable_p2p: true
 jitsi_enable_av_moderation: true
 jitsi_enable_breakout_rooms: true
-jitsi_disable_gravatar: true
+jitsi_disable_gravatar: false
 
 # Authentication type, must be one of internal, jwt, matrix or ldap.
 # Currently, only internal, matrix and ldap mechanisms are supported by this role.
