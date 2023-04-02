@@ -404,7 +404,7 @@ jitsi_prosody_systemd_required_services_list: ['docker.service']
 # Neccessary Port binding for those disabling the integrated nginx proxy
 jitsi_prosody_container_http_host_bind_port: ''
 
-jitsi_prosody_container_jvb_host_bind_port: 5222
+jitsi_prosody_container_jvb_host_bind_port: ''
 
 jitsi_jicofo_container_image: "{{ jitsi_jicofo_container_image_registry_prefix }}jitsi/jicofo:{{ jitsi_container_image_tag }}"
 jitsi_jicofo_container_image_force_pull: "{{ jitsi_jicofo_container_image.endswith(':latest') }}"
