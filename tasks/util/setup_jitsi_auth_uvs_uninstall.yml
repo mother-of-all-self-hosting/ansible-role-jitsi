@@ -9,12 +9,6 @@
     - "{{ jitsi_prosody_auth_matrix_files | map(attribute='path') | map('regex_replace', '^', jitsi_prosody_plugins_path+'/') | list }}"
   register: jitsi_prosody_auth_matrix_user_verification_uninstalled
 
-- name: Remove /.well-known/element/jitsi
-  when: jitsi_prosody_auth_matrix_uvs_matrix_well_known_files_path != ''
-  ansible.builtin.file:
-    path: "{{ jitsi_prosody_auth_matrix_uvs_matrix_well_known_files_path }}/element/jitsi"
-    state: absent
-
 - when: jitsi_prosody_auth_matrix_user_verification_uninstalled.changed
   block:
     - name: Populate service facts
