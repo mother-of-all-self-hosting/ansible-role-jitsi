@@ -4,7 +4,7 @@
 #
 
 - name: Ensure Jitsi internal authentication users are configured
-  ansible.builtin.shell: "{{ devture_systemd_docker_base_host_command_docker }} exec {{ jitsi_identifier }}-prosody prosodyctl --config /config/prosody.cfg.lua register {{ item.username | quote }} meet.jitsi {{ item.password | quote }}"
+  ansible.builtin.command: "{{ devture_systemd_docker_base_host_command_docker }} exec {{ jitsi_identifier }}-prosody prosodyctl --config /config/prosody.cfg.lua register {{ item.username | quote }} meet.jitsi {{ item.password | quote }}"
   with_items: "{{ jitsi_prosody_auth_internal_accounts }}"
   when:
     - jitsi_prosody_auth_internal_accounts|length > 0
