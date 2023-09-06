@@ -6,7 +6,6 @@
     dest: "{{ jitsi_prosody_auth_matrix_user_verification_repo_target }}"
     version: "{{ jitsi_prosody_auth_matrix_user_verification_repo_version }}"
   become: true
-  become_user: "{{ jitsi_uid }}"
 
 - name: Install Prosody Auth Matrix User Verification Plugin
   ansible.builtin.copy:
@@ -18,3 +17,4 @@
     group: "{{ jitsi_gid }}"
   with_items: "{{ jitsi_prosody_auth_matrix_files }}"
   when: item.when | bool
+  become: true
