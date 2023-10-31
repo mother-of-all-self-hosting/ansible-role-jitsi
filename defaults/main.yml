@@ -20,6 +20,9 @@ jitsi_path_prefix: /
 jitsi_uid: ''
 jitsi_gid: ''
 
+# Username corresponding to jitsi_uid. If undefined, it will be auto-detected.
+jitsi_user_username: ''
+
 jitsi_architecture: ''
 
 jitsi_enable_auth: false

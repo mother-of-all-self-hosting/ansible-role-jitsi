@@ -1,12 +1,25 @@
 ---
 
+- name: Determine jitsi_user_username if undefined
+  when: jitsi_user_username == ''
+  block:
+    - name: Look up Jitsi username by uid
+      ansible.builtin.getent:
+        database: passwd
+        key: "{{ jitsi_uid }}"
+      register: result_jitsi_user_username
+
+    - name: Set jitsi_user_username based on uid lookup data
+      set_fact:
+        jitsi_user_username: "{{ result_jitsi_user_username.ansible_facts.getent_passwd.keys() | list | first }}"
+
 - name: Checkout Prosody Auth Matrix User Verification Plugin Repo
   ansible.builtin.git:
     repo: "{{ jitsi_prosody_auth_matrix_user_verification_repo_location }}"
     dest: "{{ jitsi_prosody_auth_matrix_user_verification_repo_target }}"
     version: "{{ jitsi_prosody_auth_matrix_user_verification_repo_version }}"
   become: true
-  become_user: "{{ jitsi_uid }}"
+  become_user: "{{ jitsi_user_username }}"
 
 - name: Install Prosody Auth Matrix User Verification Plugin
   ansible.builtin.copy:
