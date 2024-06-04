@@ -272,7 +272,7 @@ jitsi_web_container_additional_networks_custom: []
 jitsi_web_container_extra_arguments: []
 
 # List of systemd services that jitsi-web.service depends on
-jitsi_web_systemd_required_services_list: ['docker.service']
+jitsi_web_systemd_required_services_list: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
 
 
 # Custom configuration to be appended to `interface_config.js`, passed to Jitsi Web.
@@ -400,7 +400,7 @@ jitsi_muc_modules: |
 jitsi_prosody_container_extra_arguments: []
 
 # List of systemd services that jitsi-prosody.service depends on
-jitsi_prosody_systemd_required_services_list: ['docker.service']
+jitsi_prosody_systemd_required_services_list: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
 
 # Neccessary Port binding for those disabling the integrated nginx proxy
 jitsi_prosody_container_http_host_bind_port: ''
@@ -428,6 +428,8 @@ jitsi_jicofo_container_extra_arguments: []
 jitsi_jicofo_systemd_required_services_list: "{{ jitsi_jicofo_systemd_required_services_list_default + jitsi_jicofo_systemd_required_services_list_auto + jitsi_jicofo_systemd_required_services_list_custom }}"
 jitsi_jicofo_systemd_required_services_list_default: |
   {{
+    ([devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [])
+    +
     [
       'docker.service',
       (jitsi_identifier + '-prosody.service'),
