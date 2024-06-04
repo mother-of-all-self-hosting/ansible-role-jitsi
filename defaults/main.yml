@@ -431,7 +431,6 @@ jitsi_jicofo_systemd_required_services_list_default: |
     ([devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [])
     +
     [
-      'docker.service',
       (jitsi_identifier + '-prosody.service'),
     ]
   }}
@@ -498,7 +497,7 @@ jitsi_jvb_config_path: "{{ jitsi_jvb_base_path }}/config"
 jitsi_jvb_container_extra_arguments: []
 
 # List of systemd services that jitsi-jvb.service depends on
-jitsi_jvb_systemd_required_services_list: ['docker.service']
+jitsi_jvb_systemd_required_services_list: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
 
 jitsi_jvb_auth_user: jvb
 jitsi_jvb_auth_password: ''
