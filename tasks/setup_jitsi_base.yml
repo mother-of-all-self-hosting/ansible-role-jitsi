@@ -15,3 +15,4 @@
   community.general.docker_network:
     name: "{{ jitsi_container_network }}"
     driver: bridge
+    driver_options: "{{ devture_systemd_docker_base_container_networks_driver_options }}"
