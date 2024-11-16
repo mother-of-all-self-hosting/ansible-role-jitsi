@@ -4,9 +4,9 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
-  with_flattened:
-    - "{{ jitsi_prosody_auth_matrix_user_verification_repo_target }}"
-    - "{{ jitsi_prosody_auth_matrix_files | map(attribute='path') | map('regex_replace', '^', jitsi_prosody_plugins_path+'/') | list }}"
+  loop:
+    - "{{ jitsi_prosody_auth_matrix_user_verification_repo_target | flatten  }}"
+    - "{{ jitsi_prosody_auth_matrix_files | map(attribute='path') | map('regex_replace', '^', jitsi_prosody_plugins_path+'/') | list | flatten }}"
   register: jitsi_prosody_auth_matrix_user_verification_uninstalled
 
 - when: jitsi_prosody_auth_matrix_user_verification_uninstalled.changed
