@@ -8,7 +8,7 @@ jitsi_identifier: jitsi
 
 jitsi_base_path: "/{{ jitsi_identifier }}"
 
-jitsi_version: stable-9823
+jitsi_version: stable-9909
 
 # The hostname at which Jitsi is served.
 jitsi_hostname: ''
