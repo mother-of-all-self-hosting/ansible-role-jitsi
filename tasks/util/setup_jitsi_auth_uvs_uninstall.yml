@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2024 Kim Brose
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 ---
 
 - name: Remove all files regarding prosody mod auth_matrix_user_verification
