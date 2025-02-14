@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Jitsi Ansible role
 
 This is an [Ansible](https://www.ansible.com/) role which installs [Jitsi](https://jitsi.org/) to run as a bunch of [Docker](https://www.docker.com/) containers wrapped in a systemd services. The architecture is inspired by the [docker-jitsi-meet](https://github.com/jitsi/docker-jitsi-meet) project, but does not use Docker Compose.

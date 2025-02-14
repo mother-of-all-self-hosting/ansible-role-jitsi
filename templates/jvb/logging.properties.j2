@@ -1,3 +1,9 @@
+{#
+SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+#}
+
 {% raw %}
 {{ if .Env.SENTRY_DSN | default "0" | toBool }}
 handlers=java.util.logging.ConsoleHandler,io.sentry.jul.SentryHandler
