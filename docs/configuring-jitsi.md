@@ -323,11 +323,9 @@ If you use the [mash-playbook](https://github.com/mother-of-all-self-hosting/mas
 
 ## Usage
 
-You can use the self-hosted Jitsi server in multiple ways:
+Open the specified URL such as `https://example.com`, and you can start a videoconference. Note that you'll need to log in to your Jitsi's account if you have configured authentication with `internal` auth.
 
-- **by adding a widget to a room via Element Web** (the one configured by the playbook at `https://element.example.com`). Just start a voice or a video call in a room containing more than 2 members and that would create a Jitsi widget which utilizes your self-hosted Jitsi server.
-
-- **directly (without any Matrix integration)**. Just go to `https://example.com`
+Check [the official user guide](https://jitsi.github.io/handbook/docs/category/user-guide) for details about how to use Jitsi Meet.
 
 ### Set up additional JVBs for more video-conferences (optional)
 
