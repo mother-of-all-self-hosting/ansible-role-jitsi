@@ -64,18 +64,17 @@ jitsi_enabled: true
 ########################################################################
 ```
 
-### Adjusting the Jitsi URL (optional)
+### Set the hostname
 
-By tweaking the `jitsi_hostname` variable, you can easily make the service available at a **different hostname** than the default one.
+**Note**: if you use the MDAD Ansible playbook, it installs Jitsi on the `jitsi.` subdomain (`jitsi.example.com`) by default, so this setting is optional.
 
-Example additional configuration for your `vars.yml` file:
+To serve Jitsi you need to set the hostname as well. To do so, add the following configuration to your `vars.yml` file. Make sure to replace `example.com` with your own value.
 
 ```yaml
-# Change the default hostname
-jitsi_hostname: call.example.com
+jitsi_hostname: "example.com"
 ```
 
-After changing the domain, **you may need to adjust your DNS** records to point the Jitsi domain to the Matrix server.
+After adjusting the hostname, make sure to adjust your DNS records to point the Jitsi domain to your server.
 
 ### Configure Jitsi authentication and guests mode (optional)
 
@@ -225,6 +224,7 @@ Take a look at:
 
 Here is an example set of configurations for running a Jitsi instance with:
 
+- hostname: `call.example.com`
 - authentication using a Jitsi account (username: `US3RNAME`, password: `passw0rd`)
 - guests: allowed
 - maximum participants: 6 people
@@ -233,6 +233,7 @@ Here is an example set of configurations for running a Jitsi instance with:
 
 ```yaml
 jitsi_enabled: true
+jitsi_hostname: "call.example.com"
 jitsi_enable_auth: true
 jitsi_enable_guests: true
 jitsi_prosody_auth_internal_accounts:
