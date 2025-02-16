@@ -78,7 +78,9 @@ After adjusting the hostname, make sure to adjust your DNS records to point the 
 
 ### Configure Jitsi authentication and guests mode (optional)
 
-By default the Jitsi instance does not require for anyone to log in, and is open to use without an account. To control who is allowed to start meetings on your Jitsi instance, you'd need to enable Jitsi's authentication and optionally guests mode. With authentication enabled, all meetings have to be started by a registered user. After the meeting is started by that user, then guests are free to join. If the registered user is not yet present, they are put on hold in individual waiting rooms.
+By default the Jitsi Meet instance **does not require for anyone to log in, and is open to use without an account**. If you're fine with such an open Jitsi instance, please skip ahead.
+
+If you would like to control who is allowed to open meetings on your instance, you'd need to enable Jitsi's authentication and optionally guests mode. With authentication enabled, all meetings have to be started by a registered user. After the meeting is started by that user, then guests are free to join. If the registered user is not yet present, they are put on hold in individual waiting rooms.
 
 Authentication type must be one of them: `internal` (default), `jwt`, `matrix` or `ldap`. Currently, only `internal`, `matrix` and `ldap` mechanisms are supported by this role.
 
