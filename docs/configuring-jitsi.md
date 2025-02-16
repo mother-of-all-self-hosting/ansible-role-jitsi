@@ -107,19 +107,27 @@ jitsi_prosody_auth_internal_accounts:
 #### Authenticate using Matrix OpenID: Auth-Type `matrix`
 
 > [!WARNING]
-> This breaks the Jitsi instance on federated rooms probably and does not allow sharing conference links with guests.
+> This probably breaks the Jitsi instance on federated Matrix rooms and does not allow sharing conference links with guests.
 
-This authentication method requires [Matrix User Verification Service](https://github.com/matrix-org/matrix-user-verification-service), which can be installed using this [playbook](configuring-playbook-user-verification-service.md). It verifies against Matrix openID, and requires a user-verification-service to run.
+This authentication method requires [Matrix User Verification Service (UVS)](https://github.com/matrix-org/matrix-user-verification-service). It verifies against Matrix OpenID, and requires a user-verification-service to run. If you use the MDAD playbook, you can refer [this document](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/docs/configuring-playbook-user-verification-service.md) for the instruction about installing UVS.
 
 To enable authentication with Matrix OpenID, add the following configuration to your `vars.yml` file:
 
 ```yaml
 jitsi_enable_auth: true
 jitsi_auth_type: matrix
-matrix_user_verification_service_enabled: true
 ```
 
-For more information see also [https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification](https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification).
+If you install UVS in a different way than the MDAD playbook, you need to add the following configuration to your `vars.yml` file as well. Make sure to replace `UVS_AUTH_TOKEN_HERE` (auth token for Matrix User Verification Service) and `UVS_URL_HERE` (URL where Matrix User Verification Service is hosted) with your own values.
+
+```yaml
+jitsi_prosody_auth_matrix_uvs_auth_token: UVS_AUTH_TOKEN_HERE
+jitsi_prosody_auth_matrix_uvs_location: UVS_URL_HERE
+```
+
+On the MDAD playbook, these two variables are specified by default, so you do not need to add them. See its [`matrix_servers`](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/group_vars/matrix_servers) for details.
+
+**Note**: see [https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification](https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification) for more details about the authenticaition with Matrix OpenID.
 
 #### Authenticate using LDAP: Auth-Type `ldap`
 
