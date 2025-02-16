@@ -29,6 +29,10 @@ Before proceeding, you may need to open the following ports to your server:
 - `4443/tcp` — RTP media fallback over TCP
 - `10000/udp` — RTP media over UDP. Depending on your firewall/NAT configuration, incoming RTP packets on port `10000` may have the external IP of your firewall as destination address, due to the usage of STUN in JVB (see [`jitsi_jvb_stun_servers`](../defaults/main.yml)).
 
+Docker automatically opens these ports in the server's firewall, so you likely don't need to do anything. If you use another firewall in front of the server, you may need to adjust it.
+
+To learn more, see the upstream [firewall documentation](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker/#external-ports).
+
 ## Adjusting the playbook configuration
 
 To enable Jitsi with this role, add the following configuration to your `vars.yml` file.
