@@ -206,14 +206,11 @@ jitsi_enable_lobby: true
 
 In the default Jisti Meet configuration, `gravatar.com` is enabled as an avatar service.
 
-You can disable it the Gravatar service by adding the following configuration to your `vars.yml` file:
+As this will result in third party request leaking data to the Gravatar Service (`gravatar.com`, unless configured otherwise), you can disable it by adding the following configuration to your `vars.yml` file:
 
 ```yaml
 jitsi_disable_gravatar: true
 ```
-
-> [!WARNING]
-> This will result in third party request leaking data to the Gravatar Service (`gravatar.com`, unless configured otherwise). Besides metadata, the Matrix user_id and possibly the room ID (via `referrer` header) will be also sent to the third party.
 
 #### Control Etherpad's availability on Jitsi conferences
 
