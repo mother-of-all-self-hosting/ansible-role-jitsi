@@ -84,7 +84,7 @@ If you would like to control who is allowed to open meetings on your instance, y
 
 Authentication type must be one of them: `internal` (default), `jwt`, `matrix` or `ldap`. Currently, only `internal`, `matrix` and `ldap` mechanisms are supported by this role.
 
-**Note**: authentication is not tested by playbook's self-checks. We therefore recommend that you would make sure by yourself that authentication is configured properly. To test it, start a meeting at `jitsi.example.com` on your browser.
+**Note**: authentication is not tested by playbook's self-checks. We therefore recommend that you would make sure by yourself that authentication is configured properly. To test it, start a meeting at `example.com` on your browser.
 
 #### Authenticate using Jitsi accounts: Auth-Type `internal`
 
@@ -269,7 +269,7 @@ You can use the self-hosted Jitsi server in multiple ways:
 
 - **by adding a widget to a room via Element Web** (the one configured by the playbook at `https://element.example.com`). Just start a voice or a video call in a room containing more than 2 members and that would create a Jitsi widget which utilizes your self-hosted Jitsi server.
 
-- **directly (without any Matrix integration)**. Just go to `https://jitsi.example.com`
+- **directly (without any Matrix integration)**. Just go to `https://example.com`
 
 ### Set up additional JVBs for more video-conferences (optional)
 
