@@ -182,20 +182,67 @@ To set it, add the following configuration to your `vars.yml` file (adapt to you
 jitsi_prosody_max_participants: 4 # example value
 ```
 
-### Enable Gravatar (optional)
+### Configure time zone (optional)
+
+You can configure the time zone (default: UTC) for the Jitsi instance. To configure it, add the following configuration to your `vars.yml` file (adapt to your needs):
+
+```yaml
+jitsi_timezone: America/New_York
+```
+
+### Enable lobby (optional)
+
+With a lobby feature enabled, before participants can join the meeting, they must ask the moderator to be let in. This is useful when you're hosting a private conference.
+
+This feature is disabled by default. To enable it, add the following configuration to your `vars.yml` file:
+
+```yaml
+jitsi_enable_lobby: true
+```
+
+### Disable Gravatar (optional)
 
 In the default Jisti Meet configuration, `gravatar.com` is enabled as an avatar service.
 
-Since the Element clients send the URL of configured Matrix avatars to the Jitsi instance, our default configuration has disabled the Gravatar service.
-
-To enable the Gravatar service, add the following configuration to your `vars.yml` file:
+You can disable it the Gravatar service by adding the following configuration to your `vars.yml` file:
 
 ```yaml
-jitsi_disable_gravatar: false
+jitsi_disable_gravatar: true
 ```
 
 > [!WARNING]
 > This will result in third party request leaking data to the Gravatar Service (`gravatar.com`, unless configured otherwise). Besides metadata, the Matrix user_id and possibly the room ID (via `referrer` header) will be also sent to the third party.
+
+### Control Etherpad's availability on Jitsi conferences (optional)
+
+If the self-hosted Etherpad instance (which can be installed with [this Ansible role of MASH project](https://github.com/mother-of-all-self-hosting/ansible-role-etherpad)) is available, you can configure it so that it will show up in Jitsi conferences.
+
+By default it is disabled, and you can enable it by adding the following configuration to your `vars.yml` file. Make sure to replace `YOUR_ETHERPAD_BASE_URL_HERE` with your Etherpad base URL (e.g. `https://etherpad.example.com` or `https://example.com/etherpad`).
+
+```yaml
+jitsi_etherpad_enabled: true
+jitsi_etherpad_base: YOUR_ETHERPAD_BASE_URL_HERE
+```
+
+**Note**: on the MDAD Ansible playbook this configuration is enabled by default. See its [`matrix_servers`](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/group_vars/matrix_servers) for details.
+
+### Enable HSTS preloading (optional)
+
+If you want to enable [HSTS (HTTP Strict-Transport-Security) preloading](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security#preloading_strict_transport_security), add the following configuration to your `vars.yml` file:
+
+```yaml
+jitsi_web_hsts_preload_enabled: true
+```
+
+### Allow/disallow embedding Jitsi (optional)
+
+It is possible to control whether embedding Jitsi Meet to a frame on another website will be allowed or not.
+
+By default it is disallowed, and you can allow it by adding the following configuration to your `vars.yml` file:
+
+```yaml
+jitsi_web_framing_enabled: true
+```
 
 ### Fine tune Jitsi (optional)
 
@@ -238,6 +285,7 @@ Here is an example set of configurations for running a Jitsi instance with:
 - authentication using a Jitsi account (username: `US3RNAME`, password: `passw0rd`)
 - guests: allowed
 - maximum participants: 6 people
+- timezone: Europe/Sofia
 - fine tuning with the configurations presented above
 - other miscellaneous options (see the official Jitsi documentation [here](https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-configuration) and [here](https://jitsi.github.io/handbook/docs/user-guide/user-guide-advanced))
 
@@ -250,6 +298,7 @@ jitsi_prosody_auth_internal_accounts:
   - username: "US3RNAME"
     password: "passw0rd"
 jitsi_prosody_max_participants: 6
+jitsi_timezone: Europe/Sofia
 jitsi_web_config_resolution_width_ideal_and_max: 480
 jitsi_web_config_resolution_height_ideal_and_max: 240
 jitsi_web_custom_config_extension: |
