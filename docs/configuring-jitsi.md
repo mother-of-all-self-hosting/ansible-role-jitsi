@@ -80,7 +80,7 @@ After adjusting the hostname, make sure to adjust your DNS records to point the 
 
 By default the Jitsi instance does not require for anyone to log in, and is open to use without an account. To control who is allowed to start meetings on your Jitsi instance, you'd need to enable Jitsi's authentication and optionally guests mode.
 
-Authentication type must be one of them: `internal` (default), `jwt`, `matrix` or `ldap`. Currently, only `internal`, `matrix` and `ldap` mechanisms are supported by the [Jitsi role](https://github.com/mother-of-all-self-hosting/ansible-role-jitsi).
+Authentication type must be one of them: `internal` (default), `jwt`, `matrix` or `ldap`. Currently, only `internal`, `matrix` and `ldap` mechanisms are supported by this role.
 
 With authentication enabled, all meetings have to be started by a registered user. After the meeting is started by that user, then guests are free to join. If the registered user is not yet present, the guests are put on hold in individual waiting rooms.
 
@@ -215,7 +215,7 @@ There are some additional things you may wish to configure about the component.
 
 Take a look at:
 
-- [Jitsi role](https://github.com/mother-of-all-self-hosting/ansible-role-jitsi)'s [`defaults/main.yml`](https://github.com/mother-of-all-self-hosting/ansible-role-jitsi/blob/main/defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using these variables:
+- [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using these variables:
   - `jitsi_web_custom_interface_config_extension`: custom configuration to be appended to `interface_config.js`, passed to Jitsi Web
   - `jitsi_web_custom_config_extension`: custom configuration to be injected into `custom-config.js`, passed to Jitsi Web
   - `jitsi_jvb_custom_config_extension`: custom configuration to be injected into `custom-sip-communicator.properties`, passed to Jitsi JVB
