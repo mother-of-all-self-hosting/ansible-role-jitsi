@@ -24,7 +24,15 @@ See the project's [documentation](https://jitsi.github.io/handbook/) to learn wh
 
 ## Prerequisites
 
-Before proceeding, you may need to open the following ports to your server:
+### Check resource requirements
+
+Before proceeding, make sure to check server's requirements recommended by [the official deployment guide](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-requirements). Please note that Jitsi Meet requires much resource (network bandwidth, RAM, and CPU) and it depends on a lot of factors how much is suitable for you.
+
+Jitsi Meet is scalable with multiple JVBs ([Jitsi VideoBridge](https://github.com/jitsi/jitsi-videobridge)), and it is possible to provision them on other hosts by utilizing this role on your Ansible playbook. For big meetings the official guide recommends to prefer deploying JVBs to getting huge amount of RAM on the server. See [this section](#set-up-additional-jvbs-for-more-video-conferences-optional) below for instructions about how to set up JVBs.
+
+### Open ports
+
+You may need to open the following ports to your server:
 
 - `4443/tcp` — RTP media fallback over TCP
 - `10000/udp` — RTP media over UDP. Depending on your firewall/NAT configuration, incoming RTP packets on port `10000` may have the external IP of your firewall as destination address, due to the usage of STUN in JVB (see [`jitsi_jvb_stun_servers`](../defaults/main.yml)).
