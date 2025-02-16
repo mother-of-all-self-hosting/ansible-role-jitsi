@@ -14,35 +14,42 @@ SPDX-FileCopyrightText: 2024 - 2025 Suguru Hirahara
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-# Setting up the Jitsi video-conferencing platform (optional)
+# Setting up Jitsi
 
-The playbook can install and configure the [Jitsi](https://jitsi.org/) video-conferencing platform for you.
+This is an [Ansible](https://www.ansible.com/) role which installs [Jitsi](https://jitsi.org/) to run as a bunch of [Docker](https://www.docker.com/) containers wrapped in systemd services.
 
-Jitsi can not only be integrated with Element clients ([Element Web](configuring-playbook-client-element-web.md)/Desktop, Android and iOS) as a widget, but also be used as standalone web app.
+See the project's [documentation](https://jitsi.github.io/handbook/) to learn what Jitsi does and why it might be useful to you.
 
-See the project's [documentation](https://jitsi.github.io/handbook/) to learn what it does and why it might be useful to you.
-
-**Note**: the configuration by the playbook is similar to the one by [docker-jitsi-meet](https://github.com/jitsi/docker-jitsi-meet). You can refer to the official documentation for Docker deployment [here](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker/).
+**Note**: the configuration of this role is similar to the one by [docker-jitsi-meet](https://github.com/jitsi/docker-jitsi-meet). You can refer to the official documentation for Docker deployment [here](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker/).
 
 ## Prerequisites
 
-You may need to open the following ports to your server:
+Before proceeding, you may need to open the following ports to your server:
 
 - `4443/tcp` — RTP media fallback over TCP
-- `10000/udp` — RTP media over UDP. Depending on your firewall/NAT configuration, incoming RTP packets on port `10000` may have the external IP of your firewall as destination address, due to the usage of STUN in JVB (see [`jitsi_jvb_stun_servers`](https://github.com/mother-of-all-self-hosting/ansible-role-jitsi/blob/main/defaults/main.yml)).
-
-## Adjusting DNS records
-
-By default, this playbook installs Jitsi on the `jitsi.` subdomain (`jitsi.example.com`) and requires you to create a CNAME record for `jitsi`, which targets `matrix.example.com`.
-
-When setting, replace `example.com` with your own.
+- `10000/udp` — RTP media over UDP. Depending on your firewall/NAT configuration, incoming RTP packets on port `10000` may have the external IP of your firewall as destination address, due to the usage of STUN in JVB (see [`jitsi_jvb_stun_servers`](../defaults/main.yml)).
 
 ## Adjusting the playbook configuration
 
-To enable Jitsi, add the following configuration to your `inventory/host_vars/matrix.example.com/vars.yml` file:
+To enable Jitsi with this role, add the following configuration to your `vars.yml` file.
+
+**Note**: the path should be something like `inventory/host_vars/matrix.example.com/vars.yml` if you use the [MDAD (matrix-docker-ansible-deploy)](https://github.com/spantaleev/matrix-docker-ansible-deploy) Ansible playbook.
+
 
 ```yaml
+########################################################################
+#                                                                      #
+# jitsi                                                                #
+#                                                                      #
+########################################################################
+
 jitsi_enabled: true
+
+########################################################################
+#                                                                      #
+# /jitsi                                                               #
+#                                                                      #
+########################################################################
 ```
 
 ### Adjusting the Jitsi URL (optional)
