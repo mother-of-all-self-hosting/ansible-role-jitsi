@@ -466,7 +466,7 @@ traefik_provider_configuration_extension_yaml: |
 
 #### Run the playbook
 
-After configuring `hosts` and `vars.yml` files, run the playbook with [playbook tags](playbook-tags.md) as below:
+After configuring `hosts` and `vars.yml` files, run the installation command of your playbook as below:
 
 ```sh
 ansible-playbook -i inventory/hosts --limit jitsi_jvb_servers jitsi_jvb.yml --tags=common,setup-additional-jitsi-jvb,start
