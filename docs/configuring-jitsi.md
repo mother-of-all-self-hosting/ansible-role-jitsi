@@ -82,7 +82,7 @@ By default the Jitsi Meet instance **does not require for anyone to log in, and 
 
 If you would like to control who is allowed to open meetings on your instance, you'd need to enable Jitsi's authentication and optionally guests mode. With authentication enabled, all meetings have to be started by a registered user. After the meeting is started by that user, then guests are free to join. If the registered user is not yet present, they are put on hold in individual waiting rooms.
 
-Authentication type must be one of them: `internal` (default), `jwt`, `matrix` or `ldap`. Currently, only `internal`, `matrix` and `ldap` mechanisms are supported by this role.
+Authentication type must be one of them: `internal` (default), `jwt`, `ldap` or `matrix`. Currently, only `internal`, `ldap` and `matrix` mechanisms are supported by this role.
 
 **Note**: authentication is not tested by playbook's self-checks. We therefore recommend that you would make sure by yourself that authentication is configured properly. To test it, start a meeting at `example.com` on your browser.
 
@@ -103,6 +103,30 @@ jitsi_prosody_auth_internal_accounts:
 ```
 
 **Note**: if Jitsi account removal function is not integrated into a playbook, these accounts will not be able to be removed from the Prosody server automatically, even if they are removed from your `vars.yml` file subsequently.
+
+#### Authenticate using LDAP: Auth-Type `ldap`
+
+To enable authentication with LDAP, add the following configuration to your `vars.yml` file (adapt to your needs):
+
+```yaml
+jitsi_enable_auth: true
+jitsi_auth_type: ldap
+jitsi_ldap_url: "ldap://ldap.example.com"
+jitsi_ldap_base: "OU=People,DC=example.com"
+#jitsi_ldap_binddn: ""
+#jitsi_ldap_bindpw: ""
+jitsi_ldap_filter: "uid=%u"
+jitsi_ldap_auth_method: "bind"
+jitsi_ldap_version: "3"
+jitsi_ldap_use_tls: true
+jitsi_ldap_tls_ciphers: ""
+jitsi_ldap_tls_check_peer: true
+jitsi_ldap_tls_cacert_file: "/etc/ssl/certs/ca-certificates.crt"
+jitsi_ldap_tls_cacert_dir: "/etc/ssl/certs"
+jitsi_ldap_start_tls: false
+```
+
+For more information refer to the [docker-jitsi-meet](https://github.com/jitsi/docker-jitsi-meet#authentication-using-ldap) and the [saslauthd `LDAP_SASLAUTHD`](https://github.com/winlibs/cyrus-sasl/blob/master/saslauthd/LDAP_SASLAUTHD) documentation.
 
 #### Authenticate using Matrix OpenID: Auth-Type `matrix`
 
@@ -130,30 +154,6 @@ On the MDAD playbook, these two variables are specified by default, so you do no
 **Notes**:
 - If you enable UVS for your Matrix homeserver (Synapse), make sure that the Matrix Federation port (usually `8448`) is accessible. See [here](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/docs/configuring-playbook-user-verification-service.md#open-matrix-federation-port) for more information.
 - See [https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification](https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification) for more details about the authenticaition with Matrix OpenID.
-
-#### Authenticate using LDAP: Auth-Type `ldap`
-
-To enable authentication with LDAP, add the following configuration to your `vars.yml` file (adapt to your needs):
-
-```yaml
-jitsi_enable_auth: true
-jitsi_auth_type: ldap
-jitsi_ldap_url: "ldap://ldap.example.com"
-jitsi_ldap_base: "OU=People,DC=example.com"
-#jitsi_ldap_binddn: ""
-#jitsi_ldap_bindpw: ""
-jitsi_ldap_filter: "uid=%u"
-jitsi_ldap_auth_method: "bind"
-jitsi_ldap_version: "3"
-jitsi_ldap_use_tls: true
-jitsi_ldap_tls_ciphers: ""
-jitsi_ldap_tls_check_peer: true
-jitsi_ldap_tls_cacert_file: "/etc/ssl/certs/ca-certificates.crt"
-jitsi_ldap_tls_cacert_dir: "/etc/ssl/certs"
-jitsi_ldap_start_tls: false
-```
-
-For more information refer to the [docker-jitsi-meet](https://github.com/jitsi/docker-jitsi-meet#authentication-using-ldap) and the [saslauthd `LDAP_SASLAUTHD`](https://github.com/winlibs/cyrus-sasl/blob/master/saslauthd/LDAP_SASLAUTHD) documentation.
 
 ### Configure `JVB_ADVERTISE_IPS` for running behind NAT or on a LAN environment (optional)
 
