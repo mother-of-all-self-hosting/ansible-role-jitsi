@@ -475,10 +475,12 @@ ansible-playbook -i inventory/hosts --limit jitsi_jvb_servers jitsi_jvb.yml --ta
 ## Troubleshooting
 
 As with all other services, you can find the logs in [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) by logging in to the server with SSH and running the commands below:
-- `journalctl -fu matrix-jitsi-web`
-- `journalctl -fu matrix-jitsi-prosody`
-- `journalctl -fu matrix-jitsi-jicofo`
-- `journalctl -fu matrix-jitsi-jvb`
+- `journalctl -fu jitsi-web`
+- `journalctl -fu jitsi-prosody`
+- `journalctl -fu jitsi-jicofo`
+- `journalctl -fu jitsi-jvb`
+
+**Note**: these service names depend on how you/your playbook named the service, e.g. `matrix-jitsi-web`.
 
 ### `Error: Account creation/modification not supported`
 
