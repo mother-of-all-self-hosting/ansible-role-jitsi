@@ -102,7 +102,7 @@ jitsi_prosody_auth_internal_accounts:
     password: "PASSWORD_FOR_THE_SECOND_USER_HERE"
 ```
 
-**Note**: as Jitsi account removal function is not integrated into the playbook, these accounts will not be able to be removed from the Prosody server automatically, even if they are removed from your `vars.yml` file subsequently.
+**Note**: if Jitsi account removal function is not integrated into a playbook, these accounts will not be able to be removed from the Prosody server automatically, even if they are removed from your `vars.yml` file subsequently.
 
 #### Authenticate using Matrix OpenID: Auth-Type `matrix`
 
