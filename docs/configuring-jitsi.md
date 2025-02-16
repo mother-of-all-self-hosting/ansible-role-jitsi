@@ -275,9 +275,9 @@ There are some additional things you may wish to configure about the component.
 Take a look at:
 
 - [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using these variables:
-  - `jitsi_web_custom_interface_config_extension`: custom configuration to be appended to `interface_config.js`, passed to Jitsi Web
-  - `jitsi_web_custom_config_extension`: custom configuration to be injected into `custom-config.js`, passed to Jitsi Web
-  - `jitsi_jvb_custom_config_extension`: custom configuration to be injected into `custom-sip-communicator.properties`, passed to Jitsi JVB
+  - `jitsi_web_custom_interface_config_extension`: custom configuration to be appended to `interface_config.js`, passed to Jitsi Meet
+  - `jitsi_web_custom_config_extension`: custom configuration to be injected into `custom-config.js`, passed to Jitsi Meet
+  - `jitsi_jvb_custom_config_extension`: custom configuration to be injected into `custom-sip-communicator.properties`, passed to Jitsi Videobridge (JVB)
 
 ### Example configurations
 
