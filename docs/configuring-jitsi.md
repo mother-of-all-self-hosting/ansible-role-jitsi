@@ -86,9 +86,9 @@ Authentication type must be one of them: `internal` (default), `jwt`, `matrix` o
 
 **Note**: authentication is not tested by playbook's self-checks. We therefore recommend that you would make sure by yourself that authentication is configured properly. To test it, start a meeting at `jitsi.example.com` on your browser.
 
-#### Authenticate using Jitsi accounts: Auth-Type `internal` (recommended)
+#### Authenticate using Jitsi accounts: Auth-Type `internal`
 
-The default authentication mechanism is `internal` auth, which requires a Jitsi account to have been configured. This is a recommended method, as it also works in federated rooms on a Matrix server.
+The default authentication mechanism is `internal` auth, which requires a Jitsi account to have been configured.
 
 To enable authentication with a Jitsi account, add the following configuration to your `vars.yml` file. Make sure to replace `USERNAME_…` and `PASSWORD_…` with your own values.
 
