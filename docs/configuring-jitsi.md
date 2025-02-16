@@ -26,7 +26,7 @@ See the project's [documentation](https://jitsi.github.io/handbook/) to learn wh
 
 ### Check resource requirements
 
-Before proceeding, make sure to check server's requirements recommended by [the official deployment guide](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-requirements). Please note that Jitsi Meet requires much resource (network bandwidth, RAM, and CPU) and it depends on a lot of factors how much is suitable for you.
+Before proceeding, make sure to check server's requirements recommended by [the official deployment guide](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-requirements). Please note that Jitsi Meet requires much resource (network bandwidth, RAM, and CPU) and it depends on a lot of factors how much is sufficient for you.
 
 Jitsi Meet is scalable with multiple JVBs ([Jitsi VideoBridge](https://github.com/jitsi/jitsi-videobridge)), and it is possible to provision them on other hosts by utilizing this role on your Ansible playbook. For big meetings the official guide recommends to prefer deploying JVBs to getting huge amount of RAM on the server. See [this section](#set-up-additional-jvbs-for-more-video-conferences-optional) below for instructions about how to set up JVBs.
 
@@ -80,7 +80,7 @@ After adjusting the hostname, make sure to adjust your DNS records to point the 
 
 By default the Jitsi Meet instance **does not require for anyone to log in, and is open to use without an account**. If you're fine with such an open Jitsi instance, please skip ahead.
 
-If you would like to control who is allowed to open meetings on your instance, you'd need to enable Jitsi's authentication and optionally guests mode. With authentication enabled, all meetings have to be started by a registered user. After the meeting is started by that user, then guests are free to join. If the registered user is not yet present, they are put on hold in individual waiting rooms.
+If you would like to control who is allowed to start meetings on your instance, you'd need to enable Jitsi's authentication and optionally guests mode. With authentication enabled, all meetings have to be started by a registered user. After the meeting is started by that user, then guests are free to join. If the registered user is not yet present, they are put on hold in individual waiting rooms.
 
 Authentication type must be one of them: `internal` (default), `jwt`, `ldap` or `matrix`. Currently, only `internal`, `ldap` and `matrix` mechanisms are supported by this role.
 
@@ -236,7 +236,7 @@ If you want to enable [HSTS (HTTP Strict-Transport-Security) preloading](https:/
 jitsi_web_hsts_preload_enabled: true
 ```
 
-#### Allow/disallow embedding Jitsi
+#### Allow/disallow embedding Jitsi Meet
 
 It is possible to control whether embedding Jitsi Meet to a frame on another website will be allowed or not.
 
