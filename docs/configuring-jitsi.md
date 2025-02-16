@@ -78,17 +78,15 @@ After adjusting the hostname, make sure to adjust your DNS records to point the 
 
 ### Configure Jitsi authentication and guests mode (optional)
 
-By default the Jitsi instance does not require for anyone to log in, and is open to use without an account. To control who is allowed to start meetings on your Jitsi instance, you'd need to enable Jitsi's authentication and optionally guests mode.
+By default the Jitsi instance does not require for anyone to log in, and is open to use without an account. To control who is allowed to start meetings on your Jitsi instance, you'd need to enable Jitsi's authentication and optionally guests mode. With authentication enabled, all meetings have to be started by a registered user. After the meeting is started by that user, then guests are free to join. If the registered user is not yet present, they are put on hold in individual waiting rooms.
 
 Authentication type must be one of them: `internal` (default), `jwt`, `matrix` or `ldap`. Currently, only `internal`, `matrix` and `ldap` mechanisms are supported by this role.
 
-With authentication enabled, all meetings have to be started by a registered user. After the meeting is started by that user, then guests are free to join. If the registered user is not yet present, the guests are put on hold in individual waiting rooms.
-
-**Note**: authentication is not tested by the playbook's self-checks. We therefore recommend that you would make sure by yourself that authentication is configured properly. To test it, start a meeting at `jitsi.example.com` on your browser.
+**Note**: authentication is not tested by playbook's self-checks. We therefore recommend that you would make sure by yourself that authentication is configured properly. To test it, start a meeting at `jitsi.example.com` on your browser.
 
 #### Authenticate using Jitsi accounts: Auth-Type `internal` (recommended)
 
-The default authentication mechanism is `internal` auth, which requires a Jitsi account to have been configured. This is a recommended method, as it also works in federated rooms.
+The default authentication mechanism is `internal` auth, which requires a Jitsi account to have been configured. This is a recommended method, as it also works in federated rooms on a Matrix server.
 
 To enable authentication with a Jitsi account, add the following configuration to your `vars.yml` file. Make sure to replace `USERNAME_…` and `PASSWORD_…` with your own values.
 
