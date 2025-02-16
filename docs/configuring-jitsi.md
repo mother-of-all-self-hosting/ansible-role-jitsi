@@ -127,7 +127,9 @@ jitsi_prosody_auth_matrix_uvs_location: UVS_URL_HERE
 
 On the MDAD playbook, these two variables are specified by default, so you do not need to add them. See its [`matrix_servers`](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/group_vars/matrix_servers) for details.
 
-**Note**: see [https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification](https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification) for more details about the authenticaition with Matrix OpenID.
+**Notes**:
+- If you enable UVS for your Matrix homeserver (Synapse), make sure that the Matrix Federation port (usually `8448`) is accessible. See [here](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/docs/configuring-playbook-user-verification-service.md#open-matrix-federation-port) for more information.
+- See [https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification](https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification) for more details about the authenticaition with Matrix OpenID.
 
 #### Authenticate using LDAP: Auth-Type `ldap`
 
