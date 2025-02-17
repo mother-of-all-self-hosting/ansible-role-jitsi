@@ -79,7 +79,8 @@ jitsi_ldap_start_tls: false
 
 # Auth type: matrix
 jitsi_prosody_auth_matrix_user_verification_repo_location: "https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification"
-jitsi_prosody_auth_matrix_user_verification_repo_target: "{{ jitsi_prosody_ext_path }}/prosody_auth_matrix_user_verification"
+jitsi_prosody_auth_matrix_user_verification_repo_target:
+  - "{{ jitsi_prosody_ext_path }}/prosody_auth_matrix_user_verification"
 jitsi_prosody_auth_matrix_user_verification_repo_version: "2839499cb03894d8cfc3e5b2219441427cb133d8"  # v1.8.0
 jitsi_prosody_auth_matrix_uvs_sync_power_levels: false
 jitsi_prosody_auth_matrix_uvs_location: ""
