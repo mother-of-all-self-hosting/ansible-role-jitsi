@@ -495,5 +495,7 @@ To rebuild your Jitsi configuration, follow the procedure below:
 
 - run this command locally to stop all Jitsi services: `just run-tags stop-group --extra-vars=group=jitsi`
 - log in the server with SSH
-- run this command remotely to remove all Jitsi configuration & data: `rm -rf /matrix/jitsi`
+- run this command remotely to remove all Jitsi configuration & data: `rm -rf /DIRECTORY_BY_PLAYBOOK_HERE/jitsi`
 - run this command locally to set up Jitsi anew and restart services: `just install-service jitsi`
+
+Replace `DIRECTORY_BY_PLAYBOOK_HERE` with the directory which your playbook has created. For example, it is `mash` if you use mash-playbook, and it is `matrix` if MDAD playbook.
