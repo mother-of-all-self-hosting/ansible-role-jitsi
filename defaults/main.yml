@@ -279,8 +279,10 @@ jitsi_web_container_additional_networks_custom: []
 jitsi_web_container_extra_arguments: []
 
 # List of systemd services that jitsi-web.service depends on
-jitsi_web_systemd_required_services_list: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
-
+jitsi_web_systemd_required_services_list: "{{ jitsi_web_systemd_required_services_list_default + jitsi_web_systemd_required_services_list_auto + jitsi_web_systemd_required_services_list_custom }}"
+jitsi_web_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
+jitsi_web_systemd_required_services_list_auto: []
+jitsi_web_systemd_required_services_list_custom: []
 
 # Custom configuration to be appended to `interface_config.js`, passed to Jitsi Web.
 #
