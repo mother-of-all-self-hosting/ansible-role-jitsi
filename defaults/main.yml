@@ -409,7 +409,10 @@ jitsi_muc_modules: |
 jitsi_prosody_container_extra_arguments: []
 
 # List of systemd services that jitsi-prosody.service depends on
-jitsi_prosody_systemd_required_services_list: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
+jitsi_prosody_systemd_required_services_list: "{{ jitsi_prosody_systemd_required_services_list_default + jitsi_prosody_systemd_required_services_list_auto + jitsi_prosody_systemd_required_services_list_custom }}"
+jitsi_prosody_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
+jitsi_prosody_systemd_required_services_list_auto: []
+jitsi_prosody_systemd_required_services_list_custom: []
 
 # Neccessary Port binding for those disabling the integrated nginx proxy
 jitsi_prosody_container_http_host_bind_port: ''
