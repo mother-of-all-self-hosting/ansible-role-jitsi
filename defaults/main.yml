@@ -135,7 +135,9 @@ jitsi_container_labels_traefik_entrypoints: web-secure
 
 jitsi_web_container_image: "{{ jitsi_web_container_image_registry_prefix }}jitsi/web:{{ jitsi_container_image_tag }}"
 jitsi_web_container_image_force_pull: "{{ jitsi_web_container_image.endswith(':latest') }}"
-jitsi_web_container_image_registry_prefix: docker.io/
+jitsi_web_container_image_registry_prefix: "{{ jitsi_web_container_image_registry_prefix_upstream }}"
+jitsi_web_container_image_registry_prefix_upstream: "{{ jitsi_web_container_image_registry_prefix_upstream_default }}"
+jitsi_web_container_image_registry_prefix_upstream_default: docker.io/
 
 # jitsi_web_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the Web container.
 # See `../templates/web/labels.j2` for details.
@@ -346,7 +348,9 @@ jitsi_web_environment_variables_extension: ''
 
 jitsi_prosody_container_image: "{{ jitsi_prosody_container_image_registry_prefix }}jitsi/prosody:{{ jitsi_container_image_tag }}"
 jitsi_prosody_container_image_force_pull: "{{ jitsi_prosody_container_image.endswith(':latest') }}"
-jitsi_prosody_container_image_registry_prefix: docker.io/
+jitsi_prosody_container_image_registry_prefix: "{{ jitsi_prosody_container_image_registry_prefix_upstream }}"
+jitsi_prosody_container_image_registry_prefix_upstream: "{{ jitsi_prosody_container_image_registry_prefix_upstream_default }}"
+jitsi_prosody_container_image_registry_prefix_upstream_default: docker.io/
 
 # A list of additional container networks that the Prosody container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -421,7 +425,9 @@ jitsi_prosody_container_jvb_host_bind_port: ''
 
 jitsi_jicofo_container_image: "{{ jitsi_jicofo_container_image_registry_prefix }}jitsi/jicofo:{{ jitsi_container_image_tag }}"
 jitsi_jicofo_container_image_force_pull: "{{ jitsi_jicofo_container_image.endswith(':latest') }}"
-jitsi_jicofo_container_image_registry_prefix: docker.io/
+jitsi_jicofo_container_image_registry_prefix: "{{ jitsi_jicofo_container_image_registry_prefix_upstream }}"
+jitsi_jicofo_container_image_registry_prefix_upstream: "{{ jitsi_jicofo_container_image_registry_prefix_upstream_default }}"
+jitsi_jicofo_container_image_registry_prefix_upstream_default: docker.io/
 
 # A list of additional container networks that the Jicofo container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -458,7 +464,9 @@ jitsi_jicofo_sentry_dsn: ''
 
 jitsi_jvb_container_image: "{{ jitsi_jvb_container_image_registry_prefix }}jitsi/jvb:{{ jitsi_container_image_tag }}"
 jitsi_jvb_container_image_force_pull: "{{ jitsi_jvb_container_image.endswith(':latest') }}"
-jitsi_jvb_container_image_registry_prefix: docker.io/
+jitsi_jvb_container_image_registry_prefix: "{{ jitsi_jvb_container_image_registry_prefix_upstream }}"
+jitsi_jvb_container_image_registry_prefix_upstream: "{{ jitsi_jvb_container_image_registry_prefix_upstream_default }}"
+jitsi_jvb_container_image_registry_prefix_upstream_default: docker.io/
 
 # A list of additional container networks that the JVB container would be connected to.
 # The role does not create these networks, so make sure they already exist.
