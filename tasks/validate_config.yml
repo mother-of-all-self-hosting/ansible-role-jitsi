@@ -40,7 +40,7 @@
 
       Auth type 'matrix':
       If you want to enable matrix_user_verification in jitsi,
-      please provide an auth token for the user verification service (uvs) using `jitsi_prosody_auth_matrix_uvs_auth_token`.
+      please provide an auth token for Matrix User Verification Service (UVS) using `jitsi_prosody_auth_matrix_uvs_auth_token`.
       If the user-verfication-service is also managed by this playbook the token is derived from `matrix_homeserver_generic_secret_key` in the group vars.
   when:
     - jitsi_enable_auth | bool
