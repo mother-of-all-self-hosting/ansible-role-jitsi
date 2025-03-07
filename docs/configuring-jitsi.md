@@ -471,7 +471,7 @@ ansible-playbook -i inventory/hosts --limit jitsi_jvb_servers jitsi_jvb.yml --ta
 
 ## Troubleshooting
 
-As with all other services, you can find the logs in [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) by logging in to the server with SSH and running the commands below:
+You can find the logs in [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) by logging in to the server with SSH and running the commands below:
 - `journalctl -fu jitsi-web`
 - `journalctl -fu jitsi-prosody`
 - `journalctl -fu jitsi-jicofo`
