@@ -14,6 +14,7 @@ jitsi_identifier: jitsi
 
 jitsi_base_path: "/{{ jitsi_identifier }}"
 
+# renovate: datasource=docker depName=docker.io/jitsi/web
 jitsi_version: stable-10133
 
 # The hostname at which Jitsi is served.
