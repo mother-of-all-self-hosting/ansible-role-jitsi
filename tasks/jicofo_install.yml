@@ -47,7 +47,7 @@
     - sip-communicator.properties
     - logging.properties
 
-- name: Ensure jitsi-jicofo systemd service installed
+- name: Ensure jitsi-jicofo systemd service is present
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jicofo/jicofo.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jicofo.service"

@@ -72,7 +72,7 @@
   delay: "{{ devture_playbook_help_container_retries_delay }}"
   until: result is not failed
 
-- name: Ensure jitsi-web systemd service installed
+- name: Ensure jitsi-web systemd service is present
   ansible.builtin.template:
     src: "{{ role_path }}/templates/web/web.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-web.service"

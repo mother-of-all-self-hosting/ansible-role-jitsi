@@ -49,7 +49,7 @@
     - env
     - labels
 
-- name: Ensure jitsi-jvb systemd service installed
+- name: Ensure jitsi-jvb systemd service is present
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jvb/jvb.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jvb.service"
