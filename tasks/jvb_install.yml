@@ -8,7 +8,7 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
-    mode: "0777"
+    mode: 0777
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
   with_items:
@@ -31,9 +31,9 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jvb/{{ item }}.j2"
     dest: "{{ jitsi_jvb_config_path }}/{{ item }}"
+    mode: 0644
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
-    mode: "0644"
   with_items:
     - custom-sip-communicator.properties
     - logging.properties
@@ -42,9 +42,9 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jvb/{{ item }}.j2"
     dest: "{{ jitsi_jvb_base_path }}/{{ item }}"
+    mode: 0640
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
-    mode: "0640"
   with_items:
     - env
     - labels
@@ -53,4 +53,4 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jvb/jvb.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jvb.service"
-    mode: "0644"
+    mode: 0644

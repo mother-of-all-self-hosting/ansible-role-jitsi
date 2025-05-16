@@ -30,7 +30,7 @@
     remote_src: true
     src: "{{ jitsi_prosody_auth_matrix_user_verification_repo_target }}/{{ item.path }}"
     dest: "{{ jitsi_prosody_plugins_path }}/{{ item.path }}"
-    mode: "0644"
+    mode: 0644
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
   with_items: "{{ jitsi_prosody_auth_matrix_files }}"

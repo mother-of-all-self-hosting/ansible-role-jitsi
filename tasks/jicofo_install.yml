@@ -8,7 +8,7 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
-    mode: "0777"
+    mode: 0777
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
   with_items:
@@ -31,18 +31,18 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jicofo/env.j2"
     dest: "{{ jitsi_jicofo_base_path }}/env"
+    mode: 0640
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
-    mode: "0640"
   when: jitsi_enabled | bool
 
 - name: Ensure jitsi-jicofo configuration files created
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jicofo/{{ item }}.j2"
     dest: "{{ jitsi_jicofo_config_path }}/{{ item }}"
+    mode: 0644
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
-    mode: "0644"
   with_items:
     - sip-communicator.properties
     - logging.properties
@@ -51,4 +51,4 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jicofo/jicofo.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jicofo.service"
-    mode: "0644"
+    mode: 0644
