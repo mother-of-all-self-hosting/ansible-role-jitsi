@@ -559,10 +559,10 @@ jitsi_jvb_custom_config_extension: ''
 # by using `jitsi_jvb_custom_config_extension`.
 #
 # Example:
-# jitsi_jvb_environment_variables_extension: |
+# jitsi_jvb_environment_variables_additional_variables: |
 #   SOME_VARIABLE=1
 #   ANOTHER_VARIABLE=something
-jitsi_jvb_environment_variables_extension: ''
+jitsi_jvb_environment_variables_additional_variables: ''
 
 # Controls whether the jitsi-jvb container exposes its RTP UDP port (udp/10000 in the container).
 #

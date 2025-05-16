@@ -81,3 +81,4 @@
     - {'old': 'jitsi_web_interface_config_disable_transcription_subtitles', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
     - {'old': 'jitsi_web_interface_config_show_deep_linking_image', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
     - {'old': 'jitsi_web_environment_variables_extension', 'new': 'jitsi_web_environment_variables_additional_variables'}
+    - {'old': 'jitsi_jvb_environment_variables_extension', 'new': 'jitsi_jvb_environment_variables_additional_variables'}
