@@ -341,11 +341,11 @@ jitsi_web_custom_config_extension: ''
 # by using `jitsi_web_custom_config_extension`.
 #
 # Example:
-# jitsi_web_environment_variables_extension: |
+# jitsi_web_environment_variables_additional_variables: |
 #   ENABLE_FILE_RECORDING_SERVICE=1
 #   DROPBOX_APPKEY=something
 #   DROPBOX_REDIRECT_URI=something
-jitsi_web_environment_variables_extension: ''
+jitsi_web_environment_variables_additional_variables: ''
 
 jitsi_prosody_container_image: "{{ jitsi_prosody_container_image_registry_prefix }}jitsi/prosody:{{ jitsi_container_image_tag }}"
 jitsi_prosody_container_image_force_pull: "{{ jitsi_prosody_container_image.endswith(':latest') }}"
