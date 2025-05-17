@@ -11,19 +11,19 @@
 
 - when: jitsi_web_service_stat.stat.exists | bool
   block:
-    - name: Ensure jitsi-web systemd serviec is stopped
+    - name: Ensure jitsi-web systemd service systemd service is stopped
       ansible.builtin.service:
         name: "{{ jitsi_identifier }}-web"
         state: stopped
         enabled: false
         daemon_reload: true
 
-    - name: Ensure jitsi-web systemd service doesn't exist
+    - name: Ensure jitsi-web systemd service does not exist
       ansible.builtin.file:
         path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-web.service"
         state: absent
 
-    - name: Ensure jitsi-web paths doesn't exist
+    - name: Ensure jitsi-web path does not exist
       ansible.builtin.file:
         path: "{{ jitsi_web_base_path }}"
         state: absent

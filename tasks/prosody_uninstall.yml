@@ -23,7 +23,7 @@
         path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-prosody.service"
         state: absent
 
-    - name: Ensure jitsi-prosody paths doesn't exist
+    - name: Ensure jitsi-prosody path does not exist
       ansible.builtin.file:
         path: "{{ jitsi_prosody_base_path }}"
         state: absent

@@ -18,12 +18,12 @@
         enabled: false
         daemon_reload: true
 
-    - name: Ensure jitsi-jvb systemd service doesn't exist
+    - name: Ensure jitsi-jvb systemd service does not exist
       ansible.builtin.file:
         path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jvb.service"
         state: absent
 
-    - name: Ensure jitsi-jvb paths doesn't exist
+    - name: Ensure jitsi-jvb path does not exist
       ansible.builtin.file:
         path: "{{ jitsi_jvb_base_path }}"
         state: absent
