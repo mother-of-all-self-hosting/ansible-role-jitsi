@@ -4,7 +4,6 @@ SPDX-FileCopyrightText: 2023 Slavi Pantaleev
 SPDX-License-Identifier: AGPL-3.0-or-later
 #}
 
-#jinja2: lstrip_blocks: "True"
 [Unit]
 Description=Jitsi Prosody server ({{ jitsi_identifier }})
 {% for service in jitsi_prosody_systemd_required_services_list %}
