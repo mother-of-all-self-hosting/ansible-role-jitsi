@@ -36,7 +36,7 @@
     group: "{{ jitsi_gid }}"
   when: jitsi_enabled | bool
 
-- name: Ensure jitsi-jicofo configuration files created
+- name: Ensure jitsi-jicofo configuration files installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jicofo/{{ item }}.j2"
     dest: "{{ jitsi_jicofo_config_path }}/{{ item }}"

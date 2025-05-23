@@ -27,7 +27,7 @@
   delay: "{{ devture_playbook_help_container_retries_delay }}"
   until: result is not failed
 
-- name: Ensure jitsi-jvb configuration files created
+- name: Ensure jitsi-jvb configuration files installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jvb/{{ item }}.j2"
     dest: "{{ jitsi_jvb_config_path }}/{{ item }}"

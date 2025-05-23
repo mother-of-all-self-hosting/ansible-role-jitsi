@@ -35,7 +35,7 @@
     - file: base.html
       mode: 644
 
-- name: Ensure jitsi-web configuration files created
+- name: Ensure jitsi-web configuration files installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/web/{{ item }}.j2"
     dest: "{{ jitsi_web_config_path }}/{{ item }}"
