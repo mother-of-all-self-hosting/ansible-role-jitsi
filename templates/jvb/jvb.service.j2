@@ -19,27 +19,27 @@ ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_s
 ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ jitsi_identifier }}-jvb 2>/dev/null || true'
 
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
-			--rm \
-			--name={{ jitsi_identifier }}-jvb \
-			--log-driver=none \
-			--network={{ jitsi_container_network }} \
-			--network-alias=jvb.meet.jitsi \
-			--env-file={{ jitsi_jvb_base_path }}/env \
-			--label-file={{ jitsi_jvb_base_path }}/labels \
-			{% if jitsi_jvb_container_rtp_udp_host_bind_port %}
-			-p {{ jitsi_jvb_container_rtp_udp_host_bind_port }}:{{ jitsi_jvb_rtp_udp_port }}/udp \
-			{% endif %}
-			{% if jitsi_jvb_container_rtp_tcp_host_bind_port %}
-			-p {{ jitsi_jvb_container_rtp_tcp_host_bind_port }}:{{ jitsi_jvb_rtp_tcp_port }} \
-			{% endif %}
-			{% if jitsi_jvb_container_colibri_ws_host_bind_port %}
-			-p {{ jitsi_jvb_container_colibri_ws_host_bind_port }}:9090 \
-			{% endif %}
-			--mount type=bind,src={{ jitsi_jvb_config_path }},dst=/config \
-			{% for arg in jitsi_jvb_container_extra_arguments %}
-			{{ arg }} \
-			{% endfor %}
-			{{ jitsi_jvb_container_image }}
+      --rm \
+      --name={{ jitsi_identifier }}-jvb \
+      --log-driver=none \
+      --network={{ jitsi_container_network }} \
+      --network-alias=jvb.meet.jitsi \
+      --env-file={{ jitsi_jvb_base_path }}/env \
+      --label-file={{ jitsi_jvb_base_path }}/labels \
+      {% if jitsi_jvb_container_rtp_udp_host_bind_port %}
+      -p {{ jitsi_jvb_container_rtp_udp_host_bind_port }}:{{ jitsi_jvb_rtp_udp_port }}/udp \
+      {% endif %}
+      {% if jitsi_jvb_container_rtp_tcp_host_bind_port %}
+      -p {{ jitsi_jvb_container_rtp_tcp_host_bind_port }}:{{ jitsi_jvb_rtp_tcp_port }} \
+      {% endif %}
+      {% if jitsi_jvb_container_colibri_ws_host_bind_port %}
+      -p {{ jitsi_jvb_container_colibri_ws_host_bind_port }}:9090 \
+      {% endif %}
+      --mount type=bind,src={{ jitsi_jvb_config_path }},dst=/config \
+      {% for arg in jitsi_jvb_container_extra_arguments %}
+      {{ arg }} \
+      {% endfor %}
+      {{ jitsi_jvb_container_image }}
 
 {% for network in jitsi_jvb_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ jitsi_identifier }}-jvb
