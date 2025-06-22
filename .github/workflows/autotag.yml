@@ -40,7 +40,7 @@ jobs:
             if [[ "$author" == "renovate[bot]" && "${subject,,}" == *"docker tag to "* ]]; then
               VERSION=$(echo "$subject" | sed -E 's/.*[Dd]ocker tag to (.+)$/\1/')
               # Special hack for this specific role repository
-              VERSION=$(echo "$VERSION" | sed -E 's/^php[0-9]+(\.[0-9]+)?-//')
+              VERSION=$(echo "$VERSION" | sed -E 's/stable-//')
               VERSION="v${VERSION#v}"
               echo "new_version=$VERSION" >> $GITHUB_OUTPUT
               echo "commit_hash=$commit" >> $GITHUB_OUTPUT
