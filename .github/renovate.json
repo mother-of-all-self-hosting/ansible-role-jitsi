@@ -11,7 +11,7 @@
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["jitsi/web"],
-      "versioning": "regex:^stable-(?<patch>\\d+)$"
+      "versioning": "regex:^stable-(?<major>\\d+)$"
     }
   ],
   "customManagers": [
