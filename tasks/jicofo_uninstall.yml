@@ -8,7 +8,8 @@
     path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jicofo.service"
   register: jitsi_jicofo_service_stat
 
-- when: jitsi_jicofo_service_stat.stat.exists | bool
+- name: Uninstall jitsi-jicofo systemd services and files
+  when: jitsi_jicofo_service_stat.stat.exists | bool
   block:
     - name: Ensure jitsi-jicofo systemd service is stopped
       ansible.builtin.service:
