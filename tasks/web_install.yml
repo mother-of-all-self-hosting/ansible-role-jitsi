@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-- name: Ensure jitsi-web path exists
+- name: Ensure jitsi-web paths exist
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
@@ -38,9 +38,9 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/web/{{ item }}.j2"
     dest: "{{ jitsi_web_config_path }}/{{ item }}"
+    mode: "0644"
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
-    mode: "0644"
   with_items:
     - custom-config.js
     - custom-interface_config.js
