@@ -3,17 +3,16 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - name: Ensure jitsi-jicofo path exists
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
-    mode: 0777
+    mode: "0777"
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
   with_items:
-    - {path: "{{ jitsi_jicofo_base_path }}", when: true}
-    - {path: "{{ jitsi_jicofo_config_path }}", when: true}
+    - { path: "{{ jitsi_jicofo_base_path }}", when: true }
+    - { path: "{{ jitsi_jicofo_config_path }}", when: true }
   when: item.when | bool
 
 - name: Ensure jitsi-jicofo Docker image is pulled
@@ -31,7 +30,7 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jicofo/env.j2"
     dest: "{{ jitsi_jicofo_base_path }}/env"
-    mode: 0640
+    mode: "0640"
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
   when: jitsi_enabled | bool
@@ -40,7 +39,7 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jicofo/{{ item }}.j2"
     dest: "{{ jitsi_jicofo_config_path }}/{{ item }}"
-    mode: 0644
+    mode: "0644"
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
   with_items:
@@ -51,4 +50,4 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jicofo/jicofo.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jicofo.service"
-    mode: 0644
+    mode: "0644"

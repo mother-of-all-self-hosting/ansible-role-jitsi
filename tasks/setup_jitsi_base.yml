@@ -3,16 +3,15 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - name: Ensure Jitsi base path exists
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
-    mode: 0750
+    mode: "0750"
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
   with_items:
-    - {path: "{{ jitsi_base_path }}", when: true}
+    - { path: "{{ jitsi_base_path }}", when: true }
   when: item.when | bool
 
 - name: Ensure Jitsi container network is created

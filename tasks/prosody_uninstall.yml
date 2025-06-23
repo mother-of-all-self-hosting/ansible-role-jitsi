@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - name: Check if jitsi-prosody systemd service file exists
   ansible.builtin.stat:
     path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-prosody.service"

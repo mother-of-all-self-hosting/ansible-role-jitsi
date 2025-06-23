@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - name: Determine jitsi_user_username if undefined
   when: jitsi_user_username == ''
   block:
@@ -14,7 +13,7 @@
       register: result_jitsi_user_username
 
     - name: Set jitsi_user_username based on uid lookup data
-      set_fact:
+      ansible.builtin.set_fact:
         jitsi_user_username: "{{ result_jitsi_user_username.ansible_facts.getent_passwd.keys() | list | first }}"
 
 - name: Checkout Prosody Auth Matrix User Verification Plugin Repo
@@ -30,7 +29,7 @@
     remote_src: true
     src: "{{ jitsi_prosody_auth_matrix_user_verification_repo_target }}/{{ item.path }}"
     dest: "{{ jitsi_prosody_plugins_path }}/{{ item.path }}"
-    mode: 0644
+    mode: "0644"
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
   with_items: "{{ jitsi_prosody_auth_matrix_files }}"

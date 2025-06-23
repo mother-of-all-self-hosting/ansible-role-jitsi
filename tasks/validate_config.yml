@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - name: Fail if required Jitsi settings not defined
   ansible.builtin.fail:
     msg: >
@@ -54,31 +53,34 @@
       Please change your configuration to rename the variable (`{{ item.old }}` -> `{{ item.new }}`).
   when: "item.old in vars"
   with_items:
-    - {'old': 'jitsi_web_config_constraints_enabled', 'new': '<Now unnecessary. Constraints are always applied automatically>'}
-    - {'old': 'jitsi_web_config_constraints_video_aspectRatio', 'new': '<Not applicable anymore>'}
-    - {'old': 'jitsi_web_config_constraints_video_height_ideal', 'new': 'jitsi_web_config_resolution_height_ideal_and_max'}
-    - {'old': 'jitsi_web_config_constraints_video_height_max', 'new': 'jitsi_web_config_resolution_height_ideal_and_max'}
-    - {'old': 'jitsi_web_config_constraints_video_height_min', 'new': 'jitsi_web_config_resolution_height_min'}
-    - {'old': 'jitsi_web_config_disableAudioLevels', 'new': '<Can be set by using jitsi_web_custom_config_extension. Example in docs/configuring-playbook-jitsi.md>'}
-    - {'old': 'jitsi_web_config_enableLayerSuspension', 'new': '<Can be set by using jitsi_web_custom_config_extension. Example in docs/configuring-playbook-jitsi.md>'}
-    - {'old': 'jitsi_web_config_channelLastN', 'new': '<Can be set by using jitsi_web_custom_config_extension. Example in docs/configuring-playbook-jitsi.md>'}
-    - {'old': 'jitsi_web_config_testing_p2pTestMode', 'new': '<Can be set by using jitsi_web_custom_config_extension>'}
-    - {'old': 'jitsi_web_config_start_with_audio_muted', 'new': '<Superseded by jitsi_web_config_start_audio_muted_after_nth_participant>'}
-    - {'old': 'jitsi_web_config_start_with_video_muted', 'new': '<Superseded by jitsi_web_config_start_video_muted_after_nth_participant>'}
-    - {'old': 'jitsi_web_interface_config_show_watermark_for_guests', 'new': '<Not applicable anymore>'}
-    - {'old': 'jitsi_web_interface_config_invitation_powered_by', 'new': '<Not applicable anymore>'}
-    - {'old': 'jitsi_web_interface_config_lang_detection', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_interface_config_show_jitsi_watermark', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_interface_config_jitsi_watermark_link', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_interface_config_show_brand_watermark', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_interface_config_brand_watermark_link', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_interface_config_generate_room_names_on_welcome_page', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_interface_config_display_welcome_page_content', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_interface_config_app_name', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_interface_config_native_app_name', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_interface_config_provider_name', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_interface_config_show_powered_by', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_interface_config_disable_transcription_subtitles', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_interface_config_show_deep_linking_image', 'new': '<Deprecated, use jitsi_web_custom_interface_config_extension instead'}
-    - {'old': 'jitsi_web_environment_variables_extension', 'new': 'jitsi_web_environment_variables_additional_variables'}
-    - {'old': 'jitsi_jvb_environment_variables_extension', 'new': 'jitsi_jvb_environment_variables_additional_variables'}
+    - { "old": "jitsi_web_config_constraints_enabled", "new": "<Now unnecessary. Constraints are always applied automatically>" }
+    - { "old": "jitsi_web_config_constraints_video_aspectRatio", "new": "<Not applicable anymore>" }
+    - { "old": "jitsi_web_config_constraints_video_height_ideal", "new": "jitsi_web_config_resolution_height_ideal_and_max" }
+    - { "old": "jitsi_web_config_constraints_video_height_max", "new": "jitsi_web_config_resolution_height_ideal_and_max" }
+    - { "old": "jitsi_web_config_constraints_video_height_min", "new": "jitsi_web_config_resolution_height_min" }
+    - "old": "jitsi_web_config_disableAudioLevels"
+      "new": "<Can be set by using jitsi_web_custom_config_extension. Example in docs/configuring-playbook-jitsi.md>"
+    - "old": "jitsi_web_config_enableLayerSuspension"
+      "new": "<Can be set by using jitsi_web_custom_config_extension. Example in docs/configuring-playbook-jitsi.md>"
+    - "old": "jitsi_web_config_channelLastN"
+      "new": "<Can be set by using jitsi_web_custom_config_extension. Example in docs/configuring-playbook-jitsi.md>"
+    - { "old": "jitsi_web_config_testing_p2pTestMode", "new": "<Can be set by using jitsi_web_custom_config_extension>" }
+    - { "old": "jitsi_web_config_start_with_audio_muted", "new": "<Superseded by jitsi_web_config_start_audio_muted_after_nth_participant>" }
+    - { "old": "jitsi_web_config_start_with_video_muted", "new": "<Superseded by jitsi_web_config_start_video_muted_after_nth_participant>" }
+    - { "old": "jitsi_web_interface_config_show_watermark_for_guests", "new": "<Not applicable anymore>" }
+    - { "old": "jitsi_web_interface_config_invitation_powered_by", "new": "<Not applicable anymore>" }
+    - { "old": "jitsi_web_interface_config_lang_detection", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_interface_config_show_jitsi_watermark", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_interface_config_jitsi_watermark_link", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_interface_config_show_brand_watermark", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_interface_config_brand_watermark_link", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_interface_config_generate_room_names_on_welcome_page", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_interface_config_display_welcome_page_content", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_interface_config_app_name", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_interface_config_native_app_name", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_interface_config_provider_name", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_interface_config_show_powered_by", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_interface_config_disable_transcription_subtitles", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_interface_config_show_deep_linking_image", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
+    - { "old": "jitsi_web_environment_variables_extension", "new": "jitsi_web_environment_variables_additional_variables" }
+    - { "old": "jitsi_jvb_environment_variables_extension", "new": "jitsi_jvb_environment_variables_additional_variables" }

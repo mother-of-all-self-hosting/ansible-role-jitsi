@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - ansible.builtin.set_fact:
     jitsi_prosody_self_check_uvs_health_url: "{{ jitsi_prosody_auth_matrix_uvs_location }}/health"
     jitsi_element_jitsi_well_known_url: "{{ jitsi_web_public_url }}/.well-known/element/jitsi"
