@@ -8,7 +8,8 @@
     path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-web.service"
   register: jitsi_web_service_stat
 
-- when: jitsi_web_service_stat.stat.exists | bool
+- name: Uninstall jitsi-web systemd services and files
+  when: jitsi_web_service_stat.stat.exists | bool
   block:
     - name: Ensure jitsi-web systemd service systemd service is stopped
       ansible.builtin.service:
