@@ -1,16 +1,21 @@
 # SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2025 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-- tags:
+- name: Perform tasks for additional JVBs installation
+  when: jitsi_enabled | bool
+  tags:
     - setup-additional-jitsi-jvb
     - install-additional-jitsi-jvb
   block:
-    - when: jitsi_enabled | bool
+    - name: Perform an initial task for additional JVBs installation
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/init_additional_jvb.yml"
 
-- tags:
+- name: Perform Jitsi base installation tasks
+  when: jitsi_enabled | bool
+  tags:
     - setup-all
     - setup-jitsi
     - setup-additional-jitsi-jvb
@@ -18,41 +23,42 @@
     - install-jitsi
     - install-additional-jitsi-jvb
   block:
-    - when: jitsi_enabled | bool
+    - name: Validate Jitsi configuration
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
-
-    - when: jitsi_enabled | bool
+    - name: Set up Jitsi base
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/setup_jitsi_base.yml"
 
-- tags:
+- name: Perform Jitsi components installation tasks
+  when: jitsi_enabled | bool
+  tags:
     - setup-all
     - setup-jitsi
     - install-all
     - install-jitsi
   block:
-    - when: jitsi_enabled | bool
+    - name: Install jitsi-web
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/web_install.yml"
-
-    - when: jitsi_enabled | bool
+    - name: Install jitsi-prosody
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/prosody_install.yml"
-
-    - when: jitsi_enabled | bool
+    - name: Install jitsi-jicofo
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/jicofo_install.yml"
 
-- tags:
+- name: Perform Jitsi components uninstallation tasks
+  when: not jitsi_enabled | bool
+  tags:
     - setup-all
     - setup-jitsi
   block:
-    - when: not jitsi_enabled | bool
+    - name: Uninstall jitsi-web
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/web_uninstall.yml"
-
-    - when: not jitsi_enabled | bool
+    - name: Uninstall jitsi-prosody
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/prosody_uninstall.yml"
-
-    - when: not jitsi_enabled | bool
+    - name: Uninstall jitsi-jicofo
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/jicofo_uninstall.yml"
 
-- tags:
+- name: Perform additional JVBs installation tasks
+  when: jitsi_enabled | bool
+  tags:
     - setup-all
     - setup-jitsi
     - setup-additional-jitsi-jvb
@@ -60,19 +66,23 @@
     - install-jitsi
     - install-additional-jitsi-jvb
   block:
-    - when: jitsi_enabled | bool
+    - name: Install jitsi-jvb
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/jvb_install.yml"
 
-- tags:
+- name: Perform additional JVBs uninstallation tasks
+  when: not jitsi_enabled | bool
+  tags:
     - setup-all
     - setup-jitsi
     - setup-additional-jitsi-jvb
   block:
-    - when: not jitsi_enabled | bool
+    - name: Uninstall jitsi-jvb
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/jvb_uninstall.yml"
 
-- tags:
+- name: Perform Jitsi self-check tasks
+  tags:
     - self-check
   block:
-    - when: jitsi_enable_auth | bool and jitsi_auth_type == 'matrix'
+    - name: Perform self-check for authentication with Matrix OpenID
+      when: jitsi_enable_auth | bool and jitsi_auth_type == 'matrix'
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/self_check_matrix_auth.yml"
