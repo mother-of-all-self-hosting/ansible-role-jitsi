@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-- ansible.builtin.set_fact:
+- name: Initial task for additional JVBs installation
+  ansible.builtin.set_fact:
     devture_systemd_service_manager_services_list_auto: "{{ [{'name': (jitsi_identifier + '-jvb.service'), 'priority': 1000, 'groups': ['jitsi', 'jitsi-jvb']}] }}"
   when: jitsi_enabled | bool
