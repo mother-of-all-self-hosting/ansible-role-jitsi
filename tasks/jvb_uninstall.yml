@@ -8,7 +8,8 @@
     path: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jvb.service"
   register: jitsi_jvb_service_stat
 
-- when: jitsi_jvb_service_stat.stat.exists | bool
+- name: Uninstall jitsi-jvb systemd services and files
+  when: jitsi_jvb_service_stat.stat.exists | bool
   block:
     - name: Ensure jitsi-jvb systemd service is stopped
       ansible.builtin.service:
