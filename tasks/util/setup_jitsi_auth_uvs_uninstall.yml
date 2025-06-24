@@ -13,7 +13,8 @@
     - "{{ jitsi_prosody_auth_matrix_files | map(attribute='path') | map('regex_replace', '^', jitsi_prosody_plugins_path+'/') | list | flatten }}"
   register: jitsi_prosody_auth_matrix_user_verification_uninstalled
 
-- when: jitsi_prosody_auth_matrix_user_verification_uninstalled.changed
+- name: Run if Prosody mod auth_matrix_user_verification is uninstalled
+  when: jitsi_prosody_auth_matrix_user_verification_uninstalled.changed
   block:
     - name: Populate service facts
       ansible.builtin.service_facts:
