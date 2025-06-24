@@ -39,7 +39,7 @@
   ansible.builtin.debug:
     msg: "well-known is configured correctly at `{{ jitsi_element_jitsi_well_known_url }}`"
 
-- name: Check if we can reach the user verification service and if it's healthy
+- name: Check if we can reach the Matrix User Verification Service and if it's healthy
   ansible.builtin.command:
     argv:
       - "docker"
@@ -54,13 +54,13 @@
   changed_when: false
   ignore_errors: true
 
-- name: Fail if user verification service is not (reachable and healthy)
+- name: Fail if Matrix User Verification Service is not (reachable and healthy)
   ansible.builtin.fail:
     msg: |
-      Failed checking user verification service is up (checked endpoint: `{{ jitsi_prosody_self_check_uvs_health_url }}`).
+      Failed checking Matrix User Verification Service is up (checked endpoint: `{{ jitsi_prosody_self_check_uvs_health_url }}`).
       Full error: {{ jitsi_prosody_self_check_uvs_result }}
   when: "jitsi_prosody_self_check_uvs_result.failed"
 
-- name: Report healthy user verification service
+- name: Report healthy Matrix User Verification Service
   ansible.builtin.debug:
-    msg: "User verification service is working (checked endpoint: `{{ jitsi_prosody_self_check_uvs_health_url }}`)"
+    msg: "Matrix User Verification Service is working (checked endpoint: `{{ jitsi_prosody_self_check_uvs_health_url }}`)"
