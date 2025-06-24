@@ -26,7 +26,7 @@
       Full error: {{ result_well_known_jitsi_element_jitsi }}
   when: "result_well_known_jitsi_element_jitsi.failed"
 
-- name: Parse JSON for well-known payload at the matrix hostname
+- name: Parse JSON for well-known payload at the Matrix hostname
   ansible.builtin.set_fact:
     well_known_matrix_payload: "{{ result_well_known_jitsi_element_jitsi.content | from_json }}"
 
