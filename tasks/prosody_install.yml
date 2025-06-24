@@ -58,8 +58,8 @@
     mode: "0644"
   register: jitsi_prosody_systemd_service_result
 
-# Tasks that require a running prosody container are called in this file.
-- name: Run prosody related tasks, that require a running container
+# Tasks that require a running Prosody container are called in this file.
+- name: Run Prosody related tasks, that require a running container
   ansible.builtin.include_tasks:
     file: "{{ role_path }}/tasks/util/setup_jitsi_prosody_post_setup_hooks.yml"
   when:

@@ -4,7 +4,7 @@
 
 ---
 #
-# Tasks related to configuring Jitsi internal authentication on a running prosody instance.
+# Tasks related to configuring Jitsi internal authentication on a running Prosody instance.
 #
 
 - name: Ensure Jitsi internal authentication users are configured

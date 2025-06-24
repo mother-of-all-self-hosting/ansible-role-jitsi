@@ -6,8 +6,8 @@
 ---
 #####
 #
-# This tasks file starts and stops (if state before was stopped) a prosody container during setup to run commands,
-# that require a running prosody container.
+# This tasks file starts and stops (if state before was stopped) a Prosody container during setup to run commands,
+# that require a running Prosody container.
 # The task is called in ../setup_jitsi_prosody_install.yml.
 #
 # Important: The task is called conditionally, as to only start if really needed.
@@ -26,7 +26,7 @@
     daemon_reload: true
   register: restart_result
 
-- name: Wait a while, so that the prosody instance can manage to start
+- name: Wait a while, so that the Prosody instance can manage to start
   ansible.builtin.pause:
     seconds: 7
   when: "restart_result.changed"
