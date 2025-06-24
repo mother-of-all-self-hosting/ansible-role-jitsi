@@ -53,7 +53,7 @@
 
 - name: Ensure jitsi-prosody systemd service is present
   ansible.builtin.template:
-    src: "{{ role_path }}/templates/prosody/prosody.service.j2"
+    src: "{{ role_path }}/templates/prosody/systemd/prosody.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-prosody.service"
     mode: "0644"
   register: jitsi_prosody_systemd_service_result
