@@ -16,7 +16,7 @@
       ansible.builtin.set_fact:
         jitsi_user_username: "{{ result_jitsi_user_username.ansible_facts.getent_passwd.keys() | list | first }}"
 
-- name: Checkout Prosody Auth Matrix User Verification Plugin Repo
+- name: Checkout Prosody Auth Matrix User Verification plugin's Git repository
   ansible.builtin.git:
     repo: "{{ jitsi_prosody_auth_matrix_user_verification_repo_location }}"
     dest: "{{ jitsi_prosody_auth_matrix_user_verification_repo_target }}"
@@ -24,7 +24,7 @@
   become: true
   become_user: "{{ jitsi_user_username }}"
 
-- name: Install Prosody Auth Matrix User Verification Plugin
+- name: Install Prosody Auth Matrix User Verification plugin
   ansible.builtin.copy:
     remote_src: true
     src: "{{ jitsi_prosody_auth_matrix_user_verification_repo_target }}/{{ item.path }}"

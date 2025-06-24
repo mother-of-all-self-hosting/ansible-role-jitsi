@@ -40,13 +40,13 @@
   until: result is not failed
 
 # Configure Matrix authentication.
-- name: Install user verification plugin
+- name: Install Prosody Auth Matrix User Verification plugin
   ansible.builtin.include_tasks:
     file: "{{ role_path }}/tasks/util/setup_jitsi_auth_uvs_install.yml"
   when: jitsi_enable_auth | bool and jitsi_auth_type == "matrix"
 
 # Remove Matrix authentication if disabled
-- name: Ensure user verification plugin is not present if Matrix auth is disabled
+- name: Ensure Prosody Auth Matrix User Verification plugin is not present if Matrix auth is disabled
   ansible.builtin.include_tasks:
     file: "{{ role_path }}/tasks/util/setup_jitsi_auth_uvs_uninstall.yml"
   when: (not jitsi_enable_auth | bool) or (jitsi_auth_type != "matrix")
