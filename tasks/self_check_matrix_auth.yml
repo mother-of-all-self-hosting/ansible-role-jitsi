@@ -7,7 +7,7 @@
     jitsi_prosody_self_check_uvs_health_url: "{{ jitsi_prosody_auth_matrix_uvs_location }}/health"
     jitsi_element_jitsi_well_known_url: "{{ jitsi_web_public_url }}/.well-known/element/jitsi"
 
-- name: Check if jitsi serves the .well-known/element/jitsi
+- name: Check if the .well-known/element/jitsi file is served
   ansible.builtin.uri:
     url: "{{ jitsi_element_jitsi_well_known_url }}"
     follow_redirects: none
@@ -19,27 +19,27 @@
   register: result_well_known_jitsi_element_jitsi
   ignore_errors: true
 
-- name: Fail if .well-known not working
+- name: Fail if the .well-known/element/jitsi file is not served
   ansible.builtin.fail:
     msg: |
       Failed checking that the Jitsi well-known file for Element auth is configured at `{{ jitsi_element_jitsi_well_known_url }}`
       Full error: {{ result_well_known_jitsi_element_jitsi }}
   when: "result_well_known_jitsi_element_jitsi.failed"
 
-- name: Parse JSON for well-known payload at the Matrix hostname
+- name: Parse JSON for the .well-known/element/jitsi file payload at the Matrix hostname
   ansible.builtin.set_fact:
     well_known_matrix_payload: "{{ result_well_known_jitsi_element_jitsi.content | from_json }}"
 
-- name: Fail if .well-known not CORS-aware
+- name: Fail if the .well-known/element/jitsi file is not CORS-aware
   ansible.builtin.fail:
     msg: "The well-known file on `{{ jitsi_element_jitsi_well_known_url }}` is not CORS-aware. The file needs to be served with an Access-Control-Allow-Origin header set."
   when: "'access_control_allow_origin' not in result_well_known_jitsi_element_jitsi"
 
-- name: Report working .well-known
+- name: Report that the .well-known/element/jitsi file is configured correctly
   ansible.builtin.debug:
     msg: "well-known is configured correctly at `{{ jitsi_element_jitsi_well_known_url }}`"
 
-- name: Check if we can reach the Matrix User Verification Service and if it's healthy
+- name: Check if Matrix User Verification Service is reachable and healthy
   ansible.builtin.command:
     argv:
       - "docker"
@@ -54,13 +54,13 @@
   changed_when: false
   ignore_errors: true
 
-- name: Fail if Matrix User Verification Service is not (reachable and healthy)
+- name: Fail if Matrix User Verification Service is neither reachable nor healthy
   ansible.builtin.fail:
     msg: |
       Failed checking Matrix User Verification Service is up (checked endpoint: `{{ jitsi_prosody_self_check_uvs_health_url }}`).
       Full error: {{ jitsi_prosody_self_check_uvs_result }}
   when: "jitsi_prosody_self_check_uvs_result.failed"
 
-- name: Report healthy Matrix User Verification Service
+- name: Report that Matrix User Verification Service is working
   ansible.builtin.debug:
     msg: "Matrix User Verification Service is working (checked endpoint: `{{ jitsi_prosody_self_check_uvs_health_url }}`)"
