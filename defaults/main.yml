@@ -418,6 +418,12 @@ jitsi_prosody_container_http_host_bind_port: ''
 
 jitsi_prosody_container_jvb_host_bind_port: ''
 
+########################################################################
+#                                                                      #
+# jicofo                                                               #
+#                                                                      #
+########################################################################
+
 jitsi_jicofo_container_image: "{{ jitsi_jicofo_container_image_registry_prefix }}jitsi/jicofo:{{ jitsi_container_image_tag }}"
 jitsi_jicofo_container_image_force_pull: "{{ jitsi_jicofo_container_image.endswith(':latest') }}"
 jitsi_jicofo_container_image_registry_prefix: "{{ jitsi_jicofo_container_image_registry_prefix_upstream }}"
@@ -456,6 +462,12 @@ jitsi_jicofo_auth_password: ''
 
 # To enable Sentry integration for Jicofo, specify a valid DSN connection string
 jitsi_jicofo_sentry_dsn: ''
+
+########################################################################
+#                                                                      #
+# /jicofo                                                              #
+#                                                                      #
+########################################################################
 
 ########################################################################
 #                                                                      #
