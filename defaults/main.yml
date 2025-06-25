@@ -523,7 +523,7 @@ jitsi_jvb_container_image_registry_prefix_upstream_default: docker.io/
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:10000"), or empty string to not expose.
 jitsi_jvb_container_rtp_udp_host_bind_port: "{{ jitsi_jvb_rtp_udp_port }}"
 
-# Controls whether the jitsi-jvb container exposes its RTP UDP port (udp/4443 in the container).
+# Controls whether the jitsi-jvb container exposes its RTP TCP port (tcp/4443 in the container).
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:4443"), or empty string to not expose.
 jitsi_jvb_container_rtp_tcp_host_bind_port: "{{ jitsi_jvb_rtp_tcp_port }}"
@@ -532,6 +532,12 @@ jitsi_jvb_container_rtp_tcp_host_bind_port: "{{ jitsi_jvb_rtp_tcp_port }}"
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:12090"), or empty string to not expose.
 jitsi_jvb_container_colibri_ws_host_bind_port: ''
+
+# The RTP UDP port number in the container
+jitsi_jvb_rtp_udp_port: 10000
+
+# The RTP TCP port number in the container
+jitsi_jvb_rtp_tcp_port: 4443
 
 # A list of additional container networks that the JVB container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -595,10 +601,8 @@ jitsi_jvb_sentry_dsn: ''
 jitsi_jvb_stun_servers: ['meet-jit-si-turnrelay.jitsi.net:443']
 
 jitsi_jvb_brewery_muc: jvbbrewery
-jitsi_jvb_rtp_udp_port: 10000
-jitsi_jvb_rtp_tcp_port: 4443
-jitsi_jvb_server_id: 'jvb-1'
 
+jitsi_jvb_server_id: 'jvb-1'
 
 # Custom configuration to be injected into `custom-sip-communicator.properties`, passed to Jitsi Videobridge (JVB).
 # This configuration gets appended to the final configuration that Jitsi Videobridge (JVB) uses.
