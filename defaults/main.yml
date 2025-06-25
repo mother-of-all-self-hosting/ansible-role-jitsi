@@ -83,13 +83,6 @@ jitsi_xmpp_modules: ''
 
 jitsi_recorder_domain: recorder.meet.jitsi
 
-jitsi_jibri_brewery_muc: jibribrewery
-jitsi_jibri_pending_timeout: 90
-jitsi_jibri_xmpp_user: jibri
-jitsi_jibri_xmpp_password: ''
-jitsi_jibri_recorder_user: recorder
-jitsi_jibri_recorder_password: ''
-
 jitsi_enable_lobby: false
 
 jitsi_container_image_tag: "{{ jitsi_version }}"
@@ -439,6 +432,25 @@ jitsi_prosody_max_participants: ''
 ########################################################################
 #                                                                      #
 # /prosody                                                             #
+#                                                                      #
+########################################################################
+
+########################################################################
+#                                                                      #
+# jibri                                                                #
+#                                                                      #
+########################################################################
+
+jitsi_jibri_brewery_muc: jibribrewery
+jitsi_jibri_pending_timeout: 90
+jitsi_jibri_xmpp_user: jibri
+jitsi_jibri_xmpp_password: ''
+jitsi_jibri_recorder_user: recorder
+jitsi_jibri_recorder_password: ''
+
+########################################################################
+#                                                                      #
+# /jibri                                                               #
 #                                                                      #
 ########################################################################
 
