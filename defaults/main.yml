@@ -99,6 +99,11 @@ jitsi_prosody_auth_matrix_uvs_auth_token: ''
 # The setting requires an integer to be set for usage and allows a user to specify the max number of particpants on a conference.
 jitsi_prosody_max_participants: ''
 
+jitsi_muc_modules: |
+  {{
+    (['matrix_power_sync'] if jitsi_prosody_auth_matrix_uvs_sync_power_levels | bool else [])
+  }}
+
 jitsi_timezone: UTC
 
 jitsi_xmpp_domain: meet.jitsi
@@ -341,6 +346,17 @@ jitsi_web_custom_config_extension: ''
 #   DROPBOX_REDIRECT_URI=something
 jitsi_web_environment_variables_additional_variables: ''
 
+# well known is currently only needed for auth type "matrix"
+jitsi_web_well_known_enabled: "{{ jitsi_web_well_known_element_jitsi_enabled }}"
+jitsi_web_well_known_element_jitsi_enabled: "{{ jitsi_enable_auth | bool and jitsi_auth_type == 'matrix' }}"
+jitsi_web_well_known_element_jitsi_json: '{"auth": "openidtoken-jwt"}'
+
+########################################################################
+#                                                                      #
+# prosody                                                              #
+#                                                                      #
+########################################################################
+
 jitsi_prosody_container_image: "{{ jitsi_prosody_container_image_registry_prefix }}jitsi/prosody:{{ jitsi_container_image_tag }}"
 jitsi_prosody_container_image_force_pull: "{{ jitsi_prosody_container_image.endswith(':latest') }}"
 jitsi_prosody_container_image_registry_prefix: "{{ jitsi_prosody_container_image_registry_prefix_upstream }}"
@@ -394,16 +410,6 @@ jitsi_prosody_config_path: "{{ jitsi_prosody_base_path }}/config"
 jitsi_prosody_plugins_path: "{{ jitsi_prosody_base_path }}/prosody-plugins-custom"
 jitsi_prosody_ext_path: "{{ jitsi_prosody_base_path }}/ext"
 
-# well known is currently only needed for auth type "matrix"
-jitsi_web_well_known_enabled: "{{ jitsi_web_well_known_element_jitsi_enabled }}"
-jitsi_web_well_known_element_jitsi_enabled: "{{ jitsi_enable_auth | bool and jitsi_auth_type == 'matrix' }}"
-jitsi_web_well_known_element_jitsi_json: '{"auth": "openidtoken-jwt"}'
-
-jitsi_muc_modules: |
-  {{
-    (['matrix_power_sync'] if jitsi_prosody_auth_matrix_uvs_sync_power_levels | bool else [])
-  }}
-
 # A list of extra arguments to pass to the container
 jitsi_prosody_container_extra_arguments: []
 
@@ -417,6 +423,12 @@ jitsi_prosody_systemd_required_services_list_custom: []
 jitsi_prosody_container_http_host_bind_port: ''
 
 jitsi_prosody_container_jvb_host_bind_port: ''
+
+########################################################################
+#                                                                      #
+# /prosody                                                             #
+#                                                                      #
+########################################################################
 
 ########################################################################
 #                                                                      #
