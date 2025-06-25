@@ -5,17 +5,18 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 # Project source code URL: https://github.com/jitsi/docker-jitsi-meet
 
 jitsi_enabled: true
 
 jitsi_identifier: jitsi
-
 jitsi_base_path: "/{{ jitsi_identifier }}"
 
 # renovate: datasource=docker depName=jitsi/web
 jitsi_version: stable-10314
+
+jitsi_uid: ''
+jitsi_gid: ''
 
 # The hostname at which Jitsi is served.
 jitsi_hostname: ''
@@ -24,8 +25,17 @@ jitsi_hostname: ''
 # This value must either be `/` or not end with a slash (e.g. `/jitsi`).
 jitsi_path_prefix: /
 
-jitsi_uid: ''
-jitsi_gid: ''
+jitsi_container_image_tag: "{{ jitsi_version }}"
+
+# The base container network. It will be auto-created by this role if it doesn't exist already.
+jitsi_container_network: "{{ jitsi_identifier }}"
+
+jitsi_container_labels_traefik_enabled: true
+jitsi_container_labels_traefik_docker_network: "{{ jitsi_container_network }}"
+jitsi_container_labels_traefik_hostname: "{{ jitsi_hostname }}"
+# The path prefix must either be `/` or not end with a slash (e.g. `/jitsi`).
+jitsi_container_labels_traefik_path_prefix: "{{ jitsi_path_prefix }}"
+jitsi_container_labels_traefik_entrypoints: web-secure
 
 # Username corresponding to jitsi_uid. If undefined, it will be auto-detected.
 jitsi_user_username: ''
@@ -85,18 +95,6 @@ jitsi_recorder_domain: recorder.meet.jitsi
 
 jitsi_enable_lobby: false
 
-jitsi_container_image_tag: "{{ jitsi_version }}"
-
-# The base container network. It will be auto-created by this role if it doesn't exist already.
-jitsi_container_network: "{{ jitsi_identifier }}"
-
-jitsi_container_labels_traefik_enabled: true
-jitsi_container_labels_traefik_docker_network: "{{ jitsi_container_network }}"
-jitsi_container_labels_traefik_hostname: "{{ jitsi_hostname }}"
-# The path prefix must either be `/` or not end with a slash (e.g. `/jitsi`).
-jitsi_container_labels_traefik_path_prefix: "{{ jitsi_path_prefix }}"
-jitsi_container_labels_traefik_entrypoints: web-secure
-
 jitsi_letsencrypt_domain: "{{ jitsi_hostname }}"
 jitsi_letsencrypt_email: ''
 
@@ -118,11 +116,29 @@ jitsi_etherpad_base: ''
 #                                                                      #
 ########################################################################
 
+jitsi_web_base_path: "{{ jitsi_base_path }}/web"
+jitsi_web_config_path: "{{ jitsi_web_base_path }}/config"
+jitsi_web_transcripts_path: "{{ jitsi_web_base_path }}/transcripts"
+jitsi_web_crontabs_path: "{{ jitsi_web_base_path }}/crontabs"
+jitsi_web_well_known_path: "{{ jitsi_web_base_path }}/well-known"
+
 jitsi_web_container_image: "{{ jitsi_web_container_image_registry_prefix }}jitsi/web:{{ jitsi_container_image_tag }}"
 jitsi_web_container_image_force_pull: "{{ jitsi_web_container_image.endswith(':latest') }}"
 jitsi_web_container_image_registry_prefix: "{{ jitsi_web_container_image_registry_prefix_upstream }}"
 jitsi_web_container_image_registry_prefix_upstream: "{{ jitsi_web_container_image_registry_prefix_upstream_default }}"
 jitsi_web_container_image_registry_prefix_upstream_default: docker.io/
+
+# Controls whether the jitsi-web container exposes its HTTP port (tcp/80 in the container).
+#
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:13080"), or empty string to not expose.
+jitsi_web_container_http_host_bind_port: ''
+
+# A list of additional container networks that the Web container would be connected to.
+# The role does not create these networks, so make sure they already exist.
+# Use this to expose this container to another reverse proxy, which runs in a different container network.
+jitsi_web_container_additional_networks: "{{ jitsi_web_container_additional_networks_auto + jitsi_web_container_additional_networks_custom }}"
+jitsi_web_container_additional_networks_auto: []
+jitsi_web_container_additional_networks_custom: []
 
 # jitsi_web_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the Web container.
 # See `../templates/web/labels.j2` for details.
@@ -167,20 +183,8 @@ jitsi_web_container_labels_traefik_additional_response_headers_custom: {}
 #   another.label="here"
 jitsi_web_container_labels_additional_labels: ''
 
-jitsi_web_base_path: "{{ jitsi_base_path }}/web"
-jitsi_web_config_path: "{{ jitsi_web_base_path }}/config"
-jitsi_web_transcripts_path: "{{ jitsi_web_base_path }}/transcripts"
-jitsi_web_crontabs_path: "{{ jitsi_web_base_path }}/crontabs"
-jitsi_web_well_known_path: "{{ jitsi_web_base_path }}/well-known"
-
-jitsi_web_public_url: "https://{{ jitsi_hostname }}{{ '' if jitsi_path_prefix == '/' else jitsi_path_prefix }}/"
-
-# STUN servers used in the web UI. Feel free to point them to your own STUN server.
-# Addresses need to be prefixed with one of `stun:`, `turn:` or `turns:`.
-jitsi_web_stun_servers: ['stun:meet-jit-si-turnrelay.jitsi.net:443']
-
-# Controls whether Jitsi Web will allow being put in an iframe, etc.
-jitsi_web_framing_enabled: false
+# A list of extra arguments to pass to the container
+jitsi_web_container_extra_arguments: []
 
 # Specifies the value of the `X-XSS-Protection` header
 # Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
@@ -230,20 +234,8 @@ jitsi_web_http_floc_optout_enabled: true
 # See: `jitsi_web_http_header_strict_transport_security`
 jitsi_web_hsts_preload_enabled: false
 
-# Controls whether the jitsi-web container exposes its HTTP port (tcp/80 in the container).
-#
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:13080"), or empty string to not expose.
-jitsi_web_container_http_host_bind_port: ''
-
-# A list of additional container networks that the Web container would be connected to.
-# The role does not create these networks, so make sure they already exist.
-# Use this to expose this container to another reverse proxy, which runs in a different container network.
-jitsi_web_container_additional_networks: "{{ jitsi_web_container_additional_networks_auto + jitsi_web_container_additional_networks_custom }}"
-jitsi_web_container_additional_networks_auto: []
-jitsi_web_container_additional_networks_custom: []
-
-# A list of extra arguments to pass to the container
-jitsi_web_container_extra_arguments: []
+# Controls whether Jitsi Web will allow being put in an iframe, etc.
+jitsi_web_framing_enabled: false
 
 # List of systemd services that jitsi-web.service depends on
 jitsi_web_systemd_required_services_list: "{{ jitsi_web_systemd_required_services_list_default + jitsi_web_systemd_required_services_list_auto + jitsi_web_systemd_required_services_list_custom }}"
@@ -316,6 +308,12 @@ jitsi_web_well_known_enabled: "{{ jitsi_web_well_known_element_jitsi_enabled }}"
 jitsi_web_well_known_element_jitsi_enabled: "{{ jitsi_enable_auth | bool and jitsi_auth_type == 'matrix' }}"
 jitsi_web_well_known_element_jitsi_json: '{"auth": "openidtoken-jwt"}'
 
+jitsi_web_public_url: "https://{{ jitsi_hostname }}{{ '' if jitsi_path_prefix == '/' else jitsi_path_prefix }}/"
+
+# STUN servers used in the web UI. Feel free to point them to your own STUN server.
+# Addresses need to be prefixed with one of `stun:`, `turn:` or `turns:`.
+jitsi_web_stun_servers: ['stun:meet-jit-si-turnrelay.jitsi.net:443']
+
 ########################################################################
 #                                                                      #
 # /web                                                                 #
@@ -328,11 +326,21 @@ jitsi_web_well_known_element_jitsi_json: '{"auth": "openidtoken-jwt"}'
 #                                                                      #
 ########################################################################
 
+jitsi_prosody_base_path: "{{ jitsi_base_path }}/prosody"
+jitsi_prosody_config_path: "{{ jitsi_prosody_base_path }}/config"
+jitsi_prosody_plugins_path: "{{ jitsi_prosody_base_path }}/prosody-plugins-custom"
+jitsi_prosody_ext_path: "{{ jitsi_prosody_base_path }}/ext"
+
 jitsi_prosody_container_image: "{{ jitsi_prosody_container_image_registry_prefix }}jitsi/prosody:{{ jitsi_container_image_tag }}"
 jitsi_prosody_container_image_force_pull: "{{ jitsi_prosody_container_image.endswith(':latest') }}"
 jitsi_prosody_container_image_registry_prefix: "{{ jitsi_prosody_container_image_registry_prefix_upstream }}"
 jitsi_prosody_container_image_registry_prefix_upstream: "{{ jitsi_prosody_container_image_registry_prefix_upstream_default }}"
 jitsi_prosody_container_image_registry_prefix_upstream_default: docker.io/
+
+# Neccessary Port binding for those disabling the integrated nginx proxy
+jitsi_prosody_container_http_host_bind_port: ''
+
+jitsi_prosody_container_jvb_host_bind_port: ''
 
 # A list of additional container networks that the Prosody container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -376,11 +384,6 @@ jitsi_prosody_container_labels_traefik_additional_response_headers_custom: {}
 #   another.label="here"
 jitsi_prosody_container_labels_additional_labels: ''
 
-jitsi_prosody_base_path: "{{ jitsi_base_path }}/prosody"
-jitsi_prosody_config_path: "{{ jitsi_prosody_base_path }}/config"
-jitsi_prosody_plugins_path: "{{ jitsi_prosody_base_path }}/prosody-plugins-custom"
-jitsi_prosody_ext_path: "{{ jitsi_prosody_base_path }}/ext"
-
 # A list of extra arguments to pass to the container
 jitsi_prosody_container_extra_arguments: []
 
@@ -389,11 +392,6 @@ jitsi_prosody_systemd_required_services_list: "{{ jitsi_prosody_systemd_required
 jitsi_prosody_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
 jitsi_prosody_systemd_required_services_list_auto: []
 jitsi_prosody_systemd_required_services_list_custom: []
-
-# Neccessary Port binding for those disabling the integrated nginx proxy
-jitsi_prosody_container_http_host_bind_port: ''
-
-jitsi_prosody_container_jvb_host_bind_port: ''
 
 # A list of Jitsi (Prosody) accounts to create using the internal authentication mechanism.
 #
@@ -460,6 +458,9 @@ jitsi_jibri_recorder_password: ''
 #                                                                      #
 ########################################################################
 
+jitsi_jicofo_base_path: "{{ jitsi_base_path }}/jicofo"
+jitsi_jicofo_config_path: "{{ jitsi_jicofo_base_path }}/config"
+
 jitsi_jicofo_container_image: "{{ jitsi_jicofo_container_image_registry_prefix }}jitsi/jicofo:{{ jitsi_container_image_tag }}"
 jitsi_jicofo_container_image_force_pull: "{{ jitsi_jicofo_container_image.endswith(':latest') }}"
 jitsi_jicofo_container_image_registry_prefix: "{{ jitsi_jicofo_container_image_registry_prefix_upstream }}"
@@ -472,9 +473,6 @@ jitsi_jicofo_container_image_registry_prefix_upstream_default: docker.io/
 jitsi_jicofo_container_additional_networks: "{{ jitsi_jicofo_container_additional_networks_auto + jitsi_jicofo_container_additional_networks_custom }}"
 jitsi_jicofo_container_additional_networks_auto: []
 jitsi_jicofo_container_additional_networks_custom: []
-
-jitsi_jicofo_base_path: "{{ jitsi_base_path }}/jicofo"
-jitsi_jicofo_config_path: "{{ jitsi_jicofo_base_path }}/config"
 
 # A list of extra arguments to pass to the container
 jitsi_jicofo_container_extra_arguments: []
@@ -511,11 +509,29 @@ jitsi_jicofo_sentry_dsn: ''
 #                                                                      #
 ########################################################################
 
+jitsi_jvb_base_path: "{{ jitsi_base_path }}/jvb"
+jitsi_jvb_config_path: "{{ jitsi_jvb_base_path }}/config"
+
 jitsi_jvb_container_image: "{{ jitsi_jvb_container_image_registry_prefix }}jitsi/jvb:{{ jitsi_container_image_tag }}"
 jitsi_jvb_container_image_force_pull: "{{ jitsi_jvb_container_image.endswith(':latest') }}"
 jitsi_jvb_container_image_registry_prefix: "{{ jitsi_jvb_container_image_registry_prefix_upstream }}"
 jitsi_jvb_container_image_registry_prefix_upstream: "{{ jitsi_jvb_container_image_registry_prefix_upstream_default }}"
 jitsi_jvb_container_image_registry_prefix_upstream_default: docker.io/
+
+# Controls whether the jitsi-jvb container exposes its RTP UDP port (udp/10000 in the container).
+#
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:10000"), or empty string to not expose.
+jitsi_jvb_container_rtp_udp_host_bind_port: "{{ jitsi_jvb_rtp_udp_port }}"
+
+# Controls whether the jitsi-jvb container exposes its RTP UDP port (udp/4443 in the container).
+#
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:4443"), or empty string to not expose.
+jitsi_jvb_container_rtp_tcp_host_bind_port: "{{ jitsi_jvb_rtp_tcp_port }}"
+
+# Controls whether the jitsi-jvb container exposes its Colibri WebSocket port (tcp/9090 in the container).
+#
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:12090"), or empty string to not expose.
+jitsi_jvb_container_colibri_ws_host_bind_port: ''
 
 # A list of additional container networks that the JVB container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -558,9 +574,6 @@ jitsi_jvb_container_labels_traefik_additional_response_headers_custom: {}
 #   my.label=1
 #   another.label="here"
 jitsi_jvb_container_labels_additional_labels: ''
-
-jitsi_jvb_base_path: "{{ jitsi_base_path }}/jvb"
-jitsi_jvb_config_path: "{{ jitsi_jvb_base_path }}/config"
 
 # A list of extra arguments to pass to the container
 jitsi_jvb_container_extra_arguments: []
@@ -611,21 +624,6 @@ jitsi_jvb_custom_config_extension: ''
 #   SOME_VARIABLE=1
 #   ANOTHER_VARIABLE=something
 jitsi_jvb_environment_variables_additional_variables: ''
-
-# Controls whether the jitsi-jvb container exposes its RTP UDP port (udp/10000 in the container).
-#
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:10000"), or empty string to not expose.
-jitsi_jvb_container_rtp_udp_host_bind_port: "{{ jitsi_jvb_rtp_udp_port }}"
-
-# Controls whether the jitsi-jvb container exposes its RTP UDP port (udp/4443 in the container).
-#
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:4443"), or empty string to not expose.
-jitsi_jvb_container_rtp_tcp_host_bind_port: "{{ jitsi_jvb_rtp_tcp_port }}"
-
-# Controls whether the jitsi-jvb container exposes its Colibri WebSocket port (tcp/9090 in the container).
-#
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:12090"), or empty string to not expose.
-jitsi_jvb_container_colibri_ws_host_bind_port: ''
 
 ########################################################################
 #                                                                      #
