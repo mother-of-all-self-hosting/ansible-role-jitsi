@@ -174,7 +174,7 @@ jitsi_web_container_labels_traefik_additional_response_headers_auto: |
 jitsi_web_container_labels_traefik_additional_response_headers_custom: {}
 
 # jitsi_web_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
-# See `../templates/labels.j2` for details.
+# See `../templates/web/labels.j2` for details.
 #
 # Example:
 # jitsi_web_container_labels_additional_labels: |
@@ -355,7 +355,7 @@ jitsi_prosody_container_additional_networks_auto: []
 jitsi_prosody_container_additional_networks_custom: []
 
 # jitsi_prosody_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the Prosody container.
-# See `../templates/web/labels.j2` for details.
+# See `../templates/prosody/labels.j2` for details.
 #
 # To inject your own other container labels, see `jitsi_prosody_container_labels_additional_labels`.
 jitsi_prosody_container_labels_traefik_enabled: "{{ jitsi_container_labels_traefik_enabled }}"
@@ -381,7 +381,7 @@ jitsi_prosody_container_labels_traefik_additional_response_headers_auto: {}
 jitsi_prosody_container_labels_traefik_additional_response_headers_custom: {}
 
 # jitsi_prosody_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
-# See `../templates/labels.j2` for details.
+# See `../templates/prosody/labels.j2` for details.
 #
 # Example:
 # jitsi_prosody_container_labels_additional_labels: |
@@ -471,7 +471,7 @@ jitsi_jvb_container_additional_networks_auto: []
 jitsi_jvb_container_additional_networks_custom: []
 
 # jitsi_jvb_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the JVB container.
-# See `../templates/web/labels.j2` for details.
+# See `../templates/jvb/labels.j2` for details.
 #
 # To inject your own other container labels, see `jitsi_jvb_container_labels_additional_labels`.
 jitsi_jvb_container_labels_traefik_enabled: "{{ jitsi_container_labels_traefik_enabled }}"
@@ -497,7 +497,7 @@ jitsi_jvb_container_labels_traefik_additional_response_headers_auto: {}
 jitsi_jvb_container_labels_traefik_additional_response_headers_custom: {}
 
 # jitsi_jvb_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
-# See `../templates/labels.j2` for details.
+# See `../templates/jvb/labels.j2` for details.
 #
 # Example:
 # jitsi_jvb_container_labels_additional_labels: |
