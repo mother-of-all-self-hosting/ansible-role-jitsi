@@ -457,6 +457,12 @@ jitsi_jicofo_auth_password: ''
 # To enable Sentry integration for Jicofo, specify a valid DSN connection string
 jitsi_jicofo_sentry_dsn: ''
 
+########################################################################
+#                                                                      #
+# jvb                                                                  #
+#                                                                      #
+########################################################################
+
 jitsi_jvb_container_image: "{{ jitsi_jvb_container_image_registry_prefix }}jitsi/jvb:{{ jitsi_container_image_tag }}"
 jitsi_jvb_container_image_force_pull: "{{ jitsi_jvb_container_image.endswith(':latest') }}"
 jitsi_jvb_container_image_registry_prefix: "{{ jitsi_jvb_container_image_registry_prefix_upstream }}"
@@ -572,6 +578,12 @@ jitsi_jvb_container_rtp_tcp_host_bind_port: "{{ jitsi_jvb_rtp_tcp_port }}"
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:12090"), or empty string to not expose.
 jitsi_jvb_container_colibri_ws_host_bind_port: ''
+
+########################################################################
+#                                                                      #
+# /jvb                                                                 #
+#                                                                      #
+########################################################################
 
 ########################################################################
 #                                                                      #
