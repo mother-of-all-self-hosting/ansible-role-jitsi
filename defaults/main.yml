@@ -138,6 +138,27 @@ jitsi_container_labels_traefik_hostname: "{{ jitsi_hostname }}"
 jitsi_container_labels_traefik_path_prefix: "{{ jitsi_path_prefix }}"
 jitsi_container_labels_traefik_entrypoints: web-secure
 
+jitsi_letsencrypt_domain: "{{ jitsi_hostname }}"
+jitsi_letsencrypt_email: ''
+
+jitsi_turn_credentials: ''
+jitsi_turn_host: ''
+jitsi_turns_host: ''
+jitsi_turn_port: ''
+jitsi_turns_port: ''
+jitsi_turn_transport: tcp
+
+# Controls whether Etherpad will be available within Jitsi
+jitsi_etherpad_enabled: false
+# Specifies the Etherpad base URL (e.g. https://etherpad.DOMAIN or https://hostname/etherpad)
+jitsi_etherpad_base: ''
+
+########################################################################
+#                                                                      #
+# web                                                                  #
+#                                                                      #
+########################################################################
+
 jitsi_web_container_image: "{{ jitsi_web_container_image_registry_prefix }}jitsi/web:{{ jitsi_container_image_tag }}"
 jitsi_web_container_image_force_pull: "{{ jitsi_web_container_image.endswith(':latest') }}"
 jitsi_web_container_image_registry_prefix: "{{ jitsi_web_container_image_registry_prefix_upstream }}"
@@ -250,21 +271,6 @@ jitsi_web_http_floc_optout_enabled: true
 # See: `jitsi_web_http_header_strict_transport_security`
 jitsi_web_hsts_preload_enabled: false
 
-jitsi_letsencrypt_domain: "{{ jitsi_hostname }}"
-jitsi_letsencrypt_email: ''
-
-jitsi_turn_credentials: ''
-jitsi_turn_host: ''
-jitsi_turns_host: ''
-jitsi_turn_port: ''
-jitsi_turns_port: ''
-jitsi_turn_transport: tcp
-
-# Controls whether Etherpad will be available within Jitsi
-jitsi_etherpad_enabled: false
-# Specifies the Etherpad base URL (e.g. https://etherpad.DOMAIN or https://hostname/etherpad)
-jitsi_etherpad_base: ''
-
 # Controls whether the jitsi-web container exposes its HTTP port (tcp/80 in the container).
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:13080"), or empty string to not expose.
@@ -350,6 +356,12 @@ jitsi_web_environment_variables_additional_variables: ''
 jitsi_web_well_known_enabled: "{{ jitsi_web_well_known_element_jitsi_enabled }}"
 jitsi_web_well_known_element_jitsi_enabled: "{{ jitsi_enable_auth | bool and jitsi_auth_type == 'matrix' }}"
 jitsi_web_well_known_element_jitsi_json: '{"auth": "openidtoken-jwt"}'
+
+########################################################################
+#                                                                      #
+# /web                                                                 #
+#                                                                      #
+########################################################################
 
 ########################################################################
 #                                                                      #
