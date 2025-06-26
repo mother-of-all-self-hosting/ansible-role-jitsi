@@ -25,8 +25,8 @@
   block:
     - name: Validate Jitsi configuration
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
-    - name: Set up Jitsi base
-      ansible.builtin.include_tasks: "{{ role_path }}/tasks/setup_jitsi_base.yml"
+    - name: Install base for Jitsi
+      ansible.builtin.include_tasks: "{{ role_path }}/tasks/base_install.yml"
 
 - name: Perform Jitsi components installation tasks
   when: jitsi_enabled | bool
