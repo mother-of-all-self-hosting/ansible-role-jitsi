@@ -336,9 +336,15 @@ jitsi_prosody_container_image_registry_prefix_upstream: "{{ jitsi_prosody_contai
 jitsi_prosody_container_image_registry_prefix_upstream_default: docker.io/
 jitsi_prosody_container_image_force_pull: "{{ jitsi_prosody_container_image.endswith(':latest') }}"
 
-# Neccessary Port binding for those disabling the integrated nginx proxy
+# Controls whether the jitsi-prosody container exposes its HTTP port (tcp/5280 in the container).
+#
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:5280"), or empty string to not expose.
+# This is a neccessary port to bind for those disabling the integrated nginx proxy.
 jitsi_prosody_container_http_host_bind_port: ''
 
+# Controls whether the jitsi-prosody container exposes its port for a JVB (tcp/5222 in the container).
+#
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:5222"), or empty string to not expose.
 jitsi_prosody_container_jvb_host_bind_port: ''
 
 # A list of additional container networks that the Prosody container would be connected to.
