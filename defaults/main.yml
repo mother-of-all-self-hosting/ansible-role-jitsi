@@ -258,7 +258,6 @@ jitsi_web_systemd_required_services_list_custom: []
 #   interfaceConfig.DISABLE_VIDEO_BACKGROUND = true;
 jitsi_web_custom_interface_config_extension: ''
 
-
 # Controls after which participant audio will be muted. If not specified, defaults to Jitsi's default value (likely 10)
 jitsi_web_config_start_audio_muted_after_nth_participant: ~
 # Controls after which participant video will be muted. If not specified, defaults to Jitsi's default value (likely 10)
