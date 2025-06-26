@@ -5,14 +5,13 @@
 ---
 - name: Ensure Jitsi base path exists
   ansible.builtin.file:
-    path: "{{ item.path }}"
+    path: "{{ item }}"
     state: directory
     mode: "0750"
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
   with_items:
-    - { path: "{{ jitsi_base_path }}", when: true }
-  when: item.when | bool
+    - "{{ jitsi_base_path }}"
 
 - name: Ensure Jitsi container network is created via community.docker.docker_network
   when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'

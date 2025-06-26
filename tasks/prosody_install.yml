@@ -5,17 +5,16 @@
 ---
 - name: Ensure jitsi-prosody paths exist
   ansible.builtin.file:
-    path: "{{ item.path }}"
+    path: "{{ item }}"
     state: directory
     mode: "0777"
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
   with_items:
-    - { path: "{{ jitsi_prosody_base_path }}", when: true }
-    - { path: "{{ jitsi_prosody_config_path }}", when: true }
-    - { path: "{{ jitsi_prosody_plugins_path }}", when: true }
-    - { path: "{{ jitsi_prosody_ext_path }}", when: true }
-  when: item.when | bool
+    - "{{ jitsi_prosody_base_path }}"
+    - "{{ jitsi_prosody_config_path }}"
+    - "{{ jitsi_prosody_plugins_path }}"
+    - "{{ jitsi_prosody_ext_path }}"
 
 - name: Ensure jitsi-prosody support files installed
   ansible.builtin.template:
