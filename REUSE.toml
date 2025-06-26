@@ -7,7 +7,10 @@ version = 1
 # Computer-generated files and other files which cannot be copyrighted
 [[annotations]]
 path = [
+    ".ansible-lint",
     ".github/renovate.json",
+    ".gitignore",
+    ".yamllint.yml",
     "meta/main.yml",
 ]
 SPDX-FileCopyrightText = "NONE"
