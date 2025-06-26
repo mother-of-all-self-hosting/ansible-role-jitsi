@@ -123,10 +123,10 @@ jitsi_web_crontabs_path: "{{ jitsi_web_base_path }}/crontabs"
 jitsi_web_well_known_path: "{{ jitsi_web_base_path }}/well-known"
 
 jitsi_web_container_image: "{{ jitsi_web_container_image_registry_prefix }}jitsi/web:{{ jitsi_container_image_tag }}"
-jitsi_web_container_image_force_pull: "{{ jitsi_web_container_image.endswith(':latest') }}"
 jitsi_web_container_image_registry_prefix: "{{ jitsi_web_container_image_registry_prefix_upstream }}"
 jitsi_web_container_image_registry_prefix_upstream: "{{ jitsi_web_container_image_registry_prefix_upstream_default }}"
 jitsi_web_container_image_registry_prefix_upstream_default: docker.io/
+jitsi_web_container_image_force_pull: "{{ jitsi_web_container_image.endswith(':latest') }}"
 
 # Controls whether the jitsi-web container exposes its HTTP port (tcp/80 in the container).
 #
@@ -332,10 +332,10 @@ jitsi_prosody_plugins_path: "{{ jitsi_prosody_base_path }}/prosody-plugins-custo
 jitsi_prosody_ext_path: "{{ jitsi_prosody_base_path }}/ext"
 
 jitsi_prosody_container_image: "{{ jitsi_prosody_container_image_registry_prefix }}jitsi/prosody:{{ jitsi_container_image_tag }}"
-jitsi_prosody_container_image_force_pull: "{{ jitsi_prosody_container_image.endswith(':latest') }}"
 jitsi_prosody_container_image_registry_prefix: "{{ jitsi_prosody_container_image_registry_prefix_upstream }}"
 jitsi_prosody_container_image_registry_prefix_upstream: "{{ jitsi_prosody_container_image_registry_prefix_upstream_default }}"
 jitsi_prosody_container_image_registry_prefix_upstream_default: docker.io/
+jitsi_prosody_container_image_force_pull: "{{ jitsi_prosody_container_image.endswith(':latest') }}"
 
 # Neccessary Port binding for those disabling the integrated nginx proxy
 jitsi_prosody_container_http_host_bind_port: ''
@@ -462,10 +462,10 @@ jitsi_jicofo_base_path: "{{ jitsi_base_path }}/jicofo"
 jitsi_jicofo_config_path: "{{ jitsi_jicofo_base_path }}/config"
 
 jitsi_jicofo_container_image: "{{ jitsi_jicofo_container_image_registry_prefix }}jitsi/jicofo:{{ jitsi_container_image_tag }}"
-jitsi_jicofo_container_image_force_pull: "{{ jitsi_jicofo_container_image.endswith(':latest') }}"
 jitsi_jicofo_container_image_registry_prefix: "{{ jitsi_jicofo_container_image_registry_prefix_upstream }}"
 jitsi_jicofo_container_image_registry_prefix_upstream: "{{ jitsi_jicofo_container_image_registry_prefix_upstream_default }}"
 jitsi_jicofo_container_image_registry_prefix_upstream_default: docker.io/
+jitsi_jicofo_container_image_force_pull: "{{ jitsi_jicofo_container_image.endswith(':latest') }}"
 
 # A list of additional container networks that the Jicofo container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -513,10 +513,10 @@ jitsi_jvb_base_path: "{{ jitsi_base_path }}/jvb"
 jitsi_jvb_config_path: "{{ jitsi_jvb_base_path }}/config"
 
 jitsi_jvb_container_image: "{{ jitsi_jvb_container_image_registry_prefix }}jitsi/jvb:{{ jitsi_container_image_tag }}"
-jitsi_jvb_container_image_force_pull: "{{ jitsi_jvb_container_image.endswith(':latest') }}"
 jitsi_jvb_container_image_registry_prefix: "{{ jitsi_jvb_container_image_registry_prefix_upstream }}"
 jitsi_jvb_container_image_registry_prefix_upstream: "{{ jitsi_jvb_container_image_registry_prefix_upstream_default }}"
 jitsi_jvb_container_image_registry_prefix_upstream_default: docker.io/
+jitsi_jvb_container_image_force_pull: "{{ jitsi_jvb_container_image.endswith(':latest') }}"
 
 # Controls whether the jitsi-jvb container exposes its RTP UDP port (udp/10000 in the container).
 #
