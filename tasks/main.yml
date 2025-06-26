@@ -79,6 +79,16 @@
     - name: Uninstall jitsi-jvb
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/jvb_uninstall.yml"
 
+- name: Perform Jitsi base uninstallation tasks
+  when: not jitsi_enabled | bool
+  tags:
+    - setup-all
+    - setup-jitsi
+    - setup-additional-jitsi-jvb
+  block:
+    - name: Uninstall base for Jitsi
+      ansible.builtin.include_tasks: "{{ role_path }}/tasks/base_uninstall.yml"
+
 - name: Perform Jitsi self-check tasks
   tags:
     - self-check

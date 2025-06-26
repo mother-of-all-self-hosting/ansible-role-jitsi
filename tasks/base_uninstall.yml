@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2025 Suguru Hirahara
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+---
+- name: Check existence of Jitsi systemd services
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  register: jitsi_services_stat
+  loop:
+    - "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jicofo.service"
+    - "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jvb.service"
+    - "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-prosody.service"
+    - "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-web.service"
+
+- name: Uninstall base for Jitsi systemd services
+  when: jitsi_services_stat.results | selectattr('stat.exists', 'equalto', true) | list | length == 0
+  block:
+    - name: Ensure Jitsi base path does not exist
+      ansible.builtin.file:
+        path: "{{ jitsi_base_path }}"
+        state: absent
