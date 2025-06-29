@@ -11,9 +11,9 @@ if (!config.hasOwnProperty('p2p')) config.p2p = {% raw %}{}{% endraw %};
 
 {% if jitsi_web_stun_servers|length > 0 %}
 config.p2p.stunServers = [
-	{% for url in jitsi_web_stun_servers %}
-		{ urls: {{ url|to_json }} }{% if not loop.last %},{% endif %}
-	{% endfor %}
+  {% for url in jitsi_web_stun_servers %}
+    { urls: {{ url|to_json }} }{% if not loop.last %},{% endif %}
+  {% endfor %}
 ];
 {% endif %}
 
