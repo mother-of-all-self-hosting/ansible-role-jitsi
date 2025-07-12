@@ -304,8 +304,8 @@ jitsi_web_custom_config_extension: |
   config.enableLayerSuspension = true;
   config.disableAudioLevels = true;
   config.channelLastN = 4;
-  config.requireDisplayName = true; // force users to set a display name
-  config.startAudioOnly = true; // start the conference in audio only mode (no video is being received nor sent)
+  config.requireDisplayName = true;
+  config.startAudioOnly = true;
 ```
 
 ## Installing
