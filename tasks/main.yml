@@ -43,19 +43,6 @@
     - name: Install jitsi-jicofo
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/jicofo_install.yml"
 
-- name: Perform Jitsi components uninstallation tasks
-  when: not jitsi_enabled | bool
-  tags:
-    - setup-all
-    - setup-jitsi
-  block:
-    - name: Uninstall jitsi-web
-      ansible.builtin.include_tasks: "{{ role_path }}/tasks/web_uninstall.yml"
-    - name: Uninstall jitsi-prosody
-      ansible.builtin.include_tasks: "{{ role_path }}/tasks/prosody_uninstall.yml"
-    - name: Uninstall jitsi-jicofo
-      ansible.builtin.include_tasks: "{{ role_path }}/tasks/jicofo_uninstall.yml"
-
 - name: Perform additional JVBs installation tasks
   when: jitsi_enabled | bool
   tags:
@@ -69,6 +56,19 @@
     - name: Install jitsi-jvb
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/jvb_install.yml"
 
+- name: Perform Jitsi components uninstallation tasks
+  when: not jitsi_enabled | bool
+  tags:
+    - setup-all
+    - setup-jitsi
+  block:
+    - name: Uninstall jitsi-web
+      ansible.builtin.include_tasks: "{{ role_path }}/tasks/web_uninstall.yml"
+    - name: Uninstall jitsi-prosody
+      ansible.builtin.include_tasks: "{{ role_path }}/tasks/prosody_uninstall.yml"
+    - name: Uninstall jitsi-jicofo
+      ansible.builtin.include_tasks: "{{ role_path }}/tasks/jicofo_uninstall.yml"
+
 - name: Perform additional JVBs uninstallation tasks
   when: not jitsi_enabled | bool
   tags:
@@ -79,6 +79,7 @@
     - name: Uninstall jitsi-jvb
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/jvb_uninstall.yml"
 
+# Remove jitsi_base_path in the end
 - name: Perform Jitsi base uninstallation tasks
   when: not jitsi_enabled | bool
   tags:
