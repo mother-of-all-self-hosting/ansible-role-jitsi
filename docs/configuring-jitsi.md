@@ -20,7 +20,7 @@ This is an [Ansible](https://www.ansible.com/) role which installs [Jitsi](https
 
 See the project's [documentation](https://jitsi.github.io/handbook/) to learn what Jitsi does and why it might be useful to you.
 
-**Note**: the configuration of this role is similar to the one by [docker-jitsi-meet](https://github.com/jitsi/docker-jitsi-meet). You can refer to the official documentation for Docker deployment [here](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker/).
+**Note**: the configuration of this role is similar to the one by [docker-jitsi-meet](https://github.com/jitsi/docker-jitsi-meet). You can refer to the [official documentation](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker/) for Docker deployment.
 
 ## Prerequisites
 
@@ -46,7 +46,6 @@ To learn more, see the upstream [firewall documentation](https://jitsi.github.io
 To enable Jitsi with this role, add the following configuration to your `vars.yml` file.
 
 **Note**: the path should be something like `inventory/host_vars/matrix.example.com/vars.yml` if you use the [matrix-docker-ansible-deploy (MDAD)](https://github.com/spantaleev/matrix-docker-ansible-deploy) or [Mother-of-All-Self-Hosting (MASH)](https://github.com/mother-of-all-self-hosting/mash-playbook) Ansible playbook.
-
 
 ```yaml
 ########################################################################
@@ -152,12 +151,13 @@ jitsi_prosody_auth_matrix_uvs_location: UVS_URL_HERE
 On the MDAD playbook, these two variables are specified by default, so you do not need to add them. See its [`matrix_servers`](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/group_vars/matrix_servers) for details.
 
 **Notes**:
-- If you enable UVS for your Matrix homeserver (Synapse), make sure that the Matrix Federation port (usually `8448`) is accessible. See [here](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/docs/configuring-playbook-user-verification-service.md#open-matrix-federation-port) for more information.
+
+- If you enable UVS for your Matrix homeserver (Synapse), make sure that the Matrix Federation port (usually `8448`) is accessible. See [this section on the documentation on *matrix-docker-ansible-deploy* playbook](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/docs/configuring-playbook-user-verification-service.md#open-matrix-federation-port) for more information.
 - See [https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification](https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification) for more details about the authenticaition with Matrix OpenID.
 
 ### Configure `JVB_ADVERTISE_IPS` for running behind NAT or on a LAN environment (optional)
 
-When running Jitsi in a LAN environment, or on the public Internet via NAT, the `JVB_ADVERTISE_IPS` enviornment variable should be set.
+When running Jitsi in a LAN environment, or on the public Internet via NAT, the `JVB_ADVERTISE_IPS` environment variable should be set.
 
 This variable allows to control which IP addresses the JVB will advertise for WebRTC media traffic. It is necessary to set it regardless of the use of a reverse proxy, since it's the IP address that will receive the media (audio / video) and not HTTP traffic, hence it's oblivious to the reverse proxy.
 
@@ -261,9 +261,9 @@ jitsi_web_custom_config_extension: |
 These configurations:
 
 - **limit the maximum video resolution**, to save up resources on both server and clients
-- **suspend unused video layers** until they are requested again, to save up resources on both server and clients. Read more on this feature [here](https://jitsi.org/blog/new-off-stage-layer-suppression-feature/).
+- **suspend unused video layers** until they are requested again, to save up resources on both server and clients. Read more on this feature on [this blog post](https://jitsi.org/blog/new-off-stage-layer-suppression-feature/).
 - **disable audio levels** to avoid excessive refresh of the client-side page and decrease the CPU consumption involved
-- **limit the number of video feeds forwarded to each client**, to save up resources on both server and clients. As clients’ bandwidth and CPU may not bear the load, use this setting to avoid lag and crashes. This feature is available by default on other webconference applications such as Office 365 Teams (the number is limited to 4). Read how it works [here](https://github.com/jitsi/jitsi-videobridge/blob/5ff195985edf46c9399dcf263cb07167f0a2c724/doc/allocation.md).
+- **limit the number of video feeds forwarded to each client**, to save up resources on both server and clients. As clients’ bandwidth and CPU may not bear the load, use this setting to avoid lag and crashes. This feature is available by default on other webconference applications such as Office 365 Teams (the number is limited to 4). Read how it works on [this documentation](https://github.com/jitsi/jitsi-videobridge/blob/5ff195985edf46c9399dcf263cb07167f0a2c724/doc/allocation.md).
 
 ### Extending the configuration
 
@@ -286,7 +286,7 @@ Here is an example set of configurations for running a Jitsi instance with:
 - maximum participants: 6 people
 - timezone: Europe/Sofia
 - fine tuning with the configurations presented above
-- other miscellaneous options (see the official Jitsi documentation [here](https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-configuration) and [here](https://jitsi.github.io/handbook/docs/user-guide/user-guide-advanced))
+- other miscellaneous options (see the [configuration](https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-configuration) and [user guide](https://jitsi.github.io/handbook/docs/user-guide/user-guide-advanced) on the official Jitsi documentation)
 
 ```yaml
 jitsi_enabled: true
@@ -472,6 +472,7 @@ ansible-playbook -i inventory/hosts --limit jitsi_jvb_servers jitsi_jvb.yml --ta
 ## Troubleshooting
 
 You can find the logs in [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) by logging in to the server with SSH and running the commands below:
+
 - `journalctl -fu jitsi-web`
 - `journalctl -fu jitsi-prosody`
 - `journalctl -fu jitsi-jicofo`

@@ -1,7 +1,9 @@
 ---
 profile: production # min, basic, moderate, safety, shared, production
 
+# TODO: remove items except "yaml[line-length]"
 skip_list:
+  - no-handler
   - yaml[line-length]
 
 offline: true

@@ -339,7 +339,7 @@ jitsi_prosody_container_image_force_pull: "{{ jitsi_prosody_container_image.ends
 # Controls whether the jitsi-prosody container exposes its HTTP port (tcp/5280 in the container).
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:5280"), or empty string to not expose.
-# This is a neccessary port to bind for those disabling the integrated nginx proxy.
+# This is a necessary port to bind for those disabling the integrated nginx proxy.
 jitsi_prosody_container_http_host_bind_port: ''
 
 # Controls whether the jitsi-prosody container exposes its port for a JVB (tcp/5222 in the container).
@@ -429,7 +429,7 @@ jitsi_prosody_auth_matrix_uvs_auth_token: ''
 
 # Default max participants to the empty string
 #
-# The setting requires an integer to be set for usage and allows a user to specify the max number of particpants on a conference.
+# The setting requires an integer to be set for usage and allows a user to specify the max number of participants on a conference.
 jitsi_prosody_max_participants: ''
 
 ########################################################################
@@ -648,7 +648,7 @@ jitsi_jvb_environment_variables_additional_variables: ''
 
 # Allows abailty to set XMPP AUTH user if using JIGASI
 jitsi_jigasi_xmpp_user: ''
-# Allows abailty to set XMPP AUTH pasword if using JIGASI
+# Allows abailty to set XMPP AUTH password if using JIGASI
 jitsi_jigasi_xmpp_password: ''
 
 ########################################################################

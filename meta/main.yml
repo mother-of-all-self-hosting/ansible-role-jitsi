@@ -1,5 +1,4 @@
 ---
-
 galaxy_info:
   author: mash
   company: mash
@@ -13,11 +12,11 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - all
-    - name: Archlinux
+    - name: ArchLinux
       versions:
         - all
     - name: EL
       versions:
-        - 7
+        - all
   license: AGPL-3.0-or-later
-  min_ansible_version: '2.1'
+  min_ansible_version: "2.1"
