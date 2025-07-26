@@ -8,7 +8,7 @@
     msg: >-
       Your configuration contains a variable, which now has a different name.
       Please change your configuration to rename the variable (`{{ item.old }}` -> `{{ item.new }}`).
-  when: "item.old in vars"
+  when: "lookup('ansible.builtin.varnames', ('^' + item.old + '$'), wantlist=True) | length > 0"
   with_items:
     - { "old": "jitsi_web_config_constraints_enabled", "new": "<Now unnecessary. Constraints are always applied automatically>" }
     - { "old": "jitsi_web_config_constraints_video_aspectRatio", "new": "<Not applicable anymore>" }
