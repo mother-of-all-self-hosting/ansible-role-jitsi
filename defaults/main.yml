@@ -155,7 +155,7 @@ jitsi_web_container_labels_traefik_tls: "{{ jitsi_web_container_labels_traefik_e
 jitsi_web_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 
 # Controls which additional headers to attach to all HTTP requests.
-# To add your own custom request headers, use `jitsi_web_container_labels_traefik_additional_response_headers_custom`
+# To add your own custom request headers, use `jitsi_web_container_labels_traefik_additional_request_headers_custom`
 jitsi_web_container_labels_traefik_additional_request_headers: "{{ jitsi_web_container_labels_traefik_additional_request_headers_auto | combine(jitsi_web_container_labels_traefik_additional_request_headers_custom) }}"
 jitsi_web_container_labels_traefik_additional_request_headers_auto: {}
 jitsi_web_container_labels_traefik_additional_request_headers_custom: {}
@@ -369,7 +369,7 @@ jitsi_prosody_container_labels_traefik_tls: "{{ jitsi_prosody_container_labels_t
 jitsi_prosody_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 
 # Controls which additional headers to attach to all HTTP requests.
-# To add your own custom request headers, use `jitsi_prosody_container_labels_traefik_additional_response_headers_custom`
+# To add your own custom request headers, use `jitsi_prosody_container_labels_traefik_additional_request_headers_custom`
 jitsi_prosody_container_labels_traefik_additional_request_headers: "{{ jitsi_prosody_container_labels_traefik_additional_request_headers_auto | combine(jitsi_prosody_container_labels_traefik_additional_request_headers_custom) }}"
 jitsi_prosody_container_labels_traefik_additional_request_headers_auto: {}
 jitsi_prosody_container_labels_traefik_additional_request_headers_custom: {}
@@ -566,7 +566,7 @@ jitsi_jvb_container_labels_traefik_tls: "{{ jitsi_jvb_container_labels_traefik_e
 jitsi_jvb_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 
 # Controls which additional headers to attach to all HTTP requests.
-# To add your own custom request headers, use `jitsi_jvb_container_labels_traefik_additional_response_headers_custom`
+# To add your own custom request headers, use `jitsi_jvb_container_labels_traefik_additional_request_headers_custom`
 jitsi_jvb_container_labels_traefik_additional_request_headers: "{{ jitsi_jvb_container_labels_traefik_additional_request_headers_auto | combine(jitsi_jvb_container_labels_traefik_additional_request_headers_custom) }}"
 jitsi_jvb_container_labels_traefik_additional_request_headers_auto: {}
 jitsi_jvb_container_labels_traefik_additional_request_headers_custom: {}
