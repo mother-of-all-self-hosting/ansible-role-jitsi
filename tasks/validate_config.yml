@@ -24,6 +24,7 @@
     - { "old": "jitsi_web_config_testing_p2pTestMode", "new": "<Can be set by using jitsi_web_custom_config_extension>" }
     - { "old": "jitsi_web_config_start_with_audio_muted", "new": "<Superseded by jitsi_web_config_start_audio_muted_after_nth_participant>" }
     - { "old": "jitsi_web_config_start_with_video_muted", "new": "<Superseded by jitsi_web_config_start_video_muted_after_nth_participant>" }
+    - { "old": "jitsi_web_http_header_content_permission_policy", "new": "jitsi_web_http_header_permissions_policy" }
     - { "old": "jitsi_web_interface_config_show_watermark_for_guests", "new": "<Not applicable anymore>" }
     - { "old": "jitsi_web_interface_config_invitation_powered_by", "new": "<Not applicable anymore>" }
     - { "old": "jitsi_web_interface_config_lang_detection", "new": "<Deprecated, use jitsi_web_custom_interface_config_extension instead" }
