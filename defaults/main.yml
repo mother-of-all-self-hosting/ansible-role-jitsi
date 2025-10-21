@@ -13,7 +13,7 @@ jitsi_identifier: jitsi
 jitsi_base_path: "/{{ jitsi_identifier }}"
 
 # renovate: datasource=docker depName=jitsi/web
-jitsi_version: stable-10532-1
+jitsi_version: stable-10590
 
 jitsi_uid: ''
 jitsi_gid: ''
