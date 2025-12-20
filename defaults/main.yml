@@ -175,13 +175,16 @@ jitsi_web_container_labels_traefik_additional_response_headers_auto: |
 jitsi_web_container_labels_traefik_additional_response_headers_custom: {}
 
 # jitsi_web_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
+# To add your own custom labels, use `jitsi_web_container_labels_additional_labels_custom`
 # See `../templates/web/labels.j2` for details.
 #
 # Example:
 # jitsi_web_container_labels_additional_labels: |
 #   my.label=1
 #   another.label="here"
-jitsi_web_container_labels_additional_labels: ''
+jitsi_web_container_labels_additional_labels: "{{ jitsi_web_container_labels_additional_labels_auto | combine(jitsi_web_container_labels_additional_labels_custom) }}"
+jitsi_web_container_labels_additional_labels_auto: {}
+jitsi_web_container_labels_additional_labels_custom: {}
 
 # A list of extra arguments to pass to the container
 jitsi_web_container_extra_arguments: "{{ jitsi_web_container_extra_arguments_auto + jitsi_web_container_extra_arguments_custom }}"
@@ -383,13 +386,16 @@ jitsi_prosody_container_labels_traefik_additional_response_headers_auto: {}
 jitsi_prosody_container_labels_traefik_additional_response_headers_custom: {}
 
 # jitsi_prosody_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
+# To add your own custom labels, use `jitsi_prosody_container_labels_additional_labels_custom`
 # See `../templates/prosody/labels.j2` for details.
 #
 # Example:
 # jitsi_prosody_container_labels_additional_labels: |
 #   my.label=1
 #   another.label="here"
-jitsi_prosody_container_labels_additional_labels: ''
+jitsi_prosody_container_labels_additional_labels: "{{ jitsi_prosody_container_labels_additional_labels_auto | combine(jitsi_prosody_container_labels_additional_labels_custom) }}"
+jitsi_prosody_container_labels_additional_labels_auto: {}
+jitsi_prosody_container_labels_additional_labels_custom: {}
 
 # A list of extra arguments to pass to the container
 jitsi_prosody_container_extra_arguments: "{{ jitsi_prosody_container_extra_arguments_auto + jitsi_prosody_container_extra_arguments_custom }}"
@@ -584,13 +590,16 @@ jitsi_jvb_container_labels_traefik_additional_response_headers_auto: {}
 jitsi_jvb_container_labels_traefik_additional_response_headers_custom: {}
 
 # jitsi_jvb_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
+# To add your own custom labels, use `jitsi_jvb_container_labels_additional_labels_custom`
 # See `../templates/jvb/labels.j2` for details.
 #
 # Example:
 # jitsi_jvb_container_labels_additional_labels: |
 #   my.label=1
 #   another.label="here"
-jitsi_jvb_container_labels_additional_labels: ''
+jitsi_jvb_container_labels_additional_labels: "{{ jitsi_jvb_container_labels_additional_labels_auto | combine(jitsi_jvb_container_labels_additional_labels_custom) }}"
+jitsi_jvb_container_labels_additional_labels_auto: {}
+jitsi_jvb_container_labels_additional_labels_custom: {}
 
 # A list of extra arguments to pass to the container
 jitsi_jvb_container_extra_arguments: "{{ jitsi_jvb_container_extra_arguments_auto + jitsi_jvb_container_extra_arguments_custom }}"
