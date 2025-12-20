@@ -184,7 +184,9 @@ jitsi_web_container_labels_traefik_additional_response_headers_custom: {}
 jitsi_web_container_labels_additional_labels: ''
 
 # A list of extra arguments to pass to the container
-jitsi_web_container_extra_arguments: []
+jitsi_web_container_extra_arguments: "{{ jitsi_web_container_extra_arguments_auto + jitsi_web_container_extra_arguments_custom }}"
+jitsi_web_container_extra_arguments_auto: []
+jitsi_web_container_extra_arguments_custom: []
 
 # Specifies the value of the `X-XSS-Protection` header
 # Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
@@ -390,7 +392,9 @@ jitsi_prosody_container_labels_traefik_additional_response_headers_custom: {}
 jitsi_prosody_container_labels_additional_labels: ''
 
 # A list of extra arguments to pass to the container
-jitsi_prosody_container_extra_arguments: []
+jitsi_prosody_container_extra_arguments: "{{ jitsi_prosody_container_extra_arguments_auto + jitsi_prosody_container_extra_arguments_custom }}"
+jitsi_prosody_container_extra_arguments_auto: []
+jitsi_prosody_container_extra_arguments_custom: []
 
 # List of systemd services that jitsi-prosody.service depends on
 jitsi_prosody_systemd_required_services_list: "{{ jitsi_prosody_systemd_required_services_list_default + jitsi_prosody_systemd_required_services_list_auto + jitsi_prosody_systemd_required_services_list_custom }}"
@@ -480,7 +484,9 @@ jitsi_jicofo_container_additional_networks_auto: []
 jitsi_jicofo_container_additional_networks_custom: []
 
 # A list of extra arguments to pass to the container
-jitsi_jicofo_container_extra_arguments: []
+jitsi_jicofo_container_extra_arguments: "{{ jitsi_jicofo_container_extra_arguments_auto + jitsi_jicofo_container_extra_arguments_custom }}"
+jitsi_jicofo_container_extra_arguments_auto: []
+jitsi_jicofo_container_extra_arguments_custom: []
 
 # List of systemd services that jitsi-jicofo.service depends on
 jitsi_jicofo_systemd_required_services_list: "{{ jitsi_jicofo_systemd_required_services_list_default + jitsi_jicofo_systemd_required_services_list_auto + jitsi_jicofo_systemd_required_services_list_custom }}"
@@ -587,7 +593,9 @@ jitsi_jvb_container_labels_traefik_additional_response_headers_custom: {}
 jitsi_jvb_container_labels_additional_labels: ''
 
 # A list of extra arguments to pass to the container
-jitsi_jvb_container_extra_arguments: []
+jitsi_jvb_container_extra_arguments: "{{ jitsi_jvb_container_extra_arguments_auto + jitsi_jvb_container_extra_arguments_custom }}"
+jitsi_jvb_container_extra_arguments_auto: []
+jitsi_jvb_container_extra_arguments_custom: []
 
 # List of systemd services that jitsi-jvb.service depends on
 jitsi_jvb_systemd_required_services_list: "{{ jitsi_jvb_systemd_required_services_list_default + jitsi_jvb_systemd_required_services_list_auto + jitsi_jvb_systemd_required_services_list_custom }}"
