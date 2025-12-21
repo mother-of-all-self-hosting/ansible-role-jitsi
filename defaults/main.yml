@@ -186,7 +186,7 @@ jitsi_web_container_labels_additional_labels: "{{ jitsi_web_container_labels_add
 jitsi_web_container_labels_additional_labels_auto: {}
 jitsi_web_container_labels_additional_labels_custom: {}
 
-# A list of extra arguments to pass to the container
+# A list of extra arguments to pass to the container (`docker create` command)
 jitsi_web_container_extra_arguments: "{{ jitsi_web_container_extra_arguments_auto + jitsi_web_container_extra_arguments_custom }}"
 jitsi_web_container_extra_arguments_auto: []
 jitsi_web_container_extra_arguments_custom: []
@@ -397,7 +397,7 @@ jitsi_prosody_container_labels_additional_labels: "{{ jitsi_prosody_container_la
 jitsi_prosody_container_labels_additional_labels_auto: {}
 jitsi_prosody_container_labels_additional_labels_custom: {}
 
-# A list of extra arguments to pass to the container
+# A list of extra arguments to pass to the container (`docker create` command)
 jitsi_prosody_container_extra_arguments: "{{ jitsi_prosody_container_extra_arguments_auto + jitsi_prosody_container_extra_arguments_custom }}"
 jitsi_prosody_container_extra_arguments_auto: []
 jitsi_prosody_container_extra_arguments_custom: []
@@ -489,7 +489,7 @@ jitsi_jicofo_container_additional_networks: "{{ jitsi_jicofo_container_additiona
 jitsi_jicofo_container_additional_networks_auto: []
 jitsi_jicofo_container_additional_networks_custom: []
 
-# A list of extra arguments to pass to the container
+# A list of extra arguments to pass to the container (`docker create` command)
 jitsi_jicofo_container_extra_arguments: "{{ jitsi_jicofo_container_extra_arguments_auto + jitsi_jicofo_container_extra_arguments_custom }}"
 jitsi_jicofo_container_extra_arguments_auto: []
 jitsi_jicofo_container_extra_arguments_custom: []
@@ -601,7 +601,7 @@ jitsi_jvb_container_labels_additional_labels: "{{ jitsi_jvb_container_labels_add
 jitsi_jvb_container_labels_additional_labels_auto: {}
 jitsi_jvb_container_labels_additional_labels_custom: {}
 
-# A list of extra arguments to pass to the container
+# A list of extra arguments to pass to the container (`docker create` command)
 jitsi_jvb_container_extra_arguments: "{{ jitsi_jvb_container_extra_arguments_auto + jitsi_jvb_container_extra_arguments_custom }}"
 jitsi_jvb_container_extra_arguments_auto: []
 jitsi_jvb_container_extra_arguments_custom: []
