@@ -49,4 +49,6 @@ traefik.http.routers.{{ jitsi_identifier }}-jvb.tls.certResolver={{ jitsi_jvb_co
 traefik.http.services.{{ jitsi_identifier }}-jvb.loadbalancer.server.port=9090
 {% endif %}
 
-{{ jitsi_jvb_container_labels_additional_labels }}
+{% for arg in jitsi_jvb_container_labels_additional_labels %}
+{{ arg }}
+{% endfor %}

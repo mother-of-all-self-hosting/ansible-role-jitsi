@@ -55,4 +55,6 @@ traefik.http.routers.{{ jitsi_identifier }}-web.tls.certResolver={{ jitsi_web_co
 traefik.http.services.{{ jitsi_identifier }}-web.loadbalancer.server.port=80
 {% endif %}
 
-{{ jitsi_web_container_labels_additional_labels }}
+{% for arg in jitsi_web_container_labels_additional_labels %}
+{{ arg }}
+{% endfor %}

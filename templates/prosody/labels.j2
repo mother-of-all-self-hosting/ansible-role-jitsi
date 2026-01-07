@@ -49,4 +49,6 @@ traefik.http.routers.{{ jitsi_identifier }}-prosody.tls.certResolver={{ jitsi_pr
 traefik.http.services.{{ jitsi_identifier }}-prosody.loadbalancer.server.port=5280
 {% endif %}
 
-{{ jitsi_prosody_container_labels_additional_labels }}
+{% for arg in jitsi_prosody_container_labels_additional_labels %}
+{{ arg }}
+{% endfor %}
