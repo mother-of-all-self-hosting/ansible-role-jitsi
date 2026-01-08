@@ -183,7 +183,7 @@ jitsi_web_container_labels_traefik_additional_response_headers_custom: {}
 # To add your own custom labels, use `jitsi_web_container_labels_additional_labels_custom`
 #
 # Example:
-# jitsi_web_container_labels_additional_labels_custom: |
+# jitsi_web_container_labels_additional_labels_custom:
 #   - my.label=1
 #   - another.label="here"
 jitsi_web_container_labels_additional_labels: "{{ jitsi_web_container_labels_additional_labels_auto + jitsi_web_container_labels_additional_labels_custom }}"
@@ -394,7 +394,7 @@ jitsi_prosody_container_labels_traefik_additional_response_headers_custom: {}
 # To add your own custom labels, use `jitsi_prosody_container_labels_additional_labels_custom`
 #
 # Example:
-# jitsi_prosody_container_labels_additional_labels_custom: |
+# jitsi_prosody_container_labels_additional_labels_custom:
 #   - my.label=1
 #   - another.label="here"
 jitsi_prosody_container_labels_additional_labels: "{{ jitsi_prosody_container_labels_additional_labels_auto + jitsi_prosody_container_labels_additional_labels_custom }}"
@@ -598,7 +598,7 @@ jitsi_jvb_container_labels_traefik_additional_response_headers_custom: {}
 # To add your own custom labels, use `jitsi_jvb_container_labels_additional_labels_custom`
 #
 # Example:
-# jitsi_jvb_container_labels_additional_labels_custom: |
+# jitsi_jvb_container_labels_additional_labels_custom:
 #   - my.label=1
 #   - another.label="here"
 jitsi_jvb_container_labels_additional_labels: "{{ jitsi_jvb_container_labels_additional_labels_auto + jitsi_jvb_container_labels_additional_labels_custom }}"
