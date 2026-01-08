@@ -1,6 +1,7 @@
-# SPDX-FileCopyrightText: 2023 - 2024 Slavi Pantaleev
-# SPDX-FileCopyrightText: 2023 - 2024 Nikita Chernyi
-# SPDX-FileCopyrightText: 2024 - 2025 adam-kress
+# SPDX-FileCopyrightText: 2023, 2024 Nikita Chernyi
+# SPDX-FileCopyrightText: 2023, 2024 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2024, 2025 adam-kress
+# SPDX-FileCopyrightText: 2026 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -109,6 +110,9 @@ jitsi_turn_transport: tcp
 jitsi_etherpad_enabled: false
 # Specifies the Etherpad base URL (e.g. https://etherpad.DOMAIN or https://hostname/etherpad)
 jitsi_etherpad_base: ""
+
+# Specify the timezone
+jitsi_environment_variables_tz: UTC
 
 ########################################################################
 #                                                                      #
