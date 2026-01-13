@@ -147,7 +147,7 @@ jitsi_web_container_additional_networks_custom: []
 # jitsi_web_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the Web container.
 # See `../templates/web/labels.j2` for details.
 #
-# To inject your own other container labels, see `jitsi_web_container_labels_additional_labels`.
+# To inject your own other container labels, see `jitsi_web_container_labels_additional_labels_custom`.
 jitsi_web_container_labels_traefik_enabled: "{{ jitsi_container_labels_traefik_enabled }}"
 jitsi_web_container_labels_traefik_docker_network: "{{ jitsi_container_labels_traefik_docker_network }}"
 jitsi_web_container_labels_traefik_hostname: "{{ jitsi_container_labels_traefik_hostname }}"
@@ -366,7 +366,7 @@ jitsi_prosody_container_additional_networks_custom: []
 # jitsi_prosody_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the Prosody container.
 # See `../templates/prosody/labels.j2` for details.
 #
-# To inject your own other container labels, see `jitsi_prosody_container_labels_additional_labels`.
+# To inject your own other container labels, see `jitsi_prosody_container_labels_additional_labels_custom`.
 jitsi_prosody_container_labels_traefik_enabled: "{{ jitsi_container_labels_traefik_enabled }}"
 jitsi_prosody_container_labels_traefik_docker_network: "{{ jitsi_container_labels_traefik_docker_network }}"
 jitsi_prosody_container_labels_traefik_hostname: "{{ jitsi_container_labels_traefik_hostname }}"
@@ -570,7 +570,7 @@ jitsi_jvb_container_additional_networks_custom: []
 # jitsi_jvb_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the JVB container.
 # See `../templates/jvb/labels.j2` for details.
 #
-# To inject your own other container labels, see `jitsi_jvb_container_labels_additional_labels`.
+# To inject your own other container labels, see `jitsi_jvb_container_labels_additional_labels_custom`.
 jitsi_jvb_container_labels_traefik_enabled: "{{ jitsi_container_labels_traefik_enabled }}"
 jitsi_jvb_container_labels_traefik_docker_network: "{{ jitsi_container_labels_traefik_docker_network }}"
 jitsi_jvb_container_labels_traefik_hostname: "{{ jitsi_container_labels_traefik_hostname }}"
