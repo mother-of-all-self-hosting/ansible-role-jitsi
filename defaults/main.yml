@@ -132,9 +132,9 @@ jitsi_web_container_image_registry_prefix_upstream: "{{ jitsi_web_container_imag
 jitsi_web_container_image_registry_prefix_upstream_default: docker.io/
 jitsi_web_container_image_force_pull: "{{ jitsi_web_container_image.endswith(':latest') }}"
 
-# Controls whether the jitsi-web container exposes its HTTP port (tcp/80 in the container).
+# Specify how the jitsi-web container publishes its HTTP port (tcp/80 in the container).
 #
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:13080"), or empty string to not expose.
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 jitsi_web_container_http_host_bind_port: ""
 
 # A list of additional container networks that the Web container would be connected to.
@@ -345,15 +345,15 @@ jitsi_prosody_container_image_registry_prefix_upstream: "{{ jitsi_prosody_contai
 jitsi_prosody_container_image_registry_prefix_upstream_default: docker.io/
 jitsi_prosody_container_image_force_pull: "{{ jitsi_prosody_container_image.endswith(':latest') }}"
 
-# Controls whether the jitsi-prosody container exposes its HTTP port (tcp/5280 in the container).
+# Specify how the jitsi-prosody container publishes its HTTP port (tcp/5280 in the container).
 #
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:5280"), or empty string to not expose.
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 # This is a necessary port to bind for those disabling the integrated nginx proxy.
 jitsi_prosody_container_http_host_bind_port: ""
 
-# Controls whether the jitsi-prosody container exposes its port for a JVB (tcp/5222 in the container).
+# Specify how the jitsi-prosody container publishes its TCP port for a JVB (tcp/5222 in the container).
 #
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:5222"), or empty string to not expose.
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 jitsi_prosody_container_jvb_host_bind_port: ""
 
 # A list of additional container networks that the Prosody container would be connected to.
@@ -539,19 +539,19 @@ jitsi_jvb_container_image_registry_prefix_upstream: "{{ jitsi_jvb_container_imag
 jitsi_jvb_container_image_registry_prefix_upstream_default: docker.io/
 jitsi_jvb_container_image_force_pull: "{{ jitsi_jvb_container_image.endswith(':latest') }}"
 
-# Controls whether the jitsi-jvb container exposes its RTP UDP port (udp/10000 in the container).
+# Specify how the jitsi-jvb container publishes its RTP UDP port (as defined by `jitsi_jvb_rtp_udp_port`).
 #
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:10000"), or empty string to not expose.
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 jitsi_jvb_container_rtp_udp_host_bind_port: "{{ jitsi_jvb_rtp_udp_port }}"
 
-# Controls whether the jitsi-jvb container exposes its RTP TCP port (tcp/4443 in the container).
+# Specify how the jitsi-jvb container publishes its RTP TCP port (as defined by `jitsi_jvb_rtp_tcp_port`).
 #
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:4443"), or empty string to not expose.
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 jitsi_jvb_container_rtp_tcp_host_bind_port: "{{ jitsi_jvb_rtp_tcp_port }}"
 
-# Controls whether the jitsi-jvb container exposes its Colibri WebSocket port (tcp/9090 in the container).
+# Specify how the jitsi-jvb container publishes its Colibri WebSocket port (tcp/9090 in the container).
 #
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:12090"), or empty string to not expose.
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 jitsi_jvb_container_colibri_ws_host_bind_port: ""
 
 # The RTP UDP port number in the container
