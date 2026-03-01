@@ -477,6 +477,8 @@ jitsi_jibri_recorder_password: ""
 #                                                                      #
 ########################################################################
 
+jitsi_jicofo_identifier: "{{ jitsi_identifier }}-jicofo"
+
 jitsi_jicofo_base_path: "{{ jitsi_base_path }}/jicofo"
 jitsi_jicofo_config_path: "{{ jitsi_jicofo_base_path }}/config"
 
@@ -526,9 +528,9 @@ jitsi_jicofo_container_cleanup_retry_delay_seconds: "{{ devture_systemd_docker_b
 jitsi_jicofo_container_cleanup_command: |
   i=0;
   while [ "$i" -lt {{ jitsi_jicofo_container_cleanup_timeout_seconds }} ]; do
-  {{ devture_systemd_docker_base_host_command_docker }} stop -t {{ jitsi_jicofo_container_stop_grace_time_seconds }} {{ jitsi_identifier }}-jicofo >/dev/null 2>&1 || true;
-  {{ devture_systemd_docker_base_host_command_docker }} rm -f {{ jitsi_identifier }}-jicofo >/dev/null 2>&1 || true;
-  if {{ devture_systemd_docker_base_host_command_docker }} container inspect {{ jitsi_identifier }}-jicofo >/dev/null 2>&1; then
+  {{ devture_systemd_docker_base_host_command_docker }} stop -t {{ jitsi_jicofo_container_stop_grace_time_seconds }} {{ jitsi_jicofo_identifier }} >/dev/null 2>&1 || true;
+  {{ devture_systemd_docker_base_host_command_docker }} rm -f {{ jitsi_jicofo_identifier }} >/dev/null 2>&1 || true;
+  if {{ devture_systemd_docker_base_host_command_docker }} container inspect {{ jitsi_jicofo_identifier }} >/dev/null 2>&1; then
   i=$((i + 1));
   sleep {{ jitsi_jicofo_container_cleanup_retry_delay_seconds }};
   continue;
@@ -536,10 +538,10 @@ jitsi_jicofo_container_cleanup_command: |
   if {{ devture_systemd_docker_base_host_command_docker }} info >/dev/null 2>&1; then
   exit 0;
   fi;
-  echo "Failed to query Docker daemon while cleaning up {{ jitsi_identifier }}-jicofo" >&2;
+  echo "Failed to query Docker daemon while cleaning up {{ jitsi_jicofo_identifier }}" >&2;
   exit 1;
   done;
-  echo "Failed to remove stale container {{ jitsi_identifier }}-jicofo after {{ jitsi_jicofo_container_cleanup_timeout_seconds }} attempts" >&2;
+  echo "Failed to remove stale container {{ jitsi_jicofo_identifier }} after {{ jitsi_jicofo_container_cleanup_timeout_seconds }} attempts" >&2;
   exit 1
 
 jitsi_jicofo_component_secret: ""
