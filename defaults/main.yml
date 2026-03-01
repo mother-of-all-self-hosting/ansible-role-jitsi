@@ -334,6 +334,8 @@ jitsi_web_stun_servers: ['stun:meet-jit-si-turnrelay.jitsi.net:443']
 #                                                                      #
 ########################################################################
 
+jitsi_prosody_identifier: "{{ jitsi_identifier }}-prosody"
+
 jitsi_prosody_base_path: "{{ jitsi_base_path }}/prosody"
 jitsi_prosody_config_path: "{{ jitsi_prosody_base_path }}/config"
 jitsi_prosody_plugins_path: "{{ jitsi_prosody_base_path }}/prosody-plugins-custom"
@@ -411,6 +413,37 @@ jitsi_prosody_systemd_required_services_list: "{{ jitsi_prosody_systemd_required
 jitsi_prosody_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
 jitsi_prosody_systemd_required_services_list_auto: []
 jitsi_prosody_systemd_required_services_list_custom: []
+
+# Controls how long to wait for the container to stop gracefully before killing it.
+jitsi_prosody_container_stop_grace_time_seconds: "{{ devture_systemd_docker_base_container_stop_grace_time_seconds }}"
+
+# Controls how long the pre-start cleanup should wait for stale container-name release
+# before failing startup explicitly.
+jitsi_prosody_container_cleanup_timeout_seconds: "{{ devture_systemd_docker_base_container_cleanup_timeout_seconds }}"
+
+# Controls the delay between pre-start cleanup retries.
+jitsi_prosody_container_cleanup_retry_delay_seconds: "{{ devture_systemd_docker_base_container_cleanup_retry_delay_seconds }}"
+
+# Shell command used in the systemd pre-start phase to deterministically remove a stale
+# container and wait until Docker releases its name.
+jitsi_prosody_container_cleanup_command: |
+  i=0;
+  while [ "$i" -lt {{ jitsi_prosody_container_cleanup_timeout_seconds }} ]; do
+  {{ devture_systemd_docker_base_host_command_docker }} stop -t {{ jitsi_prosody_container_stop_grace_time_seconds }} {{ jitsi_prosody_identifier }} >/dev/null 2>&1 || true;
+  {{ devture_systemd_docker_base_host_command_docker }} rm -f {{ jitsi_prosody_identifier }} >/dev/null 2>&1 || true;
+  if {{ devture_systemd_docker_base_host_command_docker }} container inspect {{ jitsi_prosody_identifier }} >/dev/null 2>&1; then
+  i=$((i + 1));
+  sleep {{ jitsi_prosody_container_cleanup_retry_delay_seconds }};
+  continue;
+  fi;
+  if {{ devture_systemd_docker_base_host_command_docker }} info >/dev/null 2>&1; then
+  exit 0;
+  fi;
+  echo "Failed to query Docker daemon while cleaning up {{ jitsi_prosody_identifier }}" >&2;
+  exit 1;
+  done;
+  echo "Failed to remove stale container {{ jitsi_prosody_identifier }} after {{ jitsi_prosody_container_cleanup_timeout_seconds }} attempts" >&2;
+  exit 1
 
 # A list of Jitsi (Prosody) accounts to create using the internal authentication mechanism.
 #
