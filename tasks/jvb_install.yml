@@ -24,6 +24,7 @@
   with_items:
     - env
     - labels
+  register: jitsi_jvb_support_files_result
 
 - name: Ensure jitsi-jvb configuration files installed
   ansible.builtin.template:
@@ -35,6 +36,7 @@
   with_items:
     - custom-sip-communicator.properties
     - logging.properties
+  register: jitsi_jvb_config_files_result
 
 - name: Ensure jitsi-jvb container image is pulled via community.docker.docker_image
   when: devture_systemd_docker_base_container_image_pull_method == 'ansible-module'
@@ -43,23 +45,34 @@
     source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
     force_source: "{{ jitsi_jvb_container_image_force_pull if ansible_version.major > 2 or ansible_version.minor >= 8 else omit }}"
     force: "{{ omit if ansible_version.major > 2 or ansible_version.minor >= 8 else jitsi_jvb_container_image_force_pull }}"
-  register: result
+  register: jitsi_jvb_container_image_pull_result
   retries: "{{ devture_playbook_help_container_retries_count }}"
   delay: "{{ devture_playbook_help_container_retries_delay }}"
-  until: result is not failed
+  until: jitsi_jvb_container_image_pull_result is not failed
 
 - name: Ensure jitsi-jvb container image is pulled via ansible.builtin.command
   when: devture_systemd_docker_base_container_image_pull_method == 'command'
   ansible.builtin.command:
     cmd: "{{ devture_systemd_docker_base_host_command_docker }} pull {{ jitsi_jvb_container_image }}"
-  register: result
+  register: jitsi_jvb_container_image_pull_result
   retries: "{{ devture_playbook_help_container_retries_count }}"
   delay: "{{ devture_playbook_help_container_retries_delay }}"
-  until: result is not failed
-  changed_when: "'Downloaded newer image' in result.stdout"
+  until: jitsi_jvb_container_image_pull_result is not failed
+  changed_when: "'Downloaded newer image' in jitsi_jvb_container_image_pull_result.stdout"
 
 - name: Ensure jitsi-jvb systemd service is present
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jvb/systemd/jvb.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jvb.service"
     mode: "0644"
+  register: jitsi_jvb_systemd_service_result
+
+- name: Determine whether jitsi-jvb needs a restart
+  ansible.builtin.set_fact:
+    jitsi_jvb_restart_necessary: >-
+      {{
+        jitsi_jvb_support_files_result.changed | default(false)
+        or jitsi_jvb_config_files_result.changed | default(false)
+        or jitsi_jvb_systemd_service_result.changed | default(false)
+        or jitsi_jvb_container_image_pull_result.changed | default(false)
+      }}
