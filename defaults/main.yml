@@ -344,6 +344,16 @@ jitsi_web_custom_config_extension: ""
 #   DROPBOX_REDIRECT_URI=something
 jitsi_web_environment_variables_additional_variables: ""
 
+# jitsi_web_restart_necessary controls whether the jitsi-web systemd
+# service will be restarted (when true) or merely started (when false) by the
+# systemd service manager role (when conditional restart is enabled).
+#
+# This value is automatically computed during installation based on whether
+# any configuration files, the systemd service file, or the container image changed.
+# The default of `false` means "no restart needed" — appropriate when the role's
+# installation tasks haven't run (e.g., due to --tags skipping them).
+jitsi_web_restart_necessary: false
+
 # well known is currently only needed for auth type "matrix"
 jitsi_web_well_known_enabled: "{{ jitsi_web_well_known_element_jitsi_enabled }}"
 jitsi_web_well_known_element_jitsi_enabled: "{{ jitsi_enable_auth | bool and jitsi_auth_type == 'matrix' }}"
