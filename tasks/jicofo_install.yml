@@ -22,6 +22,7 @@
     owner: "{{ jitsi_uid }}"
     group: "{{ jitsi_gid }}"
   when: jitsi_enabled | bool
+  register: jitsi_jicofo_support_files_result
 
 - name: Ensure jitsi-jicofo configuration files installed
   ansible.builtin.template:
@@ -33,6 +34,7 @@
   with_items:
     - sip-communicator.properties
     - logging.properties
+  register: jitsi_jicofo_config_files_result
 
 - name: Ensure jitsi-jicofo Docker container image is pulled via community.docker.docker_image
   when: devture_systemd_docker_base_container_image_pull_method == 'ansible-module'
@@ -41,23 +43,34 @@
     source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
     force_source: "{{ jitsi_jicofo_container_image_force_pull if ansible_version.major > 2 or ansible_version.minor >= 8 else omit }}"
     force: "{{ omit if ansible_version.major > 2 or ansible_version.minor >= 8 else jitsi_jicofo_container_image_force_pull }}"
-  register: result
+  register: jitsi_jicofo_container_image_pull_result
   retries: "{{ devture_playbook_help_container_retries_count }}"
   delay: "{{ devture_playbook_help_container_retries_delay }}"
-  until: result is not failed
+  until: jitsi_jicofo_container_image_pull_result is not failed
 
 - name: Ensure jitsi-jicofo Docker container image is pulled via ansible.builtin.command
   when: devture_systemd_docker_base_container_image_pull_method == 'command'
   ansible.builtin.command:
     cmd: "{{ devture_systemd_docker_base_host_command_docker }} pull {{ jitsi_jicofo_container_image }}"
-  register: result
+  register: jitsi_jicofo_container_image_pull_result
   retries: "{{ devture_playbook_help_container_retries_count }}"
   delay: "{{ devture_playbook_help_container_retries_delay }}"
-  until: result is not failed
-  changed_when: "'Downloaded newer image' in result.stdout"
+  until: jitsi_jicofo_container_image_pull_result is not failed
+  changed_when: "'Downloaded newer image' in jitsi_jicofo_container_image_pull_result.stdout"
 
 - name: Ensure jitsi-jicofo systemd service is present
   ansible.builtin.template:
     src: "{{ role_path }}/templates/jicofo/systemd/jicofo.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ jitsi_identifier }}-jicofo.service"
     mode: "0644"
+  register: jitsi_jicofo_systemd_service_result
+
+- name: Determine whether jitsi-jicofo needs a restart
+  ansible.builtin.set_fact:
+    jitsi_jicofo_restart_necessary: >-
+      {{
+        jitsi_jicofo_support_files_result.changed | default(false)
+        or jitsi_jicofo_config_files_result.changed | default(false)
+        or jitsi_jicofo_systemd_service_result.changed | default(false)
+        or jitsi_jicofo_container_image_pull_result.changed | default(false)
+      }}
