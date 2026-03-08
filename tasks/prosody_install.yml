@@ -26,6 +26,7 @@
   with_items:
     - env
     - labels
+  register: jitsi_prosody_support_files_result
 
 - name: Ensure jitsi-prosody container image is pulled via community.docker.docker_image
   when: devture_systemd_docker_base_container_image_pull_method == 'ansible-module'
@@ -34,26 +35,27 @@
     source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
     force_source: "{{ jitsi_prosody_container_image_force_pull if ansible_version.major > 2 or ansible_version.minor >= 8 else omit }}"
     force: "{{ omit if ansible_version.major > 2 or ansible_version.minor >= 8 else jitsi_prosody_container_image_force_pull }}"
-  register: result
+  register: jitsi_prosody_container_image_pull_result
   retries: "{{ devture_playbook_help_container_retries_count }}"
   delay: "{{ devture_playbook_help_container_retries_delay }}"
-  until: result is not failed
+  until: jitsi_prosody_container_image_pull_result is not failed
 
 - name: Ensure jitsi-prosody container image is pulled via ansible.builtin.command
   when: devture_systemd_docker_base_container_image_pull_method == 'command'
   ansible.builtin.command:
     cmd: "{{ devture_systemd_docker_base_host_command_docker }} pull {{ jitsi_prosody_container_image }}"
-  register: result
+  register: jitsi_prosody_container_image_pull_result
   retries: "{{ devture_playbook_help_container_retries_count }}"
   delay: "{{ devture_playbook_help_container_retries_delay }}"
-  until: result is not failed
-  changed_when: "'Downloaded newer image' in result.stdout"
+  until: jitsi_prosody_container_image_pull_result is not failed
+  changed_when: "'Downloaded newer image' in jitsi_prosody_container_image_pull_result.stdout"
 
 # Configure Matrix authentication.
 - name: Install Prosody Auth Matrix User Verification plugin
   ansible.builtin.include_tasks:
     file: "{{ role_path }}/tasks/util/setup_jitsi_auth_uvs_install.yml"
   when: jitsi_enable_auth | bool and jitsi_auth_type == "matrix"
+  register: jitsi_prosody_setup_jitsi_auth_uvs_install_file_result
 
 # Remove Matrix authentication if disabled
 - name: Ensure Prosody Auth Matrix User Verification plugin is not present if Matrix auth is disabled
@@ -74,3 +76,13 @@
     file: "{{ role_path }}/tasks/util/setup_jitsi_prosody_post_setup_hooks.yml"
   when:
     - jitsi_enable_auth | bool and jitsi_auth_type == "internal"
+
+- name: Determine whether jitsi-prosody needs a restart
+  ansible.builtin.set_fact:
+    jitsi_prosody_restart_necessary: >-
+      {{
+        jitsi_prosody_support_files_result.changed | default(false)
+        or jitsi_prosody_setup_jitsi_auth_uvs_install_file_result.changed | default(false)
+        or jitsi_prosody_systemd_service_result.changed | default(false)
+        or jitsi_prosody_container_image_pull_result.changed | default(false)
+      }}
