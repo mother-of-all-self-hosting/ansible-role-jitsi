@@ -132,7 +132,6 @@ jitsi_web_container_image: "{{ jitsi_web_container_image_registry_prefix }}jitsi
 jitsi_web_container_image_registry_prefix: "{{ jitsi_web_container_image_registry_prefix_upstream }}"
 jitsi_web_container_image_registry_prefix_upstream: "{{ jitsi_web_container_image_registry_prefix_upstream_default }}"
 jitsi_web_container_image_registry_prefix_upstream_default: docker.io/
-jitsi_web_container_image_force_pull: "{{ jitsi_web_container_image.endswith(':latest') }}"
 
 # Specify how the jitsi-web container publishes its HTTP port (tcp/80 in the container).
 #
@@ -388,7 +387,6 @@ jitsi_prosody_container_image: "{{ jitsi_prosody_container_image_registry_prefix
 jitsi_prosody_container_image_registry_prefix: "{{ jitsi_prosody_container_image_registry_prefix_upstream }}"
 jitsi_prosody_container_image_registry_prefix_upstream: "{{ jitsi_prosody_container_image_registry_prefix_upstream_default }}"
 jitsi_prosody_container_image_registry_prefix_upstream_default: docker.io/
-jitsi_prosody_container_image_force_pull: "{{ jitsi_prosody_container_image.endswith(':latest') }}"
 
 # Specify how the jitsi-prosody container publishes its HTTP port (tcp/5280 in the container).
 #
@@ -572,7 +570,6 @@ jitsi_jicofo_container_image: "{{ jitsi_jicofo_container_image_registry_prefix }
 jitsi_jicofo_container_image_registry_prefix: "{{ jitsi_jicofo_container_image_registry_prefix_upstream }}"
 jitsi_jicofo_container_image_registry_prefix_upstream: "{{ jitsi_jicofo_container_image_registry_prefix_upstream_default }}"
 jitsi_jicofo_container_image_registry_prefix_upstream_default: docker.io/
-jitsi_jicofo_container_image_force_pull: "{{ jitsi_jicofo_container_image.endswith(':latest') }}"
 
 # A list of additional container networks that the Jicofo container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -668,7 +665,6 @@ jitsi_jvb_container_image: "{{ jitsi_jvb_container_image_registry_prefix }}jitsi
 jitsi_jvb_container_image_registry_prefix: "{{ jitsi_jvb_container_image_registry_prefix_upstream }}"
 jitsi_jvb_container_image_registry_prefix_upstream: "{{ jitsi_jvb_container_image_registry_prefix_upstream_default }}"
 jitsi_jvb_container_image_registry_prefix_upstream_default: docker.io/
-jitsi_jvb_container_image_force_pull: "{{ jitsi_jvb_container_image.endswith(':latest') }}"
 
 # Specify how the jitsi-jvb container publishes its RTP UDP port (as defined by `jitsi_jvb_rtp_udp_port`).
 #
