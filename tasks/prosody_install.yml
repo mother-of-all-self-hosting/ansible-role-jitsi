@@ -17,6 +17,19 @@
     - "{{ jitsi_prosody_plugins_path }}"
     - "{{ jitsi_prosody_ext_path }}"
 
+# Until upstream stable-11146, the container ran Prosody as its own (root-created) user and left
+# `config/data` and `config/certs` unreadable to anyone else. The container is unprivileged now,
+# so it cannot carry that data over to its new home unless ownership is corrected first.
+#
+# Ownership is corrected without touching permissions, so private keys keep their 0600 mode.
+- name: Ensure jitsi-prosody paths are owned by the container user
+  ansible.builtin.file:
+    path: "{{ jitsi_prosody_base_path }}"
+    state: directory
+    owner: "{{ jitsi_uid }}"
+    group: "{{ jitsi_gid }}"
+    recurse: true
+
 - name: Ensure jitsi-prosody support files installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/prosody/{{ item }}.j2"

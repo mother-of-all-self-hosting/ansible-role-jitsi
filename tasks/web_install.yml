@@ -20,6 +20,19 @@
     - { path: "{{ jitsi_web_well_known_path }}/element", when: "{{ jitsi_web_well_known_element_jitsi_enabled }}" }
   when: item.when | bool
 
+# Until upstream stable-11146, the container ran as root and created files (most notably the
+# self-signed TLS material below `keys/`) owned by root, with restrictive permissions.
+# The container is unprivileged now and cannot read those, which leaves it without a TLS key.
+#
+# Ownership is corrected without touching permissions, so private keys keep their 0600 mode.
+- name: Ensure jitsi-web paths are owned by the container user
+  ansible.builtin.file:
+    path: "{{ jitsi_web_base_path }}"
+    state: directory
+    owner: "{{ jitsi_uid }}"
+    group: "{{ jitsi_gid }}"
+    recurse: true
+
 - name: Ensure jitsi-web support files installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/web/{{ item.file }}.j2"
