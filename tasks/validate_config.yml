@@ -46,6 +46,36 @@
     - { "old": "jitsi_prosody_container_image_force_pull", "new": "<removed> (the new community.docker.docker_image_pull module handles this natively)" }
     - { "old": "jitsi_jicofo_container_image_force_pull", "new": "<removed> (the new community.docker.docker_image_pull module handles this natively)" }
     - { "old": "jitsi_jvb_container_image_force_pull", "new": "<removed> (the new community.docker.docker_image_pull module handles this natively)" }
+    - "old": "jitsi_jvb_server_id"
+      "new": "<removed> (upstream removed Colibri WebSocket support in stable-11146; clients use SCTP data channels now)"
+    - "old": "jitsi_jvb_container_colibri_ws_host_bind_port"
+      "new": "<removed> (upstream removed Colibri WebSocket support in stable-11146; clients use SCTP data channels now)"
+    - "old": "jitsi_jvb_container_labels_traefik_enabled"
+      "new": "<removed> (the JVB no longer serves HTTP, so it needs no reverse-proxy routing)"
+    - "old": "jitsi_jvb_container_labels_traefik_docker_network"
+      "new": "<removed> (the JVB no longer serves HTTP, so it needs no reverse-proxy routing)"
+    - "old": "jitsi_jvb_container_labels_traefik_hostname"
+      "new": "<removed> (the JVB no longer serves HTTP, so it needs no reverse-proxy routing)"
+    - "old": "jitsi_jvb_container_labels_traefik_path_prefix"
+      "new": "<removed> (the JVB no longer serves HTTP, so it needs no reverse-proxy routing)"
+    - "old": "jitsi_jvb_container_labels_traefik_rule"
+      "new": "<removed> (the JVB no longer serves HTTP, so it needs no reverse-proxy routing)"
+    - "old": "jitsi_jvb_container_labels_traefik_priority"
+      "new": "<removed> (the JVB no longer serves HTTP, so it needs no reverse-proxy routing)"
+    - "old": "jitsi_jvb_container_labels_traefik_entrypoints"
+      "new": "<removed> (the JVB no longer serves HTTP, so it needs no reverse-proxy routing)"
+    - "old": "jitsi_jvb_container_labels_traefik_tls"
+      "new": "<removed> (the JVB no longer serves HTTP, so it needs no reverse-proxy routing)"
+    - "old": "jitsi_jvb_container_labels_traefik_tls_certResolver"
+      "new": "<removed> (the JVB no longer serves HTTP, so it needs no reverse-proxy routing)"
+    - "old": "jitsi_jvb_container_labels_traefik_additional_request_headers_custom"
+      "new": "<removed> (the JVB no longer serves HTTP, so it needs no reverse-proxy routing)"
+    - "old": "jitsi_jvb_container_labels_traefik_additional_response_headers_custom"
+      "new": "<removed> (the JVB no longer serves HTTP, so it needs no reverse-proxy routing)"
+    - "old": "jitsi_jvb_rtp_tcp_port"
+      "new": "<removed> (the JVB TCP harvester is long gone from the upstream images; only the RTP/UDP port is used)"
+    - "old": "jitsi_jvb_container_rtp_tcp_host_bind_port"
+      "new": "<removed> (the JVB TCP harvester is long gone from the upstream images; only the RTP/UDP port is used)"
 
 - name: Fail if required Jitsi settings not defined
   ansible.builtin.fail:

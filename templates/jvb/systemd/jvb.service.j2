@@ -21,6 +21,8 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --rm \
       --name={{ jitsi_identifier }}-jvb \
       --log-driver=none \
+      --user={{ jitsi_uid }}:{{ jitsi_gid }} \
+      --read-only \
       --network={{ jitsi_container_network }} \
       --network-alias=jvb.meet.jitsi \
       --env-file={{ jitsi_jvb_base_path }}/env \
@@ -28,13 +30,9 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       {% if jitsi_jvb_container_rtp_udp_host_bind_port %}
       -p {{ jitsi_jvb_container_rtp_udp_host_bind_port }}:{{ jitsi_jvb_rtp_udp_port }}/udp \
       {% endif %}
-      {% if jitsi_jvb_container_rtp_tcp_host_bind_port %}
-      -p {{ jitsi_jvb_container_rtp_tcp_host_bind_port }}:{{ jitsi_jvb_rtp_tcp_port }} \
-      {% endif %}
-      {% if jitsi_jvb_container_colibri_ws_host_bind_port %}
-      -p {{ jitsi_jvb_container_colibri_ws_host_bind_port }}:9090 \
-      {% endif %}
       --mount type=bind,src={{ jitsi_jvb_config_path }},dst=/config \
+      --tmpfs=/run:rw,exec,nosuid,size={{ jitsi_jvb_container_tmpfs_run_size }},mode=1750 \
+      --tmpfs=/tmp:rw,noexec,nosuid,size={{ jitsi_jvb_container_tmpfs_tmp_size }},mode=1777 \
       {% for arg in jitsi_jvb_container_extra_arguments %}
       {{ arg }} \
       {% endfor %}

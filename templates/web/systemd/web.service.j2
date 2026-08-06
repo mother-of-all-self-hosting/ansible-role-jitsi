@@ -21,20 +21,25 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --rm \
       --name={{ jitsi_identifier }}-web \
       --log-driver=none \
+      --user={{ jitsi_uid }}:{{ jitsi_gid }} \
+      --read-only \
       --network={{ jitsi_container_network }} \
       --network-alias={{ jitsi_xmpp_domain }} \
       --env-file={{ jitsi_web_base_path }}/env \
       --label-file={{ jitsi_web_base_path }}/labels \
       {% if jitsi_web_container_http_host_bind_port %}
-      -p {{ jitsi_web_container_http_host_bind_port }}:80 \
+      -p {{ jitsi_web_container_http_host_bind_port }}:{{ jitsi_web_container_http_port }} \
       {% endif %}
       --mount type=bind,src={{ jitsi_web_config_path }},dst=/config \
+      --mount type=bind,src={{ jitsi_web_storage_path }},dst=/storage \
       --mount type=bind,src={{ jitsi_web_base_path }}/base.html,dst=/usr/share/jitsi-meet/base.html,ro \
       {% if jitsi_web_well_known_enabled %}
       --mount type=bind,src={{ jitsi_web_well_known_path }},dst=/usr/share/jitsi-meet/.well-known,ro \
       {% endif %}
       --mount type=bind,src={{ jitsi_web_transcripts_path }},dst=/usr/share/jitsi-meet/transcripts \
       --mount type=bind,src={{ jitsi_web_crontabs_path }},dst=/var/spool/cron/crontabs \
+      --tmpfs=/run:rw,exec,nosuid,size={{ jitsi_web_container_tmpfs_run_size }},mode=1750 \
+      --tmpfs=/tmp:rw,noexec,nosuid,size={{ jitsi_web_container_tmpfs_tmp_size }},mode=1777 \
       {% for arg in jitsi_web_container_extra_arguments %}
       {{ arg }} \
       {% endfor %}

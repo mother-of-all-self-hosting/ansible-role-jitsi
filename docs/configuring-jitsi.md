@@ -351,49 +351,11 @@ Note that most (if not all) variables are common for both servers.
 
 If you are setting up multiple JVB instances, you'd need to create `vars.yml` files for each of them too (`inventory/host_vars/jvb-3.example.com/vars.yml`, for example).
 
-#### Set the server ID to each JVB
-
-Each JVB requires a server ID to be set, so that it will be uniquely identified. The server ID allows Jitsi to keep track of which conferences are on which JVB.
-
-The server ID can be set with the variable `jitsi_jvb_server_id`. It will end up as the `JVB_WS_SERVER_ID` environment variables in the JVB docker container.
-
-To set the server ID to `jvb-2`, add the following configuration to either `hosts` or `vars.yml` files (adapt to your needs).
-
-- On `hosts`:
-
-  Add `jitsi_jvb_server_id=jvb-2` after your JVB's external IP addresses as below:
-
-  ```INI
-  [jitsi_jvb_servers]
-  jvb-2.example.com ansible_host=192.168.0.2 jitsi_jvb_server_id=jvb-2
-  jvb-3.example.com ansible_host=192.168.0.3 jitsi_jvb_server_id=jvb-2
-  ```
-
-- On `vars.yml` files:
-
-  ```yaml
-  jitsi_jvb_server_id: 'jvb-2'
-  ```
-
-Alternatively, you can specify the variable as a parameter to [the ansible command](#run-the-playbook).
-
-**Note**: the server ID `jvb-1` is reserved for the JVB instance running on the main host, therefore should not be used as the ID of an additional JVB host.
-
-#### Set colibri WebSocket port
-
-The additional JVBs will need to expose the colibri WebSocket port.
-
-To expose the port, add the following configuration to your `vars.yml` files:
-
-```yaml
-jitsi_jvb_container_colibri_ws_host_bind_port: 9090
-```
-
 #### Set Prosody XMPP server
 
-The JVB will also need to know the location of the Prosody XMPP server.
+The JVB will need to know the location of the Prosody XMPP server.
 
-Similar to the server ID (`jitsi_jvb_server_id`), this can be set with the variable for the JVB by using the variable `jitsi_xmpp_server`.
+This can be set with the variable for the JVB by using the variable `jitsi_xmpp_server`.
 
 ##### Set the main server's hostname
 
@@ -423,43 +385,11 @@ To expose the port and have Docker forward the port, add the following configura
 jitsi_prosody_container_jvb_host_bind_port: 5222
 ```
 
-#### Reverse-proxy with Traefik
+#### Expose the RTP port
 
-To make Traefik reverse-proxy to these additional JVBs, add the following configuration to your main `vars.yml` file (`inventory/host_vars/example.com/vars.yml`):
+Each JVB sends and receives media over its RTP/UDP port (`10000` by default, see `jitsi_jvb_rtp_udp_port`), which is exposed on the host automatically. Make sure your firewall allows this port through on each additional JVB host, and that clients can reach it at the host's public IP address.
 
-```yaml
-# Traefik proxying for additional JVBs. These can't be configured using Docker
-# labels, like the first JVB is, because they run on different hosts, so we add
-# the necessary configuration to the file provider.
-traefik_provider_configuration_extension_yaml: |
-  http:
-   routers:
-     {% for host in groups['jitsi_jvb_servers'] %}
-
-     additional-{{ hostvars[host]['jitsi_jvb_server_id'] }}-router:
-       entryPoints:
-         - "{{ traefik_entrypoint_primary }}"
-       rule: "Host(`{{ jitsi_hostname }}`) && PathPrefix(`/colibri-ws/{{ hostvars[host]['jitsi_jvb_server_id'] }}/`)"
-       service: additional-{{ hostvars[host]['jitsi_jvb_server_id'] }}-service
-       {% if traefik_entrypoint_primary != 'web' %}
-
-       tls:
-         certResolver: "{{ traefik_certResolver_primary }}"
-
-       {% endif %}
-
-     {% endfor %}
-
-   services:
-     {% for host in groups['jitsi_jvb_servers'] %}
-
-     additional-{{ hostvars[host]['jitsi_jvb_server_id'] }}-service:
-       loadBalancer:
-         servers:
-           - url: "http://{{ host }}:9090/"
-
-     {% endfor %}
-```
+**Note**: additional JVBs do not need to be reverse-proxied. Upstream removed Colibri WebSocket support in `stable-11146`, so the JVB no longer serves HTTP at all — clients exchange data-channel messages with it over SCTP, on the same RTP/UDP port. Earlier versions of this role required a Traefik file-provider configuration to route `/colibri-ws/<server-id>/` to each additional JVB; that is no longer necessary and can be removed.
 
 #### Run the playbook
 

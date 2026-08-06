@@ -13,8 +13,8 @@ jitsi_enabled: true
 jitsi_identifier: jitsi
 jitsi_base_path: "/{{ jitsi_identifier }}"
 
-# renovate: datasource=docker depName=jitsi/web
-jitsi_version: stable-11031
+# renovate: datasource=docker depName=ghcr.io/jitsi/web
+jitsi_version: stable-11146-1
 
 jitsi_uid: ""
 jitsi_gid: ""
@@ -128,15 +128,30 @@ jitsi_web_transcripts_path: "{{ jitsi_web_base_path }}/transcripts"
 jitsi_web_crontabs_path: "{{ jitsi_web_base_path }}/crontabs"
 jitsi_web_well_known_path: "{{ jitsi_web_base_path }}/well-known"
 
+# Persistent storage for TLS material (self-signed keys and Let's Encrypt account + certificates).
+# Since the containers became rootless (upstream stable-11146), this lives in a dedicated writable
+# volume (mounted at /storage), instead of below the configuration directory.
+jitsi_web_storage_path: "{{ jitsi_web_base_path }}/storage"
+
 jitsi_web_container_image: "{{ jitsi_web_container_image_registry_prefix }}jitsi/web:{{ jitsi_container_image_tag }}"
 jitsi_web_container_image_registry_prefix: "{{ jitsi_web_container_image_registry_prefix_upstream }}"
 jitsi_web_container_image_registry_prefix_upstream: "{{ jitsi_web_container_image_registry_prefix_upstream_default }}"
-jitsi_web_container_image_registry_prefix_upstream_default: docker.io/
+jitsi_web_container_image_registry_prefix_upstream_default: ghcr.io/
 
-# Specify how the jitsi-web container publishes its HTTP port (tcp/80 in the container).
+# Specify how the jitsi-web container publishes its HTTP port (tcp/8000 in the container).
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 jitsi_web_container_http_host_bind_port: ""
+
+# The HTTP port that the jitsi-web container listens on.
+# Upstream switched to unprivileged ports (8000/8443) in stable-11146, when the containers became rootless.
+jitsi_web_container_http_port: 8000
+
+# Specify the size of the container's tmpfs volumes.
+# The containers run with a read-only root filesystem and keep their runtime state (rendered nginx
+# configuration, s6-overlay state) on tmpfs.
+jitsi_web_container_tmpfs_run_size: 16m
+jitsi_web_container_tmpfs_tmp_size: 16m
 
 # A list of additional container networks that the Web container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -383,10 +398,16 @@ jitsi_prosody_config_path: "{{ jitsi_prosody_base_path }}/config"
 jitsi_prosody_plugins_path: "{{ jitsi_prosody_base_path }}/prosody-plugins-custom"
 jitsi_prosody_ext_path: "{{ jitsi_prosody_base_path }}/ext"
 
+# Persistent storage for Prosody's own data (user accounts, certificates).
+# Upstream moved Prosody's `data_path` from `/config/data` to `/var/lib/prosody` in stable-11146,
+# when the containers became rootless. The container seeds this directory from the old
+# `/config/data` one on its first run, so existing accounts are carried over automatically.
+jitsi_prosody_data_path: "{{ jitsi_prosody_base_path }}/data"
+
 jitsi_prosody_container_image: "{{ jitsi_prosody_container_image_registry_prefix }}jitsi/prosody:{{ jitsi_container_image_tag }}"
 jitsi_prosody_container_image_registry_prefix: "{{ jitsi_prosody_container_image_registry_prefix_upstream }}"
 jitsi_prosody_container_image_registry_prefix_upstream: "{{ jitsi_prosody_container_image_registry_prefix_upstream_default }}"
-jitsi_prosody_container_image_registry_prefix_upstream_default: docker.io/
+jitsi_prosody_container_image_registry_prefix_upstream_default: ghcr.io/
 
 # Specify how the jitsi-prosody container publishes its HTTP port (tcp/5280 in the container).
 #
@@ -398,6 +419,12 @@ jitsi_prosody_container_http_host_bind_port: ""
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 jitsi_prosody_container_jvb_host_bind_port: ""
+
+# Specify the size of the container's tmpfs volumes.
+# The containers run with a read-only root filesystem and keep their runtime state (rendered Prosody
+# configuration, s6-overlay state) on tmpfs.
+jitsi_prosody_container_tmpfs_run_size: 16m
+jitsi_prosody_container_tmpfs_tmp_size: 16m
 
 # A list of additional container networks that the Prosody container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -569,7 +596,13 @@ jitsi_jicofo_config_path: "{{ jitsi_jicofo_base_path }}/config"
 jitsi_jicofo_container_image: "{{ jitsi_jicofo_container_image_registry_prefix }}jitsi/jicofo:{{ jitsi_container_image_tag }}"
 jitsi_jicofo_container_image_registry_prefix: "{{ jitsi_jicofo_container_image_registry_prefix_upstream }}"
 jitsi_jicofo_container_image_registry_prefix_upstream: "{{ jitsi_jicofo_container_image_registry_prefix_upstream_default }}"
-jitsi_jicofo_container_image_registry_prefix_upstream_default: docker.io/
+jitsi_jicofo_container_image_registry_prefix_upstream_default: ghcr.io/
+
+# Specify the size of the container's tmpfs volumes.
+# The containers run with a read-only root filesystem and keep their runtime state (rendered Jicofo
+# configuration, s6-overlay state) on tmpfs.
+jitsi_jicofo_container_tmpfs_run_size: 16m
+jitsi_jicofo_container_tmpfs_tmp_size: 16m
 
 # A list of additional container networks that the Jicofo container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -664,28 +697,21 @@ jitsi_jvb_config_path: "{{ jitsi_jvb_base_path }}/config"
 jitsi_jvb_container_image: "{{ jitsi_jvb_container_image_registry_prefix }}jitsi/jvb:{{ jitsi_container_image_tag }}"
 jitsi_jvb_container_image_registry_prefix: "{{ jitsi_jvb_container_image_registry_prefix_upstream }}"
 jitsi_jvb_container_image_registry_prefix_upstream: "{{ jitsi_jvb_container_image_registry_prefix_upstream_default }}"
-jitsi_jvb_container_image_registry_prefix_upstream_default: docker.io/
+jitsi_jvb_container_image_registry_prefix_upstream_default: ghcr.io/
 
 # Specify how the jitsi-jvb container publishes its RTP UDP port (as defined by `jitsi_jvb_rtp_udp_port`).
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 jitsi_jvb_container_rtp_udp_host_bind_port: "{{ jitsi_jvb_rtp_udp_port }}"
 
-# Specify how the jitsi-jvb container publishes its RTP TCP port (as defined by `jitsi_jvb_rtp_tcp_port`).
-#
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
-jitsi_jvb_container_rtp_tcp_host_bind_port: "{{ jitsi_jvb_rtp_tcp_port }}"
-
-# Specify how the jitsi-jvb container publishes its Colibri WebSocket port (tcp/9090 in the container).
-#
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
-jitsi_jvb_container_colibri_ws_host_bind_port: ""
-
 # The RTP UDP port number in the container
 jitsi_jvb_rtp_udp_port: 10000
 
-# The RTP TCP port number in the container
-jitsi_jvb_rtp_tcp_port: 4443
+# Specify the size of the container's tmpfs volumes.
+# The containers run with a read-only root filesystem and keep their runtime state (rendered JVB
+# configuration, Java temporary files, s6-overlay state) on tmpfs.
+jitsi_jvb_container_tmpfs_run_size: 16m
+jitsi_jvb_container_tmpfs_tmp_size: 16m
 
 # A list of additional container networks that the JVB container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -694,32 +720,10 @@ jitsi_jvb_container_additional_networks: "{{ jitsi_jvb_container_additional_netw
 jitsi_jvb_container_additional_networks_auto: []
 jitsi_jvb_container_additional_networks_custom: []
 
-# jitsi_jvb_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the JVB container.
-# See `../templates/jvb/labels.j2` for details.
+# Note: the JVB container no longer gets Traefik labels.
+# Its only HTTP endpoint used to be the Colibri WebSocket (tcp/9090), which upstream removed in
+# stable-11146. Clients now use SCTP data channels, so the JVB needs no reverse-proxy routing at all.
 #
-# To inject your own other container labels, see `jitsi_jvb_container_labels_additional_labels_custom`.
-jitsi_jvb_container_labels_traefik_enabled: "{{ jitsi_container_labels_traefik_enabled }}"
-jitsi_jvb_container_labels_traefik_docker_network: "{{ jitsi_container_labels_traefik_docker_network }}"
-jitsi_jvb_container_labels_traefik_hostname: "{{ jitsi_container_labels_traefik_hostname }}"
-jitsi_jvb_container_labels_traefik_path_prefix: "{{ jitsi_container_labels_traefik_path_prefix }}"
-jitsi_jvb_container_labels_traefik_rule: "Host(`{{ jitsi_jvb_container_labels_traefik_hostname }}`) && PathPrefix(`{{ jitsi_jvb_container_labels_traefik_path_prefix }}{{ '' if jitsi_container_labels_traefik_path_prefix == '/' else '/' }}colibri-ws/{{ jitsi_jvb_server_id }}/`)"
-jitsi_jvb_container_labels_traefik_priority: 0
-jitsi_jvb_container_labels_traefik_entrypoints: "{{ jitsi_container_labels_traefik_entrypoints }}"
-jitsi_jvb_container_labels_traefik_tls: "{{ jitsi_jvb_container_labels_traefik_entrypoints != 'web' }}"
-jitsi_jvb_container_labels_traefik_tls_certResolver: default  # noqa var-naming
-
-# Controls which additional headers to attach to all HTTP requests.
-# To add your own custom request headers, use `jitsi_jvb_container_labels_traefik_additional_request_headers_custom`
-jitsi_jvb_container_labels_traefik_additional_request_headers: "{{ jitsi_jvb_container_labels_traefik_additional_request_headers_auto | combine(jitsi_jvb_container_labels_traefik_additional_request_headers_custom) }}"
-jitsi_jvb_container_labels_traefik_additional_request_headers_auto: {}
-jitsi_jvb_container_labels_traefik_additional_request_headers_custom: {}
-
-# Controls which additional headers to attach to all HTTP responses.
-# To add your own custom response headers, use `jitsi_jvb_container_labels_traefik_additional_response_headers_custom`
-jitsi_jvb_container_labels_traefik_additional_response_headers: "{{ jitsi_jvb_container_labels_traefik_additional_response_headers_auto | combine(jitsi_jvb_container_labels_traefik_additional_response_headers_custom) }}"
-jitsi_jvb_container_labels_traefik_additional_response_headers_auto: {}
-jitsi_jvb_container_labels_traefik_additional_response_headers_custom: {}
-
 # jitsi_jvb_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
 # See `../templates/jvb/labels.j2` for details.
 # To add your own custom labels, use `jitsi_jvb_container_labels_additional_labels_custom`
@@ -785,8 +789,6 @@ jitsi_jvb_sentry_dsn: ""
 jitsi_jvb_stun_servers: ['meet-jit-si-turnrelay.jitsi.net:443']
 
 jitsi_jvb_brewery_muc: jvbbrewery
-
-jitsi_jvb_server_id: 'jvb-1'
 
 # Custom configuration to be injected into `custom-sip-communicator.properties`, passed to Jitsi Videobridge (JVB).
 # This configuration gets appended to the final configuration that Jitsi Videobridge (JVB) uses.

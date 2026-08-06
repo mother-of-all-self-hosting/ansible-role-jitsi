@@ -21,9 +21,13 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --rm \
       --name={{ jitsi_identifier }}-jicofo \
       --log-driver=none \
+      --user={{ jitsi_uid }}:{{ jitsi_gid }} \
+      --read-only \
       --network={{ jitsi_container_network }} \
       --env-file={{ jitsi_jicofo_base_path }}/env \
       --mount type=bind,src={{ jitsi_jicofo_config_path }},dst=/config \
+      --tmpfs=/run:rw,exec,nosuid,size={{ jitsi_jicofo_container_tmpfs_run_size }},mode=1750 \
+      --tmpfs=/tmp:rw,noexec,nosuid,size={{ jitsi_jicofo_container_tmpfs_tmp_size }},mode=1777 \
       {% for arg in jitsi_jicofo_container_extra_arguments %}
       {{ arg }} \
       {% endfor %}

@@ -13,6 +13,7 @@
   with_items:
     - "{{ jitsi_prosody_base_path }}"
     - "{{ jitsi_prosody_config_path }}"
+    - "{{ jitsi_prosody_data_path }}"
     - "{{ jitsi_prosody_plugins_path }}"
     - "{{ jitsi_prosody_ext_path }}"
 

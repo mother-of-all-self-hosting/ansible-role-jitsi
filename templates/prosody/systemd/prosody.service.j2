@@ -21,6 +21,8 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --rm \
       --name={{ jitsi_identifier }}-prosody \
       --log-driver=none \
+      --user={{ jitsi_uid }}:{{ jitsi_gid }} \
+      --read-only \
       --network={{ jitsi_container_network }} \
       --network-alias={{ jitsi_xmpp_server }} \
       {% if jitsi_prosody_container_http_host_bind_port %}
@@ -33,6 +35,9 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --label-file={{ jitsi_prosody_base_path }}/labels \
       --mount type=bind,src={{ jitsi_prosody_config_path }},dst=/config \
       --mount type=bind,src={{ jitsi_prosody_plugins_path }},dst=/prosody-plugins-custom \
+      --mount type=bind,src={{ jitsi_prosody_data_path }},dst=/var/lib/prosody \
+      --tmpfs=/run:rw,exec,nosuid,size={{ jitsi_prosody_container_tmpfs_run_size }},mode=1750 \
+      --tmpfs=/tmp:rw,noexec,nosuid,size={{ jitsi_prosody_container_tmpfs_tmp_size }},mode=1777 \
       {% for arg in jitsi_prosody_container_extra_arguments %}
       {{ arg }} \
       {% endfor %}

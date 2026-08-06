@@ -13,6 +13,7 @@
   with_items:
     - { path: "{{ jitsi_web_base_path }}", when: true }
     - { path: "{{ jitsi_web_config_path }}", when: true }
+    - { path: "{{ jitsi_web_storage_path }}", when: true }
     - { path: "{{ jitsi_web_transcripts_path }}", when: true }
     - { path: "{{ jitsi_web_crontabs_path }}", when: true }
     - { path: "{{ jitsi_web_well_known_path }}", when: "{{ jitsi_web_well_known_enabled }}" }
