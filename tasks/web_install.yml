@@ -42,11 +42,11 @@
     mode: "{{ item.mode }}"
   with_items:
     - file: env
-      mode: 640
+      mode: "0640"
     - file: labels
-      mode: 640
+      mode: "0640"
     - file: base.html
-      mode: 644
+      mode: "0644"
   register: jitsi_web_support_files_result
 
 - name: Ensure jitsi-web configuration files installed
