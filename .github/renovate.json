@@ -24,7 +24,7 @@
     },
     {
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["jitsi/web"],
+      "matchPackageNames": ["ghcr.io/jitsi/web"],
       "versioning": "regex:^stable-(?<major>\\d+)$"
     }
   ],
