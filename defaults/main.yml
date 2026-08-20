@@ -14,7 +14,7 @@ jitsi_identifier: jitsi
 jitsi_base_path: "/{{ jitsi_identifier }}"
 
 # renovate: datasource=docker depName=ghcr.io/jitsi/web
-jitsi_version: stable-11146-1
+jitsi_version: stable-11146-2
 
 jitsi_uid: ""
 jitsi_gid: ""
