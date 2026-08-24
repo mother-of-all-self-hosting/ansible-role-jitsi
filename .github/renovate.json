@@ -5,9 +5,10 @@
   ],
   "packageRules": [
     {
+      "description": "Upstream's normal releases are plain `stable-NNNNN`; hotfixes append `-1`, `-2`, ... A pattern requiring the suffix silently skips every normal release, and one forbidding it silently skips every hotfix (both happened). The optional group compares as 0 when absent, ordering `stable-11146` < `stable-11146-2` < `stable-11500` correctly. Hotfixes rank as patch updates, so patch-automerge can gate them once a Molecule scenario exists.",
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/jitsi/web"],
-      "versioning": "regex:^stable-(?<major>\\d+)-(?<minor>\\d+)$"
+      "versioning": "regex:^stable-(?<major>\\d+)(?:-(?<patch>\\d+))?$"
     }
   ]
 }
