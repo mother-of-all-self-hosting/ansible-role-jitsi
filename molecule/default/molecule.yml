@@ -1,0 +1,87 @@
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+---
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
+    force: true
+driver:
+  name: docker
+platforms:
+  - name: jitsi-${MOLECULE_DISTRO:-ubuntu2604}-default
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2604}-ansible:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    cgroupns_mode: host
+    privileged: true
+    pre_build_image: true
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      callback_result_format: yaml
+  inventory:
+    group_vars:
+      all:
+        # Helper variables
+        jitsi_debug_service_enabled: false
+
+        # The container names the role derives from `jitsi_identifier`.
+        # Role defaults are not in scope in a verify play, so they are spelled out.
+        jitsi_molecule_web_container: jitsi-web
+        jitsi_molecule_prosody_container: jitsi-prosody
+        jitsi_molecule_jicofo_container: jitsi-jicofo
+        jitsi_molecule_jvb_container: jitsi-jvb
+
+        # The host ports the probes below talk to.
+        jitsi_molecule_web_port: 8000
+        jitsi_molecule_prosody_http_port: 5280
+        jitsi_molecule_prosody_xmpp_port: 5222
+        jitsi_molecule_jicofo_rest_port: 8888
+
+        # Variables for Jitsi
+        jitsi_uid: 1000
+        jitsi_gid: 1000
+        jitsi_hostname: localhost
+        jitsi_architecture: amd64
+        jitsi_container_labels_traefik_enabled: false
+
+        # The role refuses to run without these (see tasks/validate_config.yml).
+        # The Prosody container registers the jicofo/jvb/jibri XMPP accounts with
+        # these passwords on startup, and Jicofo and the JVB log in with them -
+        # so the control-plane checks in verify.yml only pass if the passwords
+        # actually travelled from here through the rendered env files.
+        jitsi_jicofo_auth_password: molecule-jicofo-password
+        jitsi_jvb_auth_password: molecule-jvb-password
+        jitsi_jibri_xmpp_password: molecule-jibri-password
+
+        # Publish the HTTP/XMPP surfaces to the target host for the probes.
+        # Docker 28+ blocks container-to-host-gateway traffic, so everything the
+        # verification talks to must be a published port on 127.0.0.1.
+        jitsi_web_container_http_host_bind_port: "127.0.0.1:{{ jitsi_molecule_web_port }}"
+        jitsi_prosody_container_http_host_bind_port: "127.0.0.1:{{ jitsi_molecule_prosody_http_port }}"
+        jitsi_prosody_container_jvb_host_bind_port: "127.0.0.1:{{ jitsi_molecule_prosody_xmpp_port }}"
+        # The JVB's RTP/UDP port (10000) is published by the role by default via
+        # `jitsi_jvb_container_rtp_udp_host_bind_port`.
+
+        # Jicofo's REST API (tcp/8888 in the container, serving /stats and
+        # /about/health) has no dedicated variables in the role, because nothing
+        # in production needs it. The extra-arguments list is the role's
+        # sanctioned escape hatch: JICOFO_ENABLE_REST makes the image bind the
+        # API on 0.0.0.0 instead of 127.0.0.1 (so publishing it works at all),
+        # and JICOFO_ENABLE_HEALTH_CHECKS turns on the health checker behind
+        # /about/health. The role's env file does not set either, so the stock
+        # deployment stays as it is.
+        jitsi_jicofo_container_extra_arguments_custom:
+          - "--env JICOFO_ENABLE_REST=1"
+          - "--env JICOFO_ENABLE_HEALTH_CHECKS=1"
+          - "-p 127.0.0.1:{{ jitsi_molecule_jicofo_rest_port }}:8888"
+  env:
+    # Workaround for https://github.com/ansible/molecule/issues/4391
+    ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/..:/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:~/.ansible/roles
+verifier:
+  name: ansible

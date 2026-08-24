@@ -1,0 +1,51 @@
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+---
+- name: Include roles for Jitsi Molecule tests
+  hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Include roles for Jitsi Molecule tests
+      ansible.builtin.include_role:
+        name: "{{ role_name }}"
+        public: true
+      loop:
+        - com.devture.ansible.role.playbook_help
+        - com.devture.ansible.role.systemd_docker_base
+        - "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"
+      loop_control:
+        loop_var: role_name
+
+- name: Ensure Jitsi services are started
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Ensure systemd daemon is reloaded
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+
+    # Prosody first: Jicofo and the JVB log into it on startup and their units
+    # order themselves after it anyway (the role's unit for Jicofo requires it).
+    - name: Ensure Jitsi Prosody systemd service is started
+      ansible.builtin.systemd_service:
+        name: jitsi-prosody.service
+        state: started
+
+    - name: Ensure Jitsi Jicofo systemd service is started
+      ansible.builtin.systemd_service:
+        name: jitsi-jicofo.service
+        state: started
+
+    - name: Ensure Jitsi Videobridge systemd service is started
+      ansible.builtin.systemd_service:
+        name: jitsi-jvb.service
+        state: started
+
+    - name: Ensure Jitsi Web systemd service is started
+      ansible.builtin.systemd_service:
+        name: jitsi-web.service
+        state: started
