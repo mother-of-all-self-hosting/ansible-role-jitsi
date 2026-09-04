@@ -392,11 +392,11 @@
     - name: Show the Jitsi verification summary
       ansible.builtin.debug:
         msg:
-          - "systemd: {{ dict(jitsi_verify_units | zip(jitsi_services.results | map(attribute='status.ActiveState'))) }}"
-          - "unconfigured images: web rc={{ jitsi_web_control.rc }}, jicofo rc={{ jitsi_jicofo_control.rc }}"
-          - "jicofo: stats {{ jitsi_jicofo_stats.status }} operational_bridge_count={{ jitsi_jicofo_stats.json.bridge_selector.operational_bridge_count | default('n/a') }}, health {{ jitsi_jicofo_health.status }}"
-          - "web: {{ jitsi_web_page.status }}, config.js names {{ jitsi_defaults.jitsi_xmpp_domain }} and https://{{ jitsi_hostname }}/"
-          - "prosody: XMPP port {{ jitsi_molecule_prosody_xmpp_port }} open, BOSH {{ jitsi_prosody_bosh.status }}"
-          - "jvb: UDP 10000 bound in-container and published on the host"
-          - "images: {{ jitsi_containers.values() | map(attribute='Config.Image') | list }}"
-          - "restarts: {{ dict(jitsi_verify_units | zip(jitsi_restarts_after.results | map(attribute='status.NRestarts'))) }}"
+          - "Jitsi systemd: {{ dict(jitsi_verify_units | zip(jitsi_services.results | map(attribute='status.ActiveState'))) }}"
+          - "Jitsi unconfigured images: web rc={{ jitsi_web_control.rc }}, jicofo rc={{ jitsi_jicofo_control.rc }}"
+          - "Jitsi jicofo: stats {{ jitsi_jicofo_stats.status }} operational_bridge_count={{ jitsi_jicofo_stats.json.bridge_selector.operational_bridge_count | default('n/a') }}, health {{ jitsi_jicofo_health.status }}"
+          - "Jitsi web: {{ jitsi_web_page.status }}, config.js names {{ jitsi_defaults.jitsi_xmpp_domain }} and https://{{ jitsi_hostname }}/"
+          - "Jitsi prosody: XMPP port {{ jitsi_molecule_prosody_xmpp_port }} open, BOSH {{ jitsi_prosody_bosh.status }}"
+          - "Jitsi JVB: UDP 10000 bound in-container and published on the host"
+          - "Jitsi images: {{ jitsi_containers.values() | map(attribute='Config.Image') | list }}"
+          - "Jitsi restarts: {{ dict(jitsi_verify_units | zip(jitsi_restarts_after.results | map(attribute='status.NRestarts'))) }}"
