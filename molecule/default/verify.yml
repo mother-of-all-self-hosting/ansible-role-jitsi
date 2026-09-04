@@ -332,22 +332,16 @@
     # role pins: no OCI version label, no version in the environment, and the
     # software inside reports its own component versions (e.g. the web image
     # ships the `jitsi-meet-web` package as 1.0.xxxx), none of which is
-    # derivable from the `stable-NNNNN` tag. The honest check that remains is
-    # that every container the role started runs the exact image reference the
-    # role's defaults pin - the leaf literal Renovate bumps.
-    - name: Assert the Jitsi containers run the version the role pins
+    # derivable from the `stable-NNNNN` tag.
+    - name: Assert the running Jitsi containers are the version this role installs
       ansible.builtin.assert:
         that:
           - jitsi_containers[jitsi_molecule_web_container].Config.Image | split(':') | last == jitsi_defaults.jitsi_version
           - jitsi_containers[jitsi_molecule_prosody_container].Config.Image | split(':') | last == jitsi_defaults.jitsi_version
           - jitsi_containers[jitsi_molecule_jicofo_container].Config.Image | split(':') | last == jitsi_defaults.jitsi_version
           - jitsi_containers[jitsi_molecule_jvb_container].Config.Image | split(':') | last == jitsi_defaults.jitsi_version
-        fail_msg: >-
-          The running containers do not match jitsi_version={{ jitsi_defaults.jitsi_version }}:
-          {{ jitsi_containers.values() | map(attribute='Config.Image') | list }}
-        success_msg: >-
-          All four containers run what `jitsi_version` pins:
-          {{ jitsi_containers.values() | map(attribute='Config.Image') | list }}
+        fail_msg: "Jitsi containers report {{ jitsi_containers.values() | map(attribute='Config.Image') | list | default('none') }}, expected {{ jitsi_defaults.jitsi_version }}"
+        success_msg: "Jitsi containers report {{ jitsi_containers.values() | map(attribute='Config.Image') | list }}"
 
     # ------------------------------------------------------------------
     # Nothing was quietly restarting while all of that was being checked
