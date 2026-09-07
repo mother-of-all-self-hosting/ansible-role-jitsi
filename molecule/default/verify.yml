@@ -135,7 +135,7 @@
           {{ dict(jitsi_verify_units | zip(jitsi_services.results | map(attribute='status.ActiveState'))) }}
         success_msg: "All four Jitsi systemd services are active"
 
-    - name: Retrieve the Jitsi service logs for debugging
+    - name: Retrieve the Jitsi systemd service log for debugging
       when: jitsi_debug_service_enabled | bool
       ansible.builtin.command:
         cmd: "journalctl -xeu {{ item }}"
