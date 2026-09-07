@@ -43,7 +43,7 @@
       register: jitsi_containers_raw
       changed_when: false
 
-    - name: Make sense of the Jitsi containers
+    - name: Parse the Jitsi containers definition
       ansible.builtin.set_fact:
         jitsi_containers: >-
           {{
