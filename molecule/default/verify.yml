@@ -24,6 +24,8 @@
       - jitsi-web.service
 
   tasks:
+    - name: Verify that Jitsi works
+      block:
     # The role is not included in this playbook, so its defaults are not in
     # scope. Reading defaults/main.yml directly ties the version assertion
     # below.
@@ -394,3 +396,49 @@
           - "Jitsi JVB: UDP 10000 bound in-container and published on the host"
           - "Jitsi images: {{ jitsi_containers.values() | map(attribute='Config.Image') | list }}"
           - "Jitsi restarts: {{ dict(jitsi_verify_units | zip(jitsi_restarts_after.results | map(attribute='status.NRestarts'))) }}"
+
+      rescue:
+        # Whatever went wrong, the reason is almost always in the systemd service log.
+        - name: Retrieve the Jitsi prosody systemd service log
+          ansible.builtin.command:
+            cmd: journalctl --no-pager --output=cat --unit=jitsi-prosody.service
+          register: jitsi_prosody_service_log
+          changed_when: false
+
+        - name: Show the Jitsi prosody systemd service log
+          ansible.builtin.debug:
+            var: jitsi_prosody_service_log.stdout_lines
+
+        - name: Retrieve the Jitsi jicofo systemd service log
+          ansible.builtin.command:
+            cmd: journalctl --no-pager --output=cat --unit=jitsi-jicofo.service
+          register: jitsi_jicofo_service_log
+          changed_when: false
+
+        - name: Show the Jitsi jicofo systemd service log
+          ansible.builtin.debug:
+            var: jitsi_jicofo_service_log.stdout_lines
+
+        - name: Retrieve the Jitsi JVB systemd service log
+          ansible.builtin.command:
+            cmd: journalctl --no-pager --output=cat --unit=jitsi-jvb.service
+          register: jitsi_jvb_service_log
+          changed_when: false
+
+        - name: Show the Jitsi JVB systemd service log
+          ansible.builtin.debug:
+            var: jitsi_web_service_log.stdout_lines
+
+        - name: Retrieve the Jitsi web systemd service log
+          ansible.builtin.command:
+            cmd: journalctl --no-pager --output=cat --unit=jitsi-web.service
+          register: jitsi_web_service_log
+          changed_when: false
+
+        - name: Show the Jitsi web systemd service log
+          ansible.builtin.debug:
+            var: jitsi_web_service_log.stdout_lines
+
+        - name: Fail because verification did not pass
+          ansible.builtin.fail:
+            msg: "Jitsi verification failed. The systemd service log is printed above."
