@@ -128,19 +128,25 @@
           retries: 36
           delay: 5
           loop: "{{ jitsi_verify_units }}"
+          # So that giving up is reported by the assertion below rather than as a
+          # wall of systemd unit properties.
+          failed_when: false
 
+        # `Restart=always` in the systemd unit means that even a container which crashes
+        # and gets restarted reads as active here, so this is a precondition rather than
+        # a result.
         - name: Assert the Jitsi systemd services are active
           ansible.builtin.assert:
             that: jitsi_services.results | map(attribute='status.ActiveState') | unique | list == ['active']
             fail_msg: >-
-              Not every Jitsi service is active:
+              Not every service is active:
               {{ dict(jitsi_verify_units | zip(jitsi_services.results | map(attribute='status.ActiveState'))) }}
-            success_msg: "All four Jitsi systemd services are active"
+            success_msg: "Every systemd service is active"
 
-        - name: Retrieve the Jitsi systemd service log for debugging
+        - name: Retrieve the Jitsi systemd services log for debugging
           when: jitsi_debug_service_enabled | bool
           ansible.builtin.command:
-            cmd: "journalctl -xeu {{ item }}"
+            cmd: "journalctl --no-pager --output=cat --unit={{ item }}"
           changed_when: false
           loop: "{{ jitsi_verify_units }}"
 
@@ -388,7 +394,7 @@
         - name: Show the Jitsi verification summary
           ansible.builtin.debug:
             msg:
-              - "Jitsi systemd: {{ dict(jitsi_verify_units | zip(jitsi_services.results | map(attribute='status.ActiveState'))) }}"
+              - "Jitsi systemd: {% for unit, state in jitsi_verify_units | zip(jitsi_services.results | map(attribute='status.ActiveState')) %}{{ unit }} ({{ state }}){% if not loop.last %}, {% endif %}{% endfor %}"
               - "Jitsi unconfigured images: web rc={{ jitsi_web_control.rc }}, jicofo rc={{ jitsi_jicofo_control.rc }}"
               - "Jitsi jicofo: stats {{ jitsi_jicofo_stats.status }} operational_bridge_count={{ jitsi_jicofo_stats.json.bridge_selector.operational_bridge_count | default('n/a') }}, health {{ jitsi_jicofo_health.status }}"
               - "Jitsi web: {{ jitsi_web_page.status }}, config.js names {{ jitsi_defaults.jitsi_xmpp_domain }} and https://{{ jitsi_hostname }}/"
