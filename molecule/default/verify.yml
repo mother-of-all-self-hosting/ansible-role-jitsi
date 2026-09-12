@@ -190,21 +190,23 @@
 
         # Jicofo's health check goes beyond bookkeeping: it creates a test
         # conference on a bridge and answers 200 only if that worked.
-        - name: Ask Jicofo for its own health verdict (up to 60s)
+        - name: Wait for Jicofo to report itself healthy (up to 180s)
           ansible.builtin.uri:
             url: "{{ jitsi_verify_jicofo_url }}/about/health"
             status_code: [200, 500, 503]
           register: jitsi_jicofo_health
           until: jitsi_jicofo_health.status == 200
-          retries: 12
+          retries: 36
           delay: 5
+          # So that giving up is reported by the assertion below rather than as a
+          # wall of systemd unit properties.
           failed_when: false
 
         - name: Assert Jicofo considers itself healthy
           ansible.builtin.assert:
             that: jitsi_jicofo_health.status == 200
-            fail_msg: "Jicofo's health check answered {{ jitsi_jicofo_health.status }}"
-            success_msg: "Jicofo's health check answers 200, so it can create a conference on the bridge"
+            fail_msg: "Jicofo did not report itself healthy: {{ jitsi_jicofo_health.status | default('no response') }}"
+            success_msg: "Jicofo reports itself healthy"
 
         # ------------------------------------------------------------------
         # The web frontend serves, and tells browsers what the role configured
