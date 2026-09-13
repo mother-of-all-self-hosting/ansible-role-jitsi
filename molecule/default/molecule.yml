@@ -29,6 +29,7 @@ provisioner:
       all:
         # Helper variables
         jitsi_debug_service_enabled: false
+        jitsi_restarts_check_enabled: true
 
         # The container names the role derives from `jitsi_identifier`.
         # Role defaults are not in scope in a verify play, so they are spelled out.
