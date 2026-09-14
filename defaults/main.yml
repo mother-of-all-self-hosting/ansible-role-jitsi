@@ -601,7 +601,10 @@ jitsi_jicofo_container_image_registry_prefix_upstream_default: ghcr.io/
 # Specify the size of the container's tmpfs volumes.
 # The containers run with a read-only root filesystem and keep their runtime state (rendered Jicofo
 # configuration, s6-overlay state) on tmpfs.
-jitsi_jicofo_container_tmpfs_run_size: 16m
+#
+# `/run` is 32M for the Java containers, matching upstream since stable-11248. The JVM extracts
+# native libraries below `/run`; 16M leaves almost no headroom.
+jitsi_jicofo_container_tmpfs_run_size: 32m
 jitsi_jicofo_container_tmpfs_tmp_size: 16m
 
 # A list of additional container networks that the Jicofo container would be connected to.
@@ -710,7 +713,10 @@ jitsi_jvb_rtp_udp_port: 10000
 # Specify the size of the container's tmpfs volumes.
 # The containers run with a read-only root filesystem and keep their runtime state (rendered JVB
 # configuration, Java temporary files, s6-overlay state) on tmpfs.
-jitsi_jvb_container_tmpfs_run_size: 16m
+#
+# `/run` is 32M for the Java containers, matching upstream since stable-11248. The JVB unpacks the
+# DCSCTP native library (~15.5 MiB) below `/run/jvb/tmp`, which leaves almost no headroom at 16M.
+jitsi_jvb_container_tmpfs_run_size: 32m
 jitsi_jvb_container_tmpfs_tmp_size: 16m
 
 # A list of additional container networks that the JVB container would be connected to.
