@@ -99,7 +99,7 @@
               timeout 120
               docker run --rm --name {{ jitsi_verify_control_container }}
               --user=1000:1000 --read-only
-              --tmpfs=/run:rw,exec,nosuid,size=16m,mode=1750
+              --tmpfs=/run:rw,exec,nosuid,size=32m,mode=1750
               --tmpfs=/tmp:rw,noexec,nosuid,size=16m,mode=1777
               {{ jitsi_containers[jitsi_molecule_jicofo_container].Config.Image }}
           register: jitsi_jicofo_control
