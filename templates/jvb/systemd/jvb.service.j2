@@ -36,7 +36,10 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       {% for arg in jitsi_jvb_container_extra_arguments %}
       {{ arg }} \
       {% endfor %}
-      {{ jitsi_jvb_container_image }}
+      {{ jitsi_jvb_container_image }} \
+      {% for arg in jitsi_jvb_process_extra_arguments %}
+      {{ arg }} \
+      {% endfor %}
 
 {% for network in jitsi_jvb_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ jitsi_identifier }}-jvb
