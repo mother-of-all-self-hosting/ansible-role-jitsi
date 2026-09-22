@@ -28,14 +28,14 @@ See the project's [documentation](https://jitsi.github.io/handbook/) to learn wh
 
 Before proceeding, make sure to check server's requirements recommended by [the official deployment guide](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-requirements). Please note that Jitsi Meet requires much resource (network bandwidth, RAM, and CPU) and it depends on a lot of factors how much is sufficient for you.
 
-Jitsi Meet is scalable with multiple JVBs ([Jitsi VideoBridge](https://github.com/jitsi/jitsi-videobridge)), and it is possible to provision them on other hosts by utilizing this role on your Ansible playbook. For big meetings the official guide recommends to prefer deploying JVBs to getting huge amount of RAM on the server. See [this section](#set-up-additional-jvbs-for-more-video-conferences-optional) below for instructions about how to set up JVBs.
+Jitsi Meet is scalable with multiple JVBs ([Jitsi VideoBridge](https://github.com/jitsi/jitsi-videobridge)), and it is possible to provision them on other hosts by utilizing this role on your Ansible playbook. For big meetings the official guide recommends to prefer deploying JVBs to getting huge amount of RAM on the server. Refer to [this section](#set-up-additional-jvbs-for-more-video-conferences-optional) below for instructions about how to set up JVBs.
 
 ### Open ports
 
 You may need to open the following ports to your server:
 
 - `4443/tcp` — RTP media fallback over TCP
-- `10000/udp` — RTP media over UDP. Depending on your firewall/NAT configuration, incoming RTP packets on port `10000` may have the external IP of your firewall as destination address, due to the usage of STUN in JVB (see [`jitsi_jvb_stun_servers`](../defaults/main.yml)).
+- `10000/udp` — RTP media over UDP. Depending on your firewall/NAT configuration, incoming RTP packets on port `10000` may have the external IP of your firewall as destination address, due to the usage of STUN in JVB (refer to [`jitsi_jvb_stun_servers`](../defaults/main.yml)).
 
 Docker automatically opens these ports in the server's firewall, so you likely don't need to do anything. If you use another firewall in front of the server, you may need to adjust it.
 
@@ -152,8 +152,8 @@ On the MDAD playbook, these two variables are specified by default, so you do no
 
 **Notes**:
 
-- If you enable UVS for your Matrix homeserver (Synapse), make sure that the Matrix Federation port (usually `8448`) is accessible. See [this section on the documentation on *matrix-docker-ansible-deploy* playbook](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/docs/configuring-playbook-user-verification-service.md#open-matrix-federation-port) for more information.
-- See [https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification](https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification) for more details about the authenticaition with Matrix OpenID.
+- If you enable UVS for your Matrix homeserver (Synapse), make sure that the Matrix Federation port (usually `8448`) is accessible. Refer to [this section on the documentation on *matrix-docker-ansible-deploy* playbook](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/docs/configuring-playbook-user-verification-service.md#open-matrix-federation-port) for more information.
+- Refer to [https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification](https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification) for more details about the authenticaition with Matrix OpenID.
 
 ### Configure `JVB_ADVERTISE_IPS` for running behind NAT or on a LAN environment (optional)
 
