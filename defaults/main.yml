@@ -58,6 +58,10 @@ jitsi_disable_gravatar: false
 # matrix auth verifies against matrix openID, and requires a user-verification-service to run.
 jitsi_auth_type: internal
 
+jitsi_jwt_allow_empty: true
+jitsi_jwt_app_id: ""
+jitsi_jwt_app_secret: ""
+
 # Configuration options for LDAP authentication. For details see upstream:
 #   https://github.com/jitsi/docker-jitsi-meet#authentication-using-ldap.
 # Defaults are taken from:
