@@ -243,6 +243,16 @@ By default it is disallowed, and you can allow it by adding the following config
 jitsi_web_framing_enabled: true
 ```
 
+Alternatively, if you'd like to allow embedding only on specific websites, add the following configuration to your `vars.yml` file (adapt to your needs):
+
+```yaml
+jitsi_web_framing_ancestors_custom:
+  - https://example.com
+  - https://www.example.com
+```
+
+This keeps embedding disallowed everywhere else. The origin serving Jitsi Meet itself is always allowed (via `jitsi_web_framing_ancestors_default`).
+
 #### Fine tune Jitsi
 
 If you'd like to have Jitsi save up resources, add the following configuration to your `vars.yml` file (adapt to your needs):

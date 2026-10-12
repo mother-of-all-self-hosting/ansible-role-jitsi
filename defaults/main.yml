@@ -236,7 +236,7 @@ jitsi_web_http_header_content_type_options: nosniff
 # Specifies the value of the `Content-Security-Policy` header.
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 jitsi_web_http_header_content_security_policy: |-
-  {{ '' if jitsi_web_framing_enabled else "frame-ancestors 'self'" }}
+  {{ '' if jitsi_web_framing_enabled else ('frame-ancestors ' + (jitsi_web_framing_ancestors | join(' '))) }}
 
 # Specifies the value of the `Permissions-Policy` header.
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
@@ -270,7 +270,23 @@ jitsi_web_http_floc_optout_enabled: true
 jitsi_web_hsts_preload_enabled: false
 
 # Controls whether Jitsi Web will allow being put in an iframe, etc.
+# When enabled, the `frame-ancestors` directive is omitted entirely, so any website may embed Jitsi Web.
+# When disabled, only the origins listed in `jitsi_web_framing_ancestors` may embed it.
 jitsi_web_framing_enabled: false
+
+# A list of origins allowed to embed Jitsi Web in an iframe.
+#
+# The origin serving Jitsi Web itself (`'self'`) is allowed by default.
+# To allow additional origins, use `jitsi_web_framing_ancestors_custom`.
+#
+# Example:
+# jitsi_web_framing_ancestors_custom:
+#   - https://example.com
+#   - https://www.example.com
+jitsi_web_framing_ancestors: "{{ jitsi_web_framing_ancestors_default + jitsi_web_framing_ancestors_auto + jitsi_web_framing_ancestors_custom }}"
+jitsi_web_framing_ancestors_default: ["'self'"]
+jitsi_web_framing_ancestors_auto: []
+jitsi_web_framing_ancestors_custom: []
 
 # List of systemd services that the jitsi-web.service depends on
 jitsi_web_systemd_required_services_list: "{{ jitsi_web_systemd_required_services_list_default + jitsi_web_systemd_required_services_list_auto + jitsi_web_systemd_required_services_list_custom }}"
