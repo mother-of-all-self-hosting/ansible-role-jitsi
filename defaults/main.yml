@@ -54,13 +54,33 @@ jitsi_enable_breakout_rooms: true
 jitsi_disable_gravatar: false
 
 # Authentication type, must be one of internal, jwt, matrix or ldap.
-# Currently, only internal, matrix and ldap mechanisms are supported by this role.
 # matrix auth verifies against matrix openID, and requires a user-verification-service to run.
 jitsi_auth_type: internal
 
-jitsi_jwt_allow_empty: true
+# Configuration options for JWT authentication (used when jitsi_auth_type is 'jwt').
+# For details see upstream:
+#   https://github.com/jitsi/docker-jitsi-meet#authentication-using-jwt.
+# Defaults are taken from:
+#   https://github.com/jitsi/docker-jitsi-meet/blob/master/prosody/rootfs/defaults/conf.d/jitsi-meet.cfg.lua
 jitsi_jwt_app_id: ""
 jitsi_jwt_app_secret: ""
+# Controls whether a token is required to join (when false) or anonymous access is allowed (when true).
+jitsi_jwt_allow_empty: false
+# A list of accepted token issuers (the `iss` claim). When empty, only `jitsi_jwt_app_id` is accepted.
+jitsi_jwt_accepted_issuers: []
+# A list of accepted token audiences (the `aud` claim). When empty, any audience is accepted.
+jitsi_jwt_accepted_audiences: []
+# A URL that returns a JSON mapping between key IDs and public keys (for RS256/ASAP tokens).
+jitsi_jwt_asap_keyserver: ""
+# The Prosody authentication module used for JWT.
+jitsi_jwt_auth_type: token
+# The Prosody module that performs token verification within the MUC component.
+jitsi_jwt_token_auth_module: token_verification
+# The signature algorithm used for tokens (e.g. HS256, RS256).
+# When empty, it is derived from the secret or key server.
+jitsi_jwt_sign_type: ""
+# Controls whether the token's `sub` (domain) claim is verified against the room's domain.
+jitsi_jwt_enable_domain_verification: false
 
 # Configuration options for LDAP authentication. For details see upstream:
 #   https://github.com/jitsi/docker-jitsi-meet#authentication-using-ldap.
