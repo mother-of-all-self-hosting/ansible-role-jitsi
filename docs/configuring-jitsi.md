@@ -81,7 +81,7 @@ By default the Jitsi Meet instance **does not require for anyone to log in, and 
 
 If you would like to control who is allowed to start meetings on your instance, you'd need to enable Jitsi's authentication and optionally guests mode. With authentication enabled, all meetings have to be started by a registered user. After the meeting is started by that user, then guests are free to join. If the registered user is not yet present, they are put on hold in individual waiting rooms.
 
-Authentication type must be one of them: `internal` (default), `jwt`, `ldap` or `matrix`. Currently, only `internal`, `ldap` and `matrix` mechanisms are supported by this role.
+Authentication type must be one of them: `internal` (default), `jwt`, `ldap` or `matrix`. All of these mechanisms are supported by this role.
 
 **Note**: authentication is not tested by playbook's self-checks. We therefore recommend that you would make sure by yourself that authentication is configured properly. To test it, start a meeting at `example.com` on your browser.
 
@@ -126,6 +126,25 @@ jitsi_ldap_start_tls: false
 ```
 
 For more information refer to the [docker-jitsi-meet](https://github.com/jitsi/docker-jitsi-meet#authentication-using-ldap) and the [saslauthd `LDAP_SASLAUTHD`](https://github.com/winlibs/cyrus-sasl/blob/master/saslauthd/LDAP_SASLAUTHD) documentation.
+
+#### Authenticate using JWT: Auth-Type `jwt`
+
+This authentication method delegates authentication to an external token generator. Users cannot join a room unless they present a valid JWT, which is signed with a shared secret and can be scoped to specific rooms. This is useful when integrating Jitsi Meet into your own application.
+
+To enable authentication with JWT, add the following configuration to your `vars.yml` file. Make sure to replace `JWT_APP_ID_HERE` and `JWT_APP_SECRET_HERE` with your own values.
+
+```yaml
+jitsi_enable_auth: true
+jitsi_auth_type: jwt
+jitsi_jwt_app_id: JWT_APP_ID_HERE
+jitsi_jwt_app_secret: JWT_APP_SECRET_HERE
+```
+
+By default a token is required for everyone (anonymous access is disallowed). To allow anonymous access, set `jitsi_jwt_allow_empty: true`.
+
+Additional settings, such as accepted issuers/audiences and the signature algorithm, are available. Refer to `defaults/main.yml` for the full list.
+
+For more information refer to the [docker-jitsi-meet JWT authentication](https://github.com/jitsi/docker-jitsi-meet#authentication-using-jwt) documentation.
 
 #### Authenticate using Matrix OpenID: Auth-Type `matrix`
 
