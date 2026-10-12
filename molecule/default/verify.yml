@@ -451,3 +451,56 @@
         - name: Fail because verification did not pass
           ansible.builtin.fail:
             msg: "Jitsi verification failed. The systemd service log is printed above."
+
+# The scenario runs without Traefik labels, so the security headers never reach
+# a container. This checks how the Content-Security-Policy header is derived
+# from `jitsi_web_framing_ancestors` instead, against the role defaults directly.
+- name: Verify the Jitsi Web Content-Security-Policy header value
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    # Unlike above, the defaults are loaded unnamespaced, so that their templates
+    # resolve against each other. `set_fact` takes precedence over `include_vars`,
+    # which is what lets each case below override the framing ancestors.
+    - name: Load the role defaults
+      ansible.builtin.include_vars:
+        file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
+
+    - name: Assert the default only allows embedding on the same origin
+      ansible.builtin.assert:
+        that:
+          - jitsi_web_http_header_content_security_policy == "frame-ancestors 'self'"
+        fail_msg: "Unexpected Content-Security-Policy: {{ jitsi_web_http_header_content_security_policy }}"
+
+    - name: Allow embedding on additional origins
+      ansible.builtin.set_fact:
+        jitsi_web_framing_ancestors_custom: [https://example.com, https://www.example.com]
+
+    - name: Assert additional origins are appended to the same origin
+      ansible.builtin.assert:
+        that:
+          - jitsi_web_http_header_content_security_policy == "frame-ancestors 'self' https://example.com https://www.example.com"
+        fail_msg: "Unexpected Content-Security-Policy: {{ jitsi_web_http_header_content_security_policy }}"
+
+    - name: Allow embedding from anywhere
+      ansible.builtin.set_fact:
+        jitsi_web_framing_ancestors_default: ['*']
+        jitsi_web_framing_ancestors_custom: []
+
+    - name: Assert allowing embedding from anywhere omits the header
+      ansible.builtin.assert:
+        that:
+          - jitsi_web_http_header_content_security_policy == ''
+        fail_msg: "Unexpected Content-Security-Policy: {{ jitsi_web_http_header_content_security_policy }}"
+
+    - name: Allow embedding from nowhere
+      ansible.builtin.set_fact:
+        jitsi_web_framing_ancestors_default: []
+
+    - name: Assert an empty list disallows embedding everywhere
+      ansible.builtin.assert:
+        that:
+          - jitsi_web_http_header_content_security_policy == "frame-ancestors 'none'"
+        fail_msg: "Unexpected Content-Security-Policy: {{ jitsi_web_http_header_content_security_policy }}"

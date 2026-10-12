@@ -256,7 +256,7 @@ jitsi_web_http_header_content_type_options: nosniff
 # Specifies the value of the `Content-Security-Policy` header.
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 jitsi_web_http_header_content_security_policy: |-
-  {{ '' if jitsi_web_framing_enabled else ('frame-ancestors ' + (jitsi_web_framing_ancestors | join(' '))) }}
+  {{ '' if '*' in jitsi_web_framing_ancestors else ('frame-ancestors ' + ((jitsi_web_framing_ancestors | join(' ')) or "'none'")) }}
 
 # Specifies the value of the `Permissions-Policy` header.
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
@@ -289,20 +289,23 @@ jitsi_web_http_floc_optout_enabled: true
 # See: `jitsi_web_http_header_strict_transport_security`
 jitsi_web_hsts_preload_enabled: false
 
-# Controls whether Jitsi Web will allow being put in an iframe, etc.
-# When enabled, the `frame-ancestors` directive is omitted entirely, so any website may embed Jitsi Web.
-# When disabled, only the origins listed in `jitsi_web_framing_ancestors` may embed it.
-jitsi_web_framing_enabled: false
-
 # A list of origins allowed to embed Jitsi Web in an iframe.
+# It becomes the `frame-ancestors` directive of the `Content-Security-Policy` header.
 #
-# The origin serving Jitsi Web itself (`'self'`) is allowed by default.
+# By default, only the origin serving Jitsi Web itself (`'self'`) may embed it.
 # To allow additional origins, use `jitsi_web_framing_ancestors_custom`.
 #
 # Example:
 # jitsi_web_framing_ancestors_custom:
 #   - https://example.com
 #   - https://www.example.com
+#
+# To allow embedding from anywhere, set `jitsi_web_framing_ancestors_default` to `['*']`.
+# A `'*'` entry omits the `frame-ancestors` directive entirely (instead of emitting `frame-ancestors *`,
+# which would still block embedders on non-network schemes, like desktop apps using a custom scheme).
+# `'*'` cannot be combined with other entries.
+#
+# An empty list results in `frame-ancestors 'none'` (embedding disallowed everywhere, even on the same origin).
 jitsi_web_framing_ancestors: "{{ jitsi_web_framing_ancestors_default + jitsi_web_framing_ancestors_auto + jitsi_web_framing_ancestors_custom }}"
 jitsi_web_framing_ancestors_default: ["'self'"]
 jitsi_web_framing_ancestors_auto: []

@@ -254,15 +254,9 @@ jitsi_web_hsts_preload_enabled: true
 
 #### Allow/disallow embedding Jitsi Meet
 
-It is possible to control whether embedding Jitsi Meet to a frame on another website will be allowed or not.
+By default, Jitsi Meet may only be embedded in a frame on its own origin (`'self'`).
 
-By default it is disallowed, and you can allow it by adding the following configuration to your `vars.yml` file:
-
-```yaml
-jitsi_web_framing_enabled: true
-```
-
-Alternatively, if you'd like to allow embedding only on specific websites, add the following configuration to your `vars.yml` file (adapt to your needs):
+To also allow embedding on specific websites, add the following configuration to your `vars.yml` file (adapt to your needs):
 
 ```yaml
 jitsi_web_framing_ancestors_custom:
@@ -270,7 +264,11 @@ jitsi_web_framing_ancestors_custom:
   - https://www.example.com
 ```
 
-This keeps embedding disallowed everywhere else. The origin serving Jitsi Meet itself is always allowed (via `jitsi_web_framing_ancestors_default`).
+To allow embedding from anywhere, add the following configuration to your `vars.yml` file instead:
+
+```yaml
+jitsi_web_framing_ancestors_default: ['*']
+```
 
 #### Fine tune Jitsi
 
