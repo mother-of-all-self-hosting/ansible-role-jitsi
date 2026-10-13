@@ -256,7 +256,39 @@ jitsi_web_http_header_content_type_options: nosniff
 # Specifies the value of the `Content-Security-Policy` header.
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 jitsi_web_http_header_content_security_policy: |-
-  {{ '' if '*' in jitsi_web_framing_ancestors else ('frame-ancestors ' + ((jitsi_web_framing_ancestors | join(' ')) or "'none'")) }}
+  {{
+    ('frame-ancestors ' + ((jitsi_web_http_header_content_security_policy_frame_ancestors | join(' ')) or "'none'"))
+    if jitsi_web_http_header_content_security_policy_frame_ancestors_enabled
+    else ''
+  }}
+
+# Controls whether the `frame-ancestors` directive is included in the `Content-Security-Policy` header.
+# When enabled, only the origins listed in `jitsi_web_http_header_content_security_policy_frame_ancestors` may embed Jitsi Web in an iframe.
+# When disabled, Jitsi Web may be embedded in an iframe on any website.
+# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors
+jitsi_web_http_header_content_security_policy_frame_ancestors_enabled: true
+
+# A list of sources allowed to embed Jitsi Web in an iframe (as values for the `frame-ancestors` directive).
+# Only takes effect while `jitsi_web_http_header_content_security_policy_frame_ancestors_enabled` is true.
+#
+# By default, only the origin serving Jitsi Web itself (`'self'`) may embed it.
+# To allow additional origins, use `jitsi_web_http_header_content_security_policy_frame_ancestors_custom`.
+#
+# Example:
+# jitsi_web_http_header_content_security_policy_frame_ancestors_custom:
+#   - https://example.com
+#   - https://www.example.com
+#
+# An empty list results in `frame-ancestors 'none'` (embedding disallowed everywhere, even on the same origin).
+jitsi_web_http_header_content_security_policy_frame_ancestors: |-
+  {{
+    jitsi_web_http_header_content_security_policy_frame_ancestors_default
+    + jitsi_web_http_header_content_security_policy_frame_ancestors_auto
+    + jitsi_web_http_header_content_security_policy_frame_ancestors_custom
+  }}
+jitsi_web_http_header_content_security_policy_frame_ancestors_default: ["'self'"]
+jitsi_web_http_header_content_security_policy_frame_ancestors_auto: []
+jitsi_web_http_header_content_security_policy_frame_ancestors_custom: []
 
 # Specifies the value of the `Permissions-Policy` header.
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
@@ -288,28 +320,6 @@ jitsi_web_http_floc_optout_enabled: true
 # - https://hstspreload.org/#opt-in
 # See: `jitsi_web_http_header_strict_transport_security`
 jitsi_web_hsts_preload_enabled: false
-
-# A list of origins allowed to embed Jitsi Web in an iframe.
-# It becomes the `frame-ancestors` directive of the `Content-Security-Policy` header.
-#
-# By default, only the origin serving Jitsi Web itself (`'self'`) may embed it.
-# To allow additional origins, use `jitsi_web_framing_ancestors_custom`.
-#
-# Example:
-# jitsi_web_framing_ancestors_custom:
-#   - https://example.com
-#   - https://www.example.com
-#
-# To allow embedding from anywhere, set `jitsi_web_framing_ancestors_default` to `['*']`.
-# A `'*'` entry omits the `frame-ancestors` directive entirely (instead of emitting `frame-ancestors *`,
-# which would still block embedders on non-network schemes, like desktop apps using a custom scheme).
-# `'*'` cannot be combined with other entries.
-#
-# An empty list results in `frame-ancestors 'none'` (embedding disallowed everywhere, even on the same origin).
-jitsi_web_framing_ancestors: "{{ jitsi_web_framing_ancestors_default + jitsi_web_framing_ancestors_auto + jitsi_web_framing_ancestors_custom }}"
-jitsi_web_framing_ancestors_default: ["'self'"]
-jitsi_web_framing_ancestors_auto: []
-jitsi_web_framing_ancestors_custom: []
 
 # List of systemd services that the jitsi-web.service depends on
 jitsi_web_systemd_required_services_list: "{{ jitsi_web_systemd_required_services_list_default + jitsi_web_systemd_required_services_list_auto + jitsi_web_systemd_required_services_list_custom }}"

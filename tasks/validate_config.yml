@@ -78,9 +78,12 @@
       "new": "<removed> (the JVB TCP harvester is long gone from the upstream images; only the RTP/UDP port is used)"
     - "old": "jitsi_web_framing_enabled"
       "new": >-
-        <removed> (framing is now controlled solely by `jitsi_web_framing_ancestors`.
-        To allow embedding from anywhere, set `jitsi_web_framing_ancestors_default: ['*']`.
-        To restrict it, set `jitsi_web_framing_ancestors_default: ["'self'"]` and list any additional origins in `jitsi_web_framing_ancestors_custom`)
+        jitsi_web_http_header_content_security_policy_frame_ancestors_enabled (with the opposite meaning:
+        `jitsi_web_framing_enabled: true` corresponds to `jitsi_web_http_header_content_security_policy_frame_ancestors_enabled: false`)
+    - { "old": "jitsi_web_framing_ancestors", "new": "jitsi_web_http_header_content_security_policy_frame_ancestors" }
+    - { "old": "jitsi_web_framing_ancestors_default", "new": "jitsi_web_http_header_content_security_policy_frame_ancestors_default" }
+    - { "old": "jitsi_web_framing_ancestors_auto", "new": "jitsi_web_http_header_content_security_policy_frame_ancestors_auto" }
+    - { "old": "jitsi_web_framing_ancestors_custom", "new": "jitsi_web_http_header_content_security_policy_frame_ancestors_custom" }
 
 - name: Fail if required Jitsi settings not defined
   ansible.builtin.fail:
@@ -101,14 +104,16 @@
     - jitsi_jicofo_auth_password
     - jitsi_jvb_auth_password
 
-- name: Fail if jitsi_web_framing_ancestors combines '*' with other origins
+- name: Fail if custom frame ancestors are defined, but the frame-ancestors directive is disabled
   ansible.builtin.fail:
     msg: >-
-      `jitsi_web_framing_ancestors` contains `'*'` (allow embedding from anywhere) together with other origins ({{ jitsi_web_framing_ancestors | reject('equalto', '*') | join(', ') }}),
-      which would have no effect.
-      To allow embedding from anywhere, remove the other origins.
-      To restrict embedding, set `jitsi_web_framing_ancestors_default` to `["'self'"]` (or otherwise remove `'*'`) and keep the other origins (e.g. in `jitsi_web_framing_ancestors_custom`).
-  when: "'*' in jitsi_web_framing_ancestors and jitsi_web_framing_ancestors | length > 1"
+      You have defined custom origins allowed to embed Jitsi Web in an iframe (`jitsi_web_http_header_content_security_policy_frame_ancestors_custom`),
+      but they have no effect, because `jitsi_web_http_header_content_security_policy_frame_ancestors_enabled` is false (embedding is allowed from anywhere).
+      To restrict embedding to these origins, set `jitsi_web_http_header_content_security_policy_frame_ancestors_enabled` to true.
+      To allow embedding from anywhere, remove `jitsi_web_http_header_content_security_policy_frame_ancestors_custom`.
+  when:
+    - not jitsi_web_http_header_content_security_policy_frame_ancestors_enabled | bool
+    - jitsi_web_http_header_content_security_policy_frame_ancestors_custom | length > 0
 
 - name: Fail if on an unsupported architecture
   ansible.builtin.fail:

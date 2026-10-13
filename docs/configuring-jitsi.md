@@ -259,7 +259,7 @@ By default, Jitsi Meet may only be embedded in a frame on its own origin (`'self
 To also allow embedding on specific websites, add the following configuration to your `vars.yml` file (adapt to your needs):
 
 ```yaml
-jitsi_web_framing_ancestors_custom:
+jitsi_web_http_header_content_security_policy_frame_ancestors_custom:
   - https://example.com
   - https://www.example.com
 ```
@@ -267,7 +267,7 @@ jitsi_web_framing_ancestors_custom:
 To allow embedding from anywhere, add the following configuration to your `vars.yml` file instead:
 
 ```yaml
-jitsi_web_framing_ancestors_default: ['*']
+jitsi_web_http_header_content_security_policy_frame_ancestors_enabled: false
 ```
 
 #### Fine tune Jitsi
