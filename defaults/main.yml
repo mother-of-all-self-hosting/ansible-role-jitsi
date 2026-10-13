@@ -100,10 +100,19 @@ jitsi_ldap_tls_cacert_file: "/etc/ssl/certs/ca-certificates.crt"
 jitsi_ldap_tls_cacert_dir: "/etc/ssl/certs"
 jitsi_ldap_start_tls: false
 
-jitsi_muc_modules: |
+# A list of additional Prosody modules to enable on the MUC component (`XMPP_MUC_MODULES`).
+# To add your own modules, use `jitsi_muc_modules_custom`.
+#
+# Example:
+# jitsi_muc_modules_custom:
+#   - token_affiliation
+jitsi_muc_modules: "{{ jitsi_muc_modules_default + jitsi_muc_modules_auto + jitsi_muc_modules_custom }}"
+jitsi_muc_modules_default: |
   {{
     (['matrix_power_sync'] if jitsi_prosody_auth_matrix_uvs_sync_power_levels | bool else [])
   }}
+jitsi_muc_modules_auto: []
+jitsi_muc_modules_custom: []
 
 jitsi_timezone: UTC
 
