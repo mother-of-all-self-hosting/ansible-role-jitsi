@@ -757,6 +757,11 @@ jitsi_jicofo_component_secret: ""
 jitsi_jicofo_auth_user: focus
 jitsi_jicofo_auth_password: ""
 
+# Controls whether Jicofo automatically grants the moderator role to the first participant joining a conference
+# (and to another participant when the last moderator leaves).
+# Disable this to have moderator rights come from elsewhere (e.g. the `token_affiliation` Prosody module for JWT authentication).
+jitsi_jicofo_auto_owner_enabled: true
+
 # To enable Sentry integration for Jicofo, specify a valid DSN connection string
 jitsi_jicofo_sentry_dsn: ""
 
