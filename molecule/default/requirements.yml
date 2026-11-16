@@ -2,7 +2,7 @@
 
 roles:
   - src: git+https://github.com/geerlingguy/ansible-role-docker.git
-    version: 8.0.0
+    version: 8.0.1
     name: ansible-role-docker
   - src: git+https://github.com/devture/com.devture.ansible.role.playbook_help.git
     version: main
