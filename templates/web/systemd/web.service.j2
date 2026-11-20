@@ -34,6 +34,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --mount type=bind,src={{ jitsi_web_storage_path }},dst=/storage \
       --mount type=bind,src={{ jitsi_web_base_path }}/base.html,dst=/usr/share/jitsi-meet/base.html,ro \
       {% if jitsi_web_well_known_enabled %}
+      --tmpfs=/run/web:rw,noexec,nosuid,nodev,size={{ jitsi_web_container_tmpfs_run_web_size }},mode=0755,uid={{ jitsi_uid }},gid={{ jitsi_gid }} \
       --mount type=bind,src={{ jitsi_web_well_known_path }},dst=/usr/share/jitsi-meet/.well-known,ro \
       {% endif %}
       --mount type=bind,src={{ jitsi_web_transcripts_path }},dst=/usr/share/jitsi-meet/transcripts \

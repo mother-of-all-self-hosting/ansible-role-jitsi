@@ -233,6 +233,24 @@
               (status={{ jitsi_web_page.status }})
             success_msg: "The Jitsi Web frontend serves the conference application shell"
 
+        # Check that nginx serves the bind-mounted discovery file after startup.
+        # The image symlinks /usr/share/jitsi-meet/.well-known into /run/web,
+        # where the web process also renders its configuration.
+        - name: Retrieve the Element Jitsi well-known file
+          ansible.builtin.uri:
+            url: "{{ jitsi_verify_web_url }}/.well-known/element/jitsi"
+            return_content: true
+            status_code: [200]
+          register: jitsi_web_well_known
+
+        - name: Assert the Jitsi Web frontend serves the Element Jitsi well-known file
+          ansible.builtin.assert:
+            that: "(jitsi_web_well_known.content | from_json) == {'auth': 'openidtoken-jwt'}"
+            fail_msg: >-
+              /.well-known/element/jitsi did not serve the expected payload:
+              {{ jitsi_web_well_known.content | truncate(200) }}
+            success_msg: "The Jitsi Web frontend serves /.well-known/element/jitsi"
+
         # /config.js is rendered by the web container on startup from the
         # environment file the role wrote. It is where a browser learns which XMPP
         # domain to use and where to reach it, so it is the honest place to check

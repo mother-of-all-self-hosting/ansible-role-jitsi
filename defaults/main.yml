@@ -185,6 +185,11 @@ jitsi_web_container_http_port: 8000
 # configuration, s6-overlay state) on tmpfs.
 jitsi_web_container_tmpfs_run_size: 16m
 jitsi_web_container_tmpfs_tmp_size: 16m
+# Only used when `jitsi_web_well_known_enabled` is true.
+# The image's `/usr/share/jitsi-meet/.well-known` is a symlink into `/run/web`,
+# so bind-mounting it would make Docker create `/run/web` as root, where the unprivileged web process could no longer render its configuration.
+# A dedicated tmpfs owned by the Jitsi user avoids that.
+jitsi_web_container_tmpfs_run_web_size: 16m
 
 # A list of additional container networks that the Web container would be connected to.
 # The role does not create these networks, so make sure they already exist.

@@ -58,6 +58,10 @@ provisioner:
         jitsi_architecture: amd64
         jitsi_container_labels_traefik_enabled: false
 
+        # Matrix auth (`jitsi_auth_type: matrix`) normally turns this on.
+        # Enabling it on its own exercises the `.well-known` bind mount without requiring a Matrix User Verification Service.
+        jitsi_web_well_known_element_jitsi_enabled: true
+
         # The role refuses to run without these (see tasks/validate_config.yml).
         # The Prosody container registers the jicofo/jvb/jibri XMPP accounts with
         # these passwords on startup, and Jicofo and the JVB log in with them -
